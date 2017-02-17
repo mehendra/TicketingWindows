@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Business;
+using Models.Services;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using TicketManager.web;
 
 namespace TicketManager.web.Controllers
 {
     public class AgentsController : Controller
     {
         private TicketingEntities db = new TicketingEntities();
-
+        private ILogger logger = new Logger();
         // GET: Agents
         public ActionResult Index()
         {

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TicketManager.web.TicketsIssued>
+﻿@model IEnumerable<Business.TicketsIssued>
 
 @{
     ViewBag.Title = "Assign Ticket";
@@ -13,10 +13,14 @@
     <form id="ticketAdd">
         <table>
             <tr><td>
-                    <input type="text" name="ticketNumber" class="form-control text-box single-line" />
+                    <input type="text" name="ticketNumber" id="ticketNumber" class="form-control text-box single-line" />
                     <input type="hidden" name="agentCode" value="@ViewData["agentCode"]"/>
                 </td>
-            <td><input type="submit" class="btn btn-default" /></td></tr>
+            <td>
+                <input type="submit" class="btn btn-default" /></td>
+            <td><div id="loadContainer"></div></td>
+            </tr>
+
         </table>
         
         
@@ -74,7 +78,11 @@
 </table>
 <script>
     var request;
-
+    $(document).ajaxStart(function () {
+        console.log('ajax starting');
+    }).ajaxStop(function () {
+        console.log('ajax stoping');
+    });
     // Bind to the submit event of our form
     $("#ticketAdd").submit(function (event) {
 
@@ -98,17 +106,24 @@
         // Note: we disable elements AFTER the form data has been serialized.
         // Disabled form elements will not be serialized.
         $inputs.prop("disabled", true);
-        alert(serializedData);
-        /*
+        if ($("#spinner").length) {
+            $('spinner').show();
+        } else {
+            $('#loadContainer').append('<img src="/Content/images/ajax-loader.gif" id="spinner"/>');
+        }
+        
+        //alert(serializedData);
+        
         // Fire off the request to /form.php
         request = $.ajax({
-            url: "/form.php",
+            url: "/api/TicketA",
             type: "post",
             data: serializedData
         });
-        */
+        
         // Callback handler that will be called on success
-        request.done(function (response, textStatus, jqXHR) {
+        request.done(function (response, textStatus, jqXHR) {            
+            $('#ticketNumber').val('');
             // Log a message to the console
             console.log("Hooray, it worked!");
         });
@@ -127,6 +142,7 @@
         request.always(function () {
             // Reenable the inputs
             $inputs.prop("disabled", false);
+            $("#spinner").hide();
         });
 
     });
