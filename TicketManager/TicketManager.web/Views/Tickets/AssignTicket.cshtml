@@ -28,7 +28,7 @@
     
 </div>
 <hr />
-<div>
+<div id="ticketContainer">
 @foreach (var item in Model)
 {
     <div class="ticketNumberOnly">
@@ -76,18 +76,19 @@
         }
 
         $("#error").text('');
-        
+
         //alert(serializedData);
-        
+
         // Fire off the request to /form.php
         request = $.ajax({
             url: "/api/TicketA",
             type: "post",
             data: serializedData
         });
-        
+
         // Callback handler that will be called on success
-        request.done(function (response, textStatus, jqXHR) {            
+        request.done(function (response, textStatus, jqXHR) {
+            updatePage($('#ticketNumber').val());
             $('#ticketNumber').val('');
         });
 
@@ -110,4 +111,20 @@
         });
 
     });
+
+    function updatePage(ticketId)
+    {
+        $.getJSON("/api/TicketA", {
+            ticketNumber: ticketId
+        }).done(function (data) {
+            var htmlString = '<div class="ticketNumberOnly">' + data.Data.TicketNumber + '<br /><span>';
+            if(data.Data.Category != null)
+            {
+                htmlString = htmlString + data.Data.Category 
+            } 
+            htmlString = htmlString + '</span></div>'
+            $('#ticketContainer').append(htmlString);
+        });
+    }
+
 </script>

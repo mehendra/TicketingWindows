@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
+using System.Web.Mvc;
 using TicketManager.web.Models;
 
 namespace TicketManager.web.Controllers
@@ -14,7 +16,8 @@ namespace TicketManager.web.Controllers
     {
         private TicketingEntities db = new TicketingEntities();
         private ILogger logger = new Logger();
-        
+        private TicketManagerService ticketManagerService = new TicketManagerService();
+
         // GET: api/TicketA
         public IEnumerable<string> Get()
         {
@@ -22,29 +25,24 @@ namespace TicketManager.web.Controllers
         }
 
         // GET: api/TicketA/5
-        public string Get(int id)
+        public JsonResult Get(string ticketNumber)
         {
-            return "value";
+            var ticketManagerResponse = ticketManagerService.GetTicket(ticketNumber);
+            var foundData = new TicketsIssued() { Category = ticketManagerResponse.ItemResuested.Category, TicketNumber = ticketManagerResponse.ItemResuested.TicketNumber };
+            return new JsonResult { Data = foundData };
         }
 
         // POST: api/TicketA
         public HttpResponseMessage Post(AddTicketToAgent value)
         {
-            try
+            var ticketManagerResponse = ticketManagerService.AddTicket(new TicketsIssued { AgentCode = value.agentCode, TicketNumber = value.ticketNumber });
+            if (ticketManagerResponse.IsASuccess)
             {
-                if(db.TicketsIssueds.Any(a=>a.TicketNumber == value.ticketNumber))
-                {
-                    var ticketIssued = db.TicketsIssueds.First(b => b.TicketNumber == value.ticketNumber);
-                    return Request.CreateResponse(HttpStatusCode.Conflict, new HttpError("Ticket already issued to " + ticketIssued.Agent.AgentName));
-                }
-                db.TicketsIssueds.Add(new TicketsIssued { AgentCode = value.agentCode, TicketNumber = value.ticketNumber });
-                db.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.Created);
             }
-            catch (Exception ex)
+            else
             {
-                logger.logMessage(ex.Message, LogLevel.error);
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable, new HttpError(ticketManagerResponse.Errors.First()));
             }
         }
 

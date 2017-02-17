@@ -61,6 +61,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="TicketConfirmer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TicketManagerService.cs" />
     <Compile Include="TicketSaledDb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
