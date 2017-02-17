@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TicketingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="AgentCode" />
+          </Key>
+          <Property Name="AgentCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AgentName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TicketsIssued">
+          <Key>
+            <PropertyRef Name="TicketNumber" />
+          </Key>
+          <Property Name="TicketNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AgentCode" Type="varchar" MaxLength="10" />
+          <Property Name="Category" Type="varchar" MaxLength="50" />
+          <Property Name="TicketStatusCode" Type="varchar" MaxLength="4" />
+          <Property Name="ArrivedAt" Type="datetime" />
+          <Property Name="ArrivalConfirmedBy" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="TicketStatus">
+          <Key>
+            <PropertyRef Name="TicketStatusCode" />
+          </Key>
+          <Property Name="TicketStatusCode" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="TicketStatus" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="fk_Agent">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="AgentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TicketStatus">
+          <End Role="TicketStatus" Type="Self.TicketStatus" Multiplicity="0..1" />
+          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatus">
+              <PropertyRef Name="TicketStatusCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="TicketStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TicketingModelStoreContainer">
+          <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketsIssued" EntityType="Self.TicketsIssued" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketStatus" EntityType="Self.TicketStatus" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_Agent" Association="Self.fk_Agent">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssued" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TicketStatus" Association="Self.fk_TicketStatus">
+            <End Role="TicketStatus" EntitySet="TicketStatus" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssued" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TicketingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="AgentCode" />
+          </Key>
+          <Property Name="AgentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AgentName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TicketsIssueds" Relationship="Self.fk_Agent" FromRole="Agent" ToRole="TicketsIssued" />
+        </EntityType>
+        <EntityType Name="TicketsIssued">
+          <Key>
+            <PropertyRef Name="TicketNumber" />
+          </Key>
+          <Property Name="TicketNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AgentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ArrivedAt" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalConfirmedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Agent" Relationship="Self.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
+          <NavigationProperty Name="TicketStatu" Relationship="Self.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatus" />
+        </EntityType>
+        <EntityType Name="TicketStatu">
+          <Key>
+            <PropertyRef Name="TicketStatusCode" />
+          </Key>
+          <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TicketStatus" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TicketsIssueds" Relationship="Self.fk_TicketStatus" FromRole="TicketStatus" ToRole="TicketsIssued" />
+        </EntityType>
+        <Association Name="fk_Agent">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="AgentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TicketStatus">
+          <End Role="TicketStatus" Type="Self.TicketStatu" Multiplicity="0..1" />
+          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatus">
+              <PropertyRef Name="TicketStatusCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="TicketStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TicketingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agents" EntityType="Self.Agent" />
+          <EntitySet Name="TicketsIssueds" EntityType="Self.TicketsIssued" />
+          <EntitySet Name="TicketStatus" EntityType="Self.TicketStatu" />
+          <AssociationSet Name="fk_Agent" Association="Self.fk_Agent">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TicketStatus" Association="Self.fk_TicketStatus">
+            <End Role="TicketStatus" EntitySet="TicketStatus" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TicketingModelStoreContainer" CdmEntityContainer="TicketingEntities">
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="TicketingModel.Agent">
+              <MappingFragment StoreEntitySet="Agent">
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketsIssueds">
+            <EntityTypeMapping TypeName="TicketingModel.TicketsIssued">
+              <MappingFragment StoreEntitySet="TicketsIssued">
+                <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+                <ScalarProperty Name="ArrivedAt" ColumnName="ArrivedAt" />
+                <ScalarProperty Name="ArrivalConfirmedBy" ColumnName="ArrivalConfirmedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketStatus">
+            <EntityTypeMapping TypeName="TicketingModel.TicketStatu">
+              <MappingFragment StoreEntitySet="TicketStatus">
+                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+                <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
