@@ -30,16 +30,21 @@ namespace TicketManager.web.Controllers
         // POST: api/TicketA
         public HttpResponseMessage Post(AddTicketToAgent value)
         {
-            db.TicketsIssueds.Add(new TicketsIssued { AgentCode = value.agentCode, TicketNumber = value.ticketNumber });
-            db.SaveChanges();
             try
             {
+                if(db.TicketsIssueds.Any(a=>a.TicketNumber == value.ticketNumber))
+                {
+                    var ticketIssued = db.TicketsIssueds.First(b => b.TicketNumber == value.ticketNumber);
+                    return Request.CreateResponse(HttpStatusCode.Conflict, new HttpError("Ticket already issued to " + ticketIssued.Agent.AgentName));
+                }
+                db.TicketsIssueds.Add(new TicketsIssued { AgentCode = value.agentCode, TicketNumber = value.ticketNumber });
+                db.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
                 logger.logMessage(ex.Message, LogLevel.error);
-                return Request.CreateResponse(HttpStatusCode.Conflict);                
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
         }
 

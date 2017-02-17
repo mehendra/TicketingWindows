@@ -22,60 +22,23 @@
             </tr>
 
         </table>
-        
+        <div id="error"></div>
         
     </form>
     
 </div>
+<hr />
 <div>
-    @Html.DisplayNameFor(model => model.TicketNumber)
-</div>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ArrivedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ArrivalConfirmedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Agent.AgentName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketStatu.TicketStatus)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivalConfirmedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Agent.AgentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatu.TicketStatus)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TicketNumber }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TicketNumber }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TicketNumber })
-        </td>
-    </tr>
+@foreach (var item in Model)
+{
+    <div class="ticketNumberOnly">
+        @Html.DisplayFor(modelItem => item.TicketNumber)
+        <br /><span>@Html.DisplayFor(modelItem => item.Category)</span>
+    </div>
 }
+</div>
 
-</table>
+
 <script>
     var request;
     $(document).ajaxStart(function () {
@@ -111,6 +74,8 @@
         } else {
             $('#loadContainer').append('<img src="/Content/images/ajax-loader.gif" id="spinner"/>');
         }
+
+        $("#error").text('');
         
         //alert(serializedData);
         
@@ -124,13 +89,12 @@
         // Callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR) {            
             $('#ticketNumber').val('');
-            // Log a message to the console
-            console.log("Hooray, it worked!");
         });
 
         // Callback handler that will be called on failure
         request.fail(function (jqXHR, textStatus, errorThrown) {
             // Log the error to the console
+            $("#error").text('Error: ' + errorThrown);
             console.error(
                 "The following error occurred: " +
                 textStatus, errorThrown

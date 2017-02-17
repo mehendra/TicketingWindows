@@ -16,3 +16,14 @@ textarea {
     max-width: 280px;
 }
 
+.ticketNumberOnly {
+    width:150px;
+    float:left;
+    min-height:60px;
+}
+
+.ticketNumberOnly span{
+    color:blue;
+    font-style:italic;
+    font-size:0.8em;
+}
