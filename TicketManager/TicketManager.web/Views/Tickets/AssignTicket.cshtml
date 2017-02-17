@@ -94,7 +94,7 @@
         // Callback handler that will be called on failure
         request.fail(function (jqXHR, textStatus, errorThrown) {
             // Log the error to the console
-            $("#error").text('Error: ' + errorThrown);
+            $("#error").text('Error: ' + jqXHR.responseText);
             console.error(
                 "The following error occurred: " +
                 textStatus, errorThrown

@@ -12,13 +12,10 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.TicketNumber)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ArrivedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ArrivalConfirmedBy)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Agent.AgentName)
@@ -32,13 +29,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @item.TicketNumber.ToUpper()
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivalConfirmedBy)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Agent.AgentName)
