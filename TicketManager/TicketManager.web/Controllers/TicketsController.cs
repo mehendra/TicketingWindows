@@ -17,6 +17,7 @@ namespace TicketManager.web.Controllers
         public ActionResult AssignTicket(string agentCode)
        {
             var ticketsIssueds = db.TicketsIssueds.Where(a=>a.AgentCode == agentCode).Include(t => t.Agent).Include(t => t.TicketStatu);
+            ViewData.Add("agentCode", agentCode);
             return View(ticketsIssueds.ToList());
         }
         
