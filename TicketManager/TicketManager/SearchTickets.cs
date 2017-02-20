@@ -9,8 +9,20 @@ using Utilities;
 namespace TicketManager
 {
     public partial class SearchTicketsForm : Form
-    {
+    {        
+
         ILogger logger = new Logger();
+        TicketConfirmerService ticketService;
+
+        private TicketConfirmerService GetTicketService()
+        {
+            if (ticketService == null)
+            {
+                ticketService = new TicketConfirmerService(logger);
+            }
+            return ticketService;
+        }
+
         public bool ScannedTextBoxInError { get; set; }
 
         ISystemInformation currentSystemInformation;
@@ -39,11 +51,23 @@ namespace TicketManager
             {
                 logger.logMessage(string.Format("Ticket {0} scanned", currentText), LogLevel.message);
                 var scannedTicket = new ScannedTicket(currentText, currentSystemInformation);
-                Console.WriteLine(currentText);
-                SimpleTicketNumberTextBox.Clear();
-                ScannerTimer.Enabled = false;
-                ScannerTabPage.BackColor = Color.LightGreen;
-                ScannedTextBoxInError = false;
+                var ticketMarked = new Business.TicketConfirmerService(logger).ConfirmArrival(scannedTicket);
+                if (ticketMarked)
+                {
+                    Console.WriteLine(currentText);
+                    SimpleTicketNumberTextBox.Clear();
+                    ScannerTimer.Enabled = false;
+                    ScannerTabPage.BackColor = Color.LightGreen;
+                    ScannedTextBoxInError = false;
+                }
+                else
+                {
+                    ScannerTabPage.BackColor = Color.Red;
+                    ScannerTimer.Enabled = false;
+                    ScannedTextBoxInError = true;
+                    MessageBox.Show("Failed to mark the ticket as scanned.");
+                }
+
             }
             else if (numberOfIterationForScanner < 10)
             {

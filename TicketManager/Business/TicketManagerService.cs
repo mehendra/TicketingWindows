@@ -2,6 +2,7 @@
 using Models.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,5 +77,11 @@ namespace Business
             }
         }
 
+        public SearchResultsWrapper<SeachTickets_Result> SeachTickets(TicketSearchParams parameters)
+        {
+            ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
+            var searchResults = db.SeachTickets(parameters.TicketNumber, parameters.AgentCode, parameters.TicketStatusCode, parameters.Category, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount);
+            return new SearchResultsWrapper<SeachTickets_Result> { RecordCiount = (int)recordCount.Value , Results = searchResults };
+        }
     }
-    }
+ }

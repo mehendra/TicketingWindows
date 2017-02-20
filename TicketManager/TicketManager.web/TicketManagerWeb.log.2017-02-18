@@ -1,0 +1,22 @@
+ERROR 10 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 10 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 9 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 13 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 10 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 20 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 20 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 19 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 10 Business.Logger - Sequence contains no elements
+ERROR 13 Business.Logger - Sequence contains no elements
+ERROR 10 Business.Logger - Object reference not set to an instance of an object.
+ERROR 12 Business.Logger - Object reference not set to an instance of an object.
+ERROR 9 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 11 Business.Logger - Object reference not set to an instance of an object.
+ERROR 11 Business.Logger - Object reference not set to an instance of an object.
+ERROR 11 Business.Logger - Object reference not set to an instance of an object.
+ERROR 18 Business.Logger - Object reference not set to an instance of an object.
+ERROR 14 Business.Logger - Object reference not set to an instance of an object.
+ERROR 19 Business.Logger - Object reference not set to an instance of an object.
+ERROR 11 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 14 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 13 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.

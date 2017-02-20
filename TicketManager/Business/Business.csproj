@@ -59,7 +59,10 @@
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Logger.cs" />
-    <Compile Include="TicketConfirmer.cs" />
+    <Compile Include="SeachTickets_Result.cs">
+      <DependentUpon>TicketSaledDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TicketConfirmerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TicketManagerService.cs" />
     <Compile Include="TicketSaledDb.Context.cs">

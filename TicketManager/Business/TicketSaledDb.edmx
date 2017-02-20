@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TicketingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TicketingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="AgentCode" />
@@ -54,6 +54,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SeachTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TicketNumber" Type="varchar" Mode="In" />
+          <Parameter Name="AgentCode" Type="varchar" Mode="In" />
+          <Parameter Name="TicketStatusCode" Type="varchar" Mode="In" />
+          <Parameter Name="Category" Type="varchar" Mode="In" />
+          <Parameter Name="RcordCount" Type="int" Mode="In" />
+          <Parameter Name="RecordsPerPage" Type="int" Mode="In" />
+          <Parameter Name="PagingStartIndex" Type="int" Mode="In" />
+          <Parameter Name="TotalRecords" Type="int" Mode="InOut" />
+        </Function>
         <EntityContainer Name="TicketingModelStoreContainer">
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketsIssued" EntityType="Self.TicketsIssued" Schema="dbo" store:Type="Tables" />
@@ -67,8 +77,7 @@
             <End Role="TicketsIssued" EntitySet="TicketsIssued" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TicketingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -137,7 +146,28 @@
             <End Role="TicketStatus" EntitySet="TicketStatus" />
             <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
           </AssociationSet>
+          <FunctionImport Name="SeachTickets" ReturnType="Collection(TicketingModel.SeachTickets_Result)">
+            <Parameter Name="TicketNumber" Mode="In" Type="String" />
+            <Parameter Name="AgentCode" Mode="In" Type="String" />
+            <Parameter Name="TicketStatusCode" Mode="In" Type="String" />
+            <Parameter Name="Category" Mode="In" Type="String" />
+            <Parameter Name="RcordCount" Mode="In" Type="Int32" />
+            <Parameter Name="RecordsPerPage" Mode="In" Type="Int32" />
+            <Parameter Name="PagingStartIndex" Mode="In" Type="Int32" />
+            <Parameter Name="TotalRecords" Mode="InOut" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="SeachTickets_Result">
+          <Property Type="Int32" Name="idx" Nullable="false" />
+          <Property Type="String" Name="TicketNumber" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="AgentCode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TicketStatusCode" Nullable="true" MaxLength="4" />
+          <Property Type="DateTime" Name="ArrivedAt" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ArrivalConfirmedBy" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="AgentName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TicketStatus" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -172,6 +202,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SeachTickets" FunctionName="TicketingModel.Store.SeachTickets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketingModel.SeachTickets_Result">
+                <ScalarProperty Name="idx" ColumnName="idx" />
+                <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+                <ScalarProperty Name="ArrivedAt" ColumnName="ArrivedAt" />
+                <ScalarProperty Name="ArrivalConfirmedBy" ColumnName="ArrivalConfirmedBy" />
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+                <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

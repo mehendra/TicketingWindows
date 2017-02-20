@@ -12,6 +12,8 @@ namespace Business
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class TicketingEntities : DbContext
     {
@@ -28,5 +30,38 @@ namespace Business
         public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<TicketsIssued> TicketsIssueds { get; set; }
         public virtual DbSet<TicketStatu> TicketStatus { get; set; }
+    
+        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string category, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
+        {
+            var ticketNumberParameter = ticketNumber != null ?
+                new ObjectParameter("TicketNumber", ticketNumber) :
+                new ObjectParameter("TicketNumber", typeof(string));
+    
+            var agentCodeParameter = agentCode != null ?
+                new ObjectParameter("AgentCode", agentCode) :
+                new ObjectParameter("AgentCode", typeof(string));
+    
+            var ticketStatusCodeParameter = ticketStatusCode != null ?
+                new ObjectParameter("TicketStatusCode", ticketStatusCode) :
+                new ObjectParameter("TicketStatusCode", typeof(string));
+    
+            var categoryParameter = category != null ?
+                new ObjectParameter("Category", category) :
+                new ObjectParameter("Category", typeof(string));
+    
+            var rcordCountParameter = rcordCount.HasValue ?
+                new ObjectParameter("RcordCount", rcordCount) :
+                new ObjectParameter("RcordCount", typeof(int));
+    
+            var recordsPerPageParameter = recordsPerPage.HasValue ?
+                new ObjectParameter("RecordsPerPage", recordsPerPage) :
+                new ObjectParameter("RecordsPerPage", typeof(int));
+    
+            var pagingStartIndexParameter = pagingStartIndex.HasValue ?
+                new ObjectParameter("PagingStartIndex", pagingStartIndex) :
+                new ObjectParameter("PagingStartIndex", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, categoryParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
+        }
     }
 }
