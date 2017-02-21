@@ -1,4 +1,5 @@
 ﻿using Business;
+using Models.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +15,8 @@ namespace TicketManager.web.Controllers
     public class TicketsController : Controller
     {
         private TicketingEntities db = new TicketingEntities();
+        TicketManagerService ticketService = new TicketManagerService();
+        ILogger loggerService = new Logger();
 
         public ActionResult AssignTicket(string agentCode)
        {
@@ -120,12 +123,15 @@ namespace TicketManager.web.Controllers
                 {
                     try
                     {
-                        db.TicketsIssueds.Add(new TicketsIssued { TicketNumber = ticket });
-                        db.SaveChanges();
+                        if (!string.IsNullOrWhiteSpace(ticket))
+                        {
+                            ticketService.AddOrIssue(new TicketsIssued { TicketNumber = ticket, TicketStatusCode = Business.Constants.TicketStatus.Initial, AgentCode = Business.Constants.FixedAgents.Unassigned });
+                        }                        
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         allErrors.Add("Failed to add ticket number " + ticket);
+                        loggerService.logMessage("Failed to add ticket number " + ticket + " with error: " + ex.Message, LogLevel.error);
                     }
                 }
                 return RedirectToAction("Index");

@@ -35,7 +35,7 @@ namespace TicketManager.web.Controllers
         // POST: api/TicketA
         public HttpResponseMessage Post(AddTicketToAgent value)
         {
-            var ticketManagerResponse = ticketManagerService.AddTicket(new TicketsIssued { AgentCode = value.agentCode, TicketNumber = value.ticketNumber });
+            var ticketManagerResponse = ticketManagerService.AddOrIssue(new TicketsIssued { AgentCode = value.agentCode, TicketNumber = value.ticketNumber });
             if (ticketManagerResponse.IsASuccess)
             {
                 return Request.CreateResponse(HttpStatusCode.Created);

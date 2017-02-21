@@ -13,20 +13,40 @@ namespace Business
     {
         private TicketingEntities db = new TicketingEntities();
         ILogger logger = new Logger();
-        public BusinessHandlerResponse<TicketsIssued> AddTicket(TicketsIssued ticket)
+        public BusinessHandlerResponse<TicketsIssued> AddOrIssue(TicketsIssued ticket)
         {
             try
             {
                 if (db.TicketsIssueds.Any(a => a.TicketNumber == ticket.TicketNumber))
                 {
                     var ticketIssued = db.TicketsIssueds.First(b => b.TicketNumber == ticket.TicketNumber);
-                    return new BusinessHandlerResponse<TicketsIssued>()
+                    if (ticketIssued.TicketStatusCode != Constants.TicketStatus.Initial)
                     {
-                        IsASuccess = false,
-                        Errors = new List<string> { "Ticket already issued to " + ticketIssued.Agent.AgentName }
-                    };
+                        return new BusinessHandlerResponse<TicketsIssued>()
+                        {
+                            IsASuccess = false,
+                            Errors = new List<string> { "Ticket already issued to " + ticketIssued.Agent.AgentName }
+                        };
+                    }
+                    else
+                    {
+                        ticketIssued.TicketStatusCode = Constants.TicketStatus.Issued;
+                    }
                 }
-                db.TicketsIssueds.Add(ticket);
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(ticket.TicketStatusCode))
+                    {
+                        ticket.TicketStatusCode = Constants.TicketStatus.Initial;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(ticket.AgentCode))
+                    {
+                        ticket.AgentCode = Constants.FixedAgents.Unassigned;
+                    }
+
+                    db.TicketsIssueds.Add(ticket);
+                }                
                 db.SaveChanges();
                 return new BusinessHandlerResponse<TicketsIssued>()
                 {

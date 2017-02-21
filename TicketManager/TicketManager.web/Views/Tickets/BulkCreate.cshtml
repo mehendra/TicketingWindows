@@ -5,7 +5,8 @@
 
 <h2>Bulk Create</h2>
 
-<form>
+<form method="post">
+    @Html.AntiForgeryToken()
     Bulk Tickets (please note all these tickets will be created new)
     <textarea name="ticketsIssued">
 

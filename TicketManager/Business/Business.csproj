@@ -58,6 +58,8 @@
     <Compile Include="Agent.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Constants\FixedAgents.cs" />
+    <Compile Include="Constants\TicketStatus.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="SeachTickets_Result.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
@@ -119,6 +121,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
