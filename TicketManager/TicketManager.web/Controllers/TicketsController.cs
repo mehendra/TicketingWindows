@@ -108,6 +108,34 @@ namespace TicketManager.web.Controllers
             return View(ticketsIssued);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BulkCreate(string ticketsIssued)
+        {
+            if (ModelState.IsValid && !string.IsNullOrWhiteSpace(ticketsIssued))
+            {
+                var allTickets = ticketsIssued.Replace(Environment.NewLine,",").Split(',').Select(a => a.Trim());
+                var allErrors = new List<string>();
+                foreach (var ticket in allTickets)
+                {
+                    try
+                    {
+                        db.TicketsIssueds.Add(new TicketsIssued { TicketNumber = ticket });
+                        db.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        allErrors.Add("Failed to add ticket number " + ticket);
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            throw new Exception("Ahhhh!");
+        }
+
+        public ActionResult BulkCreate() {
+            return View();
+        }
         // GET: Tickets/Delete/5
         public ActionResult Delete(string id)
         {

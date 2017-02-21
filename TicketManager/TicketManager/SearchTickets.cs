@@ -47,7 +47,7 @@ namespace TicketManager
         {
             var currentText = SimpleTicketNumberTextBox.Text.ToUpper();
             numberOfIterationForScanner++;
-            if (currentText.Length == 8)
+            if (currentText.Length == 14)
             {
                 logger.logMessage(string.Format("Ticket {0} scanned", currentText), LogLevel.message);
                 var scannedTicket = new ScannedTicket(currentText, currentSystemInformation);
@@ -69,7 +69,7 @@ namespace TicketManager
                 }
 
             }
-            else if (numberOfIterationForScanner < 10)
+            else if (numberOfIterationForScanner < 14)
             {
                 logger.logMessage(string.Format("Unable to find ticket {0}", currentText), LogLevel.debug);
                 Console.WriteLine("Please wait");

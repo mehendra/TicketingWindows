@@ -16,7 +16,7 @@
           <Key>
             <PropertyRef Name="TicketNumber" />
           </Key>
-          <Property Name="TicketNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TicketNumber" Type="varchar" MaxLength="17" Nullable="false" />
           <Property Name="AgentCode" Type="varchar" MaxLength="10" />
           <Property Name="Category" Type="varchar" MaxLength="50" />
           <Property Name="TicketStatusCode" Type="varchar" MaxLength="4" />
@@ -93,7 +93,7 @@
           <Key>
             <PropertyRef Name="TicketNumber" />
           </Key>
-          <Property Name="TicketNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TicketNumber" Type="String" MaxLength="17" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="AgentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
