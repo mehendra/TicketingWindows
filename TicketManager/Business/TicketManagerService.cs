@@ -25,7 +25,7 @@ namespace Business
                         return new BusinessHandlerResponse<TicketsIssued>()
                         {
                             IsASuccess = false,
-                            Errors = new List<string> { "Ticket already issued to " + ticketIssued.Agent.AgentName }
+                            Errors = new List<string> { string.Format("Ticket {0} already issued to {1} ", ticketIssued.TicketNumber, ticketIssued.Agent.AgentName) }
                         };
                     }
                     else

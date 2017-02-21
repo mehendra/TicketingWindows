@@ -7,10 +7,21 @@
 
 <form method="post">
     @Html.AntiForgeryToken()
+    @if (ViewBag.Errors != null)
+    {
+        <ul class="has-error">
+            @foreach (var item in ViewBag.Errors)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    }
     Bulk Tickets (please note all these tickets will be created new)
-    <textarea name="ticketsIssued">
+    <br />
+    <textarea name="ticketsIssued" cols="200" rows="30">
 
     </textarea>
+    <br />
     <input type="submit" />
 </form>
 

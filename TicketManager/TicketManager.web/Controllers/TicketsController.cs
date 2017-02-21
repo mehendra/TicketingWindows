@@ -125,7 +125,11 @@ namespace TicketManager.web.Controllers
                     {
                         if (!string.IsNullOrWhiteSpace(ticket))
                         {
-                            ticketService.AddOrIssue(new TicketsIssued { TicketNumber = ticket, TicketStatusCode = Business.Constants.TicketStatus.Initial, AgentCode = Business.Constants.FixedAgents.Unassigned });
+                            var savedFailiur = ticketService.AddOrIssue(new TicketsIssued { TicketNumber = ticket, TicketStatusCode = Business.Constants.TicketStatus.Initial, AgentCode = Business.Constants.FixedAgents.Unassigned });
+                            if (!savedFailiur.IsASuccess)
+                            {
+                                allErrors.AddRange(savedFailiur.Errors);
+                            }
                         }                        
                     }
                     catch (Exception ex)
@@ -134,9 +138,15 @@ namespace TicketManager.web.Controllers
                         loggerService.logMessage("Failed to add ticket number " + ticket + " with error: " + ex.Message, LogLevel.error);
                     }
                 }
-                return RedirectToAction("Index");
+                if (allErrors.Count > 0)
+                {
+                    ViewBag.Errors = allErrors;
+                }
+                else {
+                    return RedirectToAction("Index");
+                }                
             }
-            throw new Exception("Ahhhh!");
+            return View();
         }
 
         public ActionResult BulkCreate() {
