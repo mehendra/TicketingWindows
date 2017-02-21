@@ -34,7 +34,7 @@ insert into @AllRecords( [TicketNumber]
       ,[ArrivalConfirmedBy]
 	  ,AgentName
 	  ,[TicketStatus])
-select t.*,a.AgentName,ts.TicketStatus  from dbo.TicketsIssued t inner join dbo.Agent a
+select t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus  from dbo.TicketsIssued t inner join dbo.Agent a
 on t.AgentCode = a.AgentCode left join [dbo].[TicketStatus] ts
 on ts.TicketStatusCode = t.TicketStatusCode
 where t.AgentCode = case when @AgentCode is null then t.AgentCode else @AgentCode  end
