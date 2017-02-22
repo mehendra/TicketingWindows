@@ -99,8 +99,13 @@ namespace Business
 
         public SearchResultsWrapper<SeachTickets_Result> SeachTickets(TicketSearchParams parameters)
         {
+            var ticketNumberFormatted = parameters.TicketNumber;
+            if(!string.IsNullOrWhiteSpace(parameters.TicketNumber) && !parameters.TicketNumber.StartsWith("BNS2017"))
+            {
+                ticketNumberFormatted = "BNS2017" + ticketNumberFormatted;
+            }
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
-            var searchResults = db.SeachTickets(parameters.TicketNumber, parameters.AgentCode, parameters.TicketStatusCode, parameters.Category, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount);
+            var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Category, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
             return new SearchResultsWrapper<SeachTickets_Result> { RecordCiount = (int)recordCount.Value , Results = searchResults };
         }
     }

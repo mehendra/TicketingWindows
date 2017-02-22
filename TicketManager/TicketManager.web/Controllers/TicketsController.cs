@@ -1,4 +1,5 @@
 ﻿using Business;
+using Models;
 using Models.Services;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace TicketManager.web.Controllers
     {
         private TicketingEntities db = new TicketingEntities();
         TicketManagerService ticketService = new TicketManagerService();
+        StaticDataService staticDataService = new StaticDataService();
         ILogger loggerService = new Logger();
 
         public ActionResult AssignTicket(string agentCode)
@@ -26,12 +28,68 @@ namespace TicketManager.web.Controllers
             ViewData.Add("agentName", agent.AgentName);
             return View(ticketsIssueds.ToList());
         }
-        
-        // GET: Tickets
+
         public ActionResult Index()
         {
-            var ticketsIssueds = db.TicketsIssueds.Include(t => t.Agent).Include(t => t.TicketStatu);
-            return View(ticketsIssueds.ToList());
+            var searchInfo = new TicketSearchInfoViewModel<Business.SeachTickets_Result>();
+            if (searchInfo.SearchParameters == null)
+            {
+                searchInfo.SearchParameters = new TicketSearchParams()
+                {
+                    RecordsPerPage = 50,
+                    PagingStartIndex = 1
+                };
+            }
+            AddViewData(searchInfo);
+            searchInfo.SearchResults = ticketService.SeachTickets(searchInfo.SearchParameters);
+            return View(searchInfo);
+        }
+
+        [HttpPost]
+        public ActionResult Index(TicketSearchInfoViewModel<Business.SeachTickets_Result> searchInfo)
+        {
+            if (searchInfo.SearchParameters == null)
+            {
+                searchInfo.SearchParameters = new TicketSearchParams() {
+                    RecordsPerPage = 50,
+                    PagingStartIndex = 1
+                };
+            }
+            searchInfo.SearchResults = ticketService.SeachTickets(searchInfo.SearchParameters);
+            AddViewData(searchInfo);
+            return View(searchInfo);
+        }
+
+        private void AddViewData(TicketSearchInfoViewModel<Business.SeachTickets_Result> searchViewModel)
+        {
+            searchViewModel.Agents = staticDataService.GetAgents().Select(a =>
+            new SelectListItem
+            {
+                Text = a.AgentName,
+                Value = a.AgentCode
+            });
+
+            searchViewModel.TicketStatus = staticDataService.GetTicketStatuses().Select(a =>
+            new SelectListItem
+            {
+                Text = a.TicketStatus,
+                Value = a.TicketStatusCode
+            });
+
+            searchViewModel.Categories = staticDataService.GetTicketCategory().Select(a =>
+            new SelectListItem
+            {
+                Text = a.Value,
+                Value = a.Key
+            });
+
+
+            searchViewModel.RecordsPerPage = staticDataService.GetRecordsPerPage().Select(a =>
+            new SelectListItem
+            {
+                Text = a.Value,
+                Value = a.Key
+            });
         }
 
         // GET: Tickets/Details/5

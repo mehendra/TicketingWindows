@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Business.TicketsIssued>
+﻿@model Models.TicketSearchInfoViewModel<Business.SeachTickets_Result>
 
 @{
     ViewBag.Title = "Index";
@@ -9,43 +9,103 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Agent.AgentName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketStatu.TicketStatus)
-        </th>
-        <th></th>
-    </tr>
+<p>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @item.TicketNumber.ToUpper()
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Agent.AgentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatu.TicketStatus)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TicketNumber }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TicketNumber }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TicketNumber })
-        </td>
-    </tr>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>TicketSearchParams</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.TicketNumber, "Ticket Number (BNS2017)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SearchParameters.TicketNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SearchParameters.TicketNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.AgentCode, "Agent", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.AgentCode, new SelectList(Model.Agents, "Value", "Text"), "--Select Agent--")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.TicketStatusCode, "Ticket Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.TicketStatusCode, new SelectList(Model.TicketStatus, "Value", "Text"), "--Select Ticket Status--")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.Category, "Ticket Category", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.Category, new SelectList(Model.Categories, "Value", "Text"), "--Select Category--")
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.RecordsPerPage,"Records per page", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.RecordsPerPage, new SelectList(Model.RecordsPerPage, "Value", "Text"))
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.SearchParameters.RcordCount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.SearchParameters.PagingStartIndex, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.SearchResults.RecordCiount, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Search" class="btn btn-default" onclick="doSubmit();" />
+        </div>
+    </div>
 }
+</p>
+@if (Model.SearchResults != null || Model.SearchResults.Results.Count() > 0)
+{
+    <table class="table">
+    <tr>
+        <th>Ticket Number</th>
+        <th>Category</th>
+        <th>Agent Name</th>
+        <th>Ticket Status</th>
+        <th>&nbsp;</th>
+    </tr>
+    @foreach (var item in Model.SearchResults.Results)
+    {
+        Html.RenderPartial("~/Views/Shared/_SearchView.cshtml", item);
+    }
 
-</table>
+    </table>
+}
+    <script>
+        function postPage(pageId)
+        {
+            $("#SearchParameters_PagingStartIndex").val(pageId)
+            document.forms[0].submit();
+        }
+        function doSubmit() {
+            $("#SearchParameters_PagingStartIndex").val(1)
+            document.forms[0].submit();
+        }
+    </script>
+<div class="pager">
+    <ul>
+        @{ 
+            int i = 1;
+            while (i  < Math.Ceiling((decimal)Model.SearchResults.RecordCiount/ Model.SearchParameters.RecordsPerPage.Value) +1)
+            {
+                <li>&nbsp; <a href="#" onclick="postPage(@i);">@i</a></li>
+                i++;
+            }
+        }
+
+    </ul>
+</div>

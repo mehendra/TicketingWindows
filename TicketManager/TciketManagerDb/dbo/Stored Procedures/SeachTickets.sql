@@ -1,5 +1,5 @@
 ﻿create procedure dbo.SeachTickets
-	@TicketNumber varchar(10) = null,
+	@TicketNumber varchar(17) = null,
 	@AgentCode varchar(10) = null,
 	@TicketStatusCode varchar(4) = null,
 	@Category varchar(50) = null,
@@ -17,7 +17,7 @@ as begin
 declare @AllRecords as table
 (
 	[idx] int not null identity (1,1),
-	[TicketNumber] [varchar](10) NOT NULL,
+	[TicketNumber] [varchar](17) NOT NULL,
 	[AgentCode] [varchar](10) NULL,
 	[Category] [varchar](50) NULL,
 	[TicketStatusCode] [varchar](4) NULL,

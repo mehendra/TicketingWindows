@@ -1,0 +1,21 @@
+﻿@model Business.SeachTickets_Result
+
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.TicketNumber)&nbsp;@Html.HiddenFor(model => model.idx)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Category)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.AgentName)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.TicketStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>

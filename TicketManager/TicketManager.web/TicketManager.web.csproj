@@ -213,6 +213,7 @@
     <Content Include="Views\Agents\Edit.cshtml" />
     <Content Include="Views\Agents\Index.cshtml" />
     <Content Include="Views\Tickets\BulkCreate.cshtml" />
+    <Content Include="Views\Shared\_SearchView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
