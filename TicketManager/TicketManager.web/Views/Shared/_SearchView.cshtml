@@ -1,8 +1,8 @@
 ﻿@model Business.SeachTickets_Result
 
-    <tr>
+    <tr id="TicketContainer-@Model.TicketNumber">
         <td>
-            @Html.DisplayFor(model => model.TicketNumber)&nbsp;@Html.HiddenFor(model => model.idx)
+            @Html.DisplayFor(model => model.TicketNumber)
         </td>
         <td>
             @Html.DisplayFor(model => model.Category)
@@ -14,7 +14,7 @@
             @Html.DisplayFor(model => model.TicketStatus)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Edit", "Edit", new { id = Model.TicketNumber }, new { @class = "editDialog", random=Model.TicketNumber }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
