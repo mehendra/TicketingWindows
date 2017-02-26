@@ -32,6 +32,14 @@ namespace TicketManager.web.Controllers
             return new JsonResult { Data = foundData };
         }
 
+        public JsonResult GetFull(string ticketNumber)
+        {
+            var ticketManagerResponse = ticketManagerService.GetTicket(ticketNumber);
+            var foundData = new TicketsIssued() { Category = ticketManagerResponse.ItemResuested.Category, TicketNumber = ticketManagerResponse.ItemResuested.TicketNumber };
+            return new JsonResult { Data = foundData };
+        }
+
+
         // POST: api/TicketA
         public HttpResponseMessage Post(AddTicketToAgent value)
         {

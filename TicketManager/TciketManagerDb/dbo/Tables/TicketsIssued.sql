@@ -7,6 +7,8 @@
     [ArrivalConfirmedBy] VARCHAR (255) NULL,
     [Paid]               DATE          NULL,
     [Notes]              VARCHAR (500) NULL,
+	[SoldTo]			 varchar (255) NULL,
+	[Zone] [varchar](10) NULL
     CONSTRAINT [PK_TicketsIssued] PRIMARY KEY CLUSTERED ([TicketNumber] ASC),
     CONSTRAINT [fk_Agent] FOREIGN KEY ([AgentCode]) REFERENCES [dbo].[Agent] ([AgentCode]),
     CONSTRAINT [fk_TicketStatus] FOREIGN KEY ([TicketStatusCode]) REFERENCES [dbo].[TicketStatus] ([TicketStatusCode])

@@ -1,4 +1,4 @@
-﻿create procedure dbo.SeachTickets
+﻿create procedure [dbo].[SeachTickets]
 	@TicketNumber varchar(17) = null,
 	@AgentCode varchar(10) = null,
 	@TicketStatusCode varchar(4) = null,
@@ -24,7 +24,9 @@ declare @AllRecords as table
 	[ArrivedAt] [datetime] NULL,
 	[ArrivalConfirmedBy] [varchar](255) NULL,
 	[AgentName] [varchar](255) NULL,
-	[TicketStatus] nvarchar(50) null
+	[TicketStatus] nvarchar(50) null,
+	[Zone] varchar(10) null,
+	[SoldTo] [varchar](255) NULL
 )
 insert into @AllRecords( [TicketNumber]
       ,[AgentCode]
@@ -33,8 +35,8 @@ insert into @AllRecords( [TicketNumber]
       ,[ArrivedAt]
       ,[ArrivalConfirmedBy]
 	  ,AgentName
-	  ,[TicketStatus])
-select t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus  from dbo.TicketsIssued t inner join dbo.Agent a
+	  ,[TicketStatus], Zone,SoldTo )
+select t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo  from dbo.TicketsIssued t inner join dbo.Agent a
 on t.AgentCode = a.AgentCode left join [dbo].[TicketStatus] ts
 on ts.TicketStatusCode = t.TicketStatusCode
 where t.AgentCode = case when @AgentCode is null then t.AgentCode else @AgentCode  end
