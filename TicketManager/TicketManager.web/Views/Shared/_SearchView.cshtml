@@ -4,13 +4,13 @@
         <td>
             @Html.DisplayFor(model => model.TicketNumber)
         </td>
-        <td>
-            @Html.DisplayFor(model => model.Category)
-        </td>
-        <td>
+        <td id="tktCat-@Model.TicketNumber">
+            @Html.DisplayFor(model => model.SearchCategoryDescription)
+        </td id="TicketContainer-@Model.TicketNumber">
+        <td id="tktNum-@Model.TicketNumber">
             @Html.DisplayFor(model => model.AgentName)
         </td>
-        <td>
+        <td id="tktStatus-@Model.TicketNumber">
             @Html.DisplayFor(model => model.TicketStatus)
         </td>
         <td>

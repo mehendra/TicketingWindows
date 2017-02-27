@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIService\ApiTicketsIssued.cs" />
     <Compile Include="BusinessHandlerResponse.cs" />
     <Compile Include="ScannedTicket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

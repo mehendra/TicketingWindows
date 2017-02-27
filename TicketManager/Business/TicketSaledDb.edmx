@@ -9,19 +9,33 @@
           <Key>
             <PropertyRef Name="AgentCode" />
           </Key>
-          <Property Name="AgentCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AgentCode" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="AgentName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TicketCategory">
+          <Key>
+            <PropertyRef Name="TicketCategoryCode" />
+            <PropertyRef Name="TicketCategory" />
+          </Key>
+          <Property Name="TicketCategoryCode" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="TicketCategory" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="TicketsIssued">
           <Key>
             <PropertyRef Name="TicketNumber" />
           </Key>
           <Property Name="TicketNumber" Type="varchar" MaxLength="17" Nullable="false" />
-          <Property Name="AgentCode" Type="varchar" MaxLength="10" />
+          <Property Name="AgentCode" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="Category" Type="varchar" MaxLength="50" />
           <Property Name="TicketStatusCode" Type="varchar" MaxLength="4" />
           <Property Name="ArrivedAt" Type="datetime" />
           <Property Name="ArrivalConfirmedBy" Type="varchar" MaxLength="255" />
+          <Property Name="Paid" Type="date" />
+          <Property Name="Notes" Type="varchar" MaxLength="500" />
+          <Property Name="SoldTo" Type="varchar" MaxLength="255" />
+          <Property Name="Zone" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="TicketStatus">
           <Key>
@@ -31,7 +45,7 @@
           <Property Name="TicketStatus" Type="nchar" MaxLength="50" />
         </EntityType>
         <Association Name="fk_Agent">
-          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
           <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Agent">
@@ -68,6 +82,12 @@
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketsIssued" EntityType="Self.TicketsIssued" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketStatus" EntityType="Self.TicketStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketCategory" EntityType="Self.TicketCategory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TicketCategory].[TicketCategoryCode] AS [TicketCategoryCode], 
+    [TicketCategory].[TicketCategory] AS [TicketCategory]
+    FROM [dbo].[TicketCategory] AS [TicketCategory]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="fk_Agent" Association="Self.fk_Agent">
             <End Role="Agent" EntitySet="Agent" />
             <End Role="TicketsIssued" EntitySet="TicketsIssued" />
@@ -81,26 +101,22 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TicketingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Agent">
-          <Key>
-            <PropertyRef Name="AgentCode" />
-          </Key>
-          <Property Name="AgentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AgentName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="TicketsIssueds" Relationship="Self.fk_Agent" FromRole="Agent" ToRole="TicketsIssued" />
-        </EntityType>
         <EntityType Name="TicketsIssued">
           <Key>
             <PropertyRef Name="TicketNumber" />
           </Key>
           <Property Name="TicketNumber" Type="String" MaxLength="17" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AgentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="AgentCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="ArrivedAt" Type="DateTime" Precision="3" />
           <Property Name="ArrivalConfirmedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Agent" Relationship="Self.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
           <NavigationProperty Name="TicketStatu" Relationship="Self.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatus" />
+          <Property Name="Paid" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SoldTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Zone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Agent" Relationship="TicketingModel.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
         </EntityType>
         <EntityType Name="TicketStatu">
           <Key>
@@ -110,18 +126,6 @@
           <Property Name="TicketStatus" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="TicketsIssueds" Relationship="Self.fk_TicketStatus" FromRole="TicketStatus" ToRole="TicketsIssued" />
         </EntityType>
-        <Association Name="fk_Agent">
-          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
-          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Agent">
-              <PropertyRef Name="AgentCode" />
-            </Principal>
-            <Dependent Role="TicketsIssued">
-              <PropertyRef Name="AgentCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_TicketStatus">
           <End Role="TicketStatus" Type="Self.TicketStatu" Multiplicity="0..1" />
           <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
@@ -135,13 +139,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TicketingEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Agents" EntityType="Self.Agent" />
           <EntitySet Name="TicketsIssueds" EntityType="Self.TicketsIssued" />
           <EntitySet Name="TicketStatus" EntityType="Self.TicketStatu" />
-          <AssociationSet Name="fk_Agent" Association="Self.fk_Agent">
-            <End Role="Agent" EntitySet="Agents" />
-            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
-          </AssociationSet>
           <AssociationSet Name="fk_TicketStatus" Association="Self.fk_TicketStatus">
             <End Role="TicketStatus" EntitySet="TicketStatus" />
             <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
@@ -156,6 +155,12 @@
             <Parameter Name="PagingStartIndex" Mode="In" Type="Int32" />
             <Parameter Name="TotalRecords" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Agents" EntityType="TicketingModel.Agent" />
+          <EntitySet Name="TicketCategories" EntityType="TicketingModel.TicketCategory" />
+          <AssociationSet Name="fk_Agent" Association="TicketingModel.fk_Agent">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="SeachTickets_Result">
           <Property Type="Int32" Name="idx" Nullable="false" />
@@ -168,23 +173,47 @@
           <Property Type="String" Name="AgentName" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="TicketStatus" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="AgentCode" />
+          </Key>
+          <Property Name="AgentCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="AgentName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TicketsIssueds" Relationship="TicketingModel.fk_Agent" FromRole="Agent" ToRole="TicketsIssued" />
+        </EntityType>
+        <EntityType Name="TicketCategory">
+          <Key>
+            <PropertyRef Name="TicketCategoryCode" />
+            <PropertyRef Name="TicketCategory1" />
+          </Key>
+          <Property Name="TicketCategoryCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="TicketCategory1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_Agent">
+          <End Type="TicketingModel.Agent" Role="Agent" Multiplicity="1" />
+          <End Type="TicketingModel.TicketsIssued" Role="TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="AgentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TicketingModelStoreContainer" CdmEntityContainer="TicketingEntities">
-          <EntitySetMapping Name="Agents">
-            <EntityTypeMapping TypeName="TicketingModel.Agent">
-              <MappingFragment StoreEntitySet="Agent">
-                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
-                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TicketsIssueds">
             <EntityTypeMapping TypeName="TicketingModel.TicketsIssued">
               <MappingFragment StoreEntitySet="TicketsIssued">
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
+                <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
                 <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
                 <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
                 <ScalarProperty Name="Category" ColumnName="Category" />
@@ -217,6 +246,22 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="TicketingModel.Agent">
+              <MappingFragment StoreEntitySet="Agent">
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketCategories">
+            <EntityTypeMapping TypeName="TicketingModel.TicketCategory">
+              <MappingFragment StoreEntitySet="TicketCategory">
+                <ScalarProperty Name="TicketCategory1" ColumnName="TicketCategory" />
+                <ScalarProperty Name="TicketCategoryCode" ColumnName="TicketCategoryCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -11,7 +11,7 @@ namespace Models
         public bool IsASuccess { get; set; }
         public List<string> Errors { get; set; }
 
-        public T ItemResuested { get; set; }
+        public T ItemReturned { get; set; }
 
     }
 }

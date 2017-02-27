@@ -27,3 +27,7 @@ textarea {
     font-style:italic;
     font-size:0.8em;
 }
+
+#quickEdit label{
+    width: 100px;
+}

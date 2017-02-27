@@ -11,8 +11,70 @@ namespace Business
 {
     public class TicketManagerService
     {
-        private TicketingEntities db = new TicketingEntities();
+        private TicketingEntities db;
+        private StaticDataService staticData;
         ILogger logger = new Logger();
+
+        public TicketManagerService()
+        {
+            db = new TicketingEntities();
+            staticData = new StaticDataService();
+            db.Configuration.ProxyCreationEnabled = false;
+        }
+
+        public BusinessHandlerResponse<TicketsIssued> UpdateTicket(TicketsIssued ticket)
+        {
+            try
+            {
+                var ticketFromDb = db.TicketsIssueds.FirstOrDefault(a => a.TicketNumber == ticket.TicketNumber);
+                if (ticketFromDb != null)
+                {
+                    if (ticketFromDb.AgentCode != ticket.AgentCode)
+                    {
+                        ticketFromDb.AgentCode = ticket.AgentCode;
+                    }
+                    if (ticketFromDb.Category != ticket.Category)
+                    {
+                        ticketFromDb.Category = ticket.Category;
+                    }
+                    if (ticketFromDb.TicketStatusCode != ticket.TicketStatusCode)
+                    {
+                        ticketFromDb.TicketStatusCode = ticket.TicketStatusCode;
+                    }
+                    if (ticketFromDb.Zone != ticket.Zone)
+                    {
+                        ticketFromDb.Zone = ticket.Zone;
+                    }
+                    if (ticketFromDb.Notes != ticket.Notes)
+                    {
+                        ticketFromDb.Notes = (string.IsNullOrWhiteSpace(ticket.Notes)) ? ticket.Notes : ticket.Notes.Trim();
+                    }
+                    if (ticketFromDb.SoldTo != ticket.SoldTo)
+                    {
+                        ticketFromDb.SoldTo = (string.IsNullOrWhiteSpace(ticket.SoldTo)) ? ticket.SoldTo : ticket.SoldTo.Trim();
+                    }
+                }
+                else
+                {
+                    throw new Exception("Unknown Ticket " + ticket.TicketNumber);
+                }
+
+                db.SaveChanges();
+                return new BusinessHandlerResponse<TicketsIssued>()
+                {
+                    IsASuccess = true
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.logMessage(ex.Message, LogLevel.error);
+                return new BusinessHandlerResponse<TicketsIssued>()
+                {
+                    IsASuccess = false,
+                    Errors = new List<string> { "Failed due to an unknown error please check the logs" }
+                };
+            }
+        }
         public BusinessHandlerResponse<TicketsIssued> AddOrIssue(TicketsIssued ticket)
         {
             try
@@ -67,14 +129,32 @@ namespace Business
         {
             try
             {
-                var tickets = db.TicketsIssueds.FirstOrDefault(a => a.TicketNumber == ticketNumber);
+                var ticketCats = staticData.GetTicketCategory();
+                var ticketStatus = staticData.GetTicketStatuses();
+                var tickets = db.TicketsIssueds.Include("Agent").Include("TicketStatu").FirstOrDefault(a => a.TicketNumber == ticketNumber);
                 if (tickets != null)
                 {
-                    return new BusinessHandlerResponse<TicketsIssued>()
+                    var item = new BusinessHandlerResponse<TicketsIssued>()
                     {
                         IsASuccess = true,
-                        ItemResuested = tickets
+                        ItemReturned = tickets
                     };
+                    item.ItemReturned.AgentName = tickets.Agent.AgentName;
+                    if (item.ItemReturned.TicketStatusCode == null)
+                    {
+                        item.ItemReturned.TicketStatusCode = Constants.TicketStatus.Initial;
+                        item.ItemReturned.TicketStatusDescription = ticketStatus.First(a=>a.TicketStatusCode == Constants.TicketStatus.Initial).TicketStatus;
+                    }
+                    else {
+                        item.ItemReturned.TicketStatusDescription = tickets.TicketStatu.TicketStatus;
+                        item.ItemReturned.TicketStatu = null;
+                    }
+                    if (!string.IsNullOrEmpty(item.ItemReturned.Category))
+                    {
+                        item.ItemReturned.CategoryDescription = ticketCats.First(a => a.Key == item.ItemReturned.Category).Value;
+                    }                    
+                    item.ItemReturned.Agent = null;
+                    return item;
                 }
                 else
                 {
@@ -100,12 +180,17 @@ namespace Business
         public SearchResultsWrapper<SeachTickets_Result> SeachTickets(TicketSearchParams parameters)
         {
             var ticketNumberFormatted = parameters.TicketNumber;
-            if(!string.IsNullOrWhiteSpace(parameters.TicketNumber) && !parameters.TicketNumber.StartsWith("BNS2017"))
+            var allCategories = staticData.GetTicketCategory();
+            if (!string.IsNullOrWhiteSpace(parameters.TicketNumber) && !parameters.TicketNumber.StartsWith("BNS2017"))
             {
                 ticketNumberFormatted = "BNS2017" + ticketNumberFormatted;
             }
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
             var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Category, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
+            for (int i = 0; i < searchResults.Count; i++)
+            {
+                searchResults[i].SearchCategoryDescription = allCategories.First(a => a.Key == searchResults[i].Category).Value;
+            }
             return new SearchResultsWrapper<SeachTickets_Result> { RecordCiount = (int)recordCount.Value , Results = searchResults };
         }
     }

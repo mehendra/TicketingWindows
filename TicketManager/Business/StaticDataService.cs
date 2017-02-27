@@ -40,5 +40,17 @@ namespace Business
             allCats.Add("VIP", "VIP Admission");
             return allCats;
         }
+
+        public Dictionary<string, string> GetZones()
+        {
+            var zones = new Dictionary<string, string>
+            {
+                { "Zone1","Zone1"},
+                { "Zone2","Zone2"},
+                { "UnZoned","All Zones"}
+            };
+            return zones;
+
+        }
     }
 }

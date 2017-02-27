@@ -91,17 +91,25 @@
 <div id="dialog-form" title="Create new user">
     <p class="validateTips">All form fields are required.</p>
 
-    <form>
+    <form id="quickEdit">
         <fieldset>
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
-
+            <div id="editingTicketNumber"></div>
+            <input type="hidden" name="TicketNumber" id="TicketNumber" value="" />
+            <label for="Agent" >Agent</label>
+            @Html.DropDownList("Agent", new SelectList(Model.Agents, "Value", "Text"))<br />
+            <label for="Category">Category</label>
+            @Html.DropDownList("Category", new SelectList(Model.Categories, "Value", "Text"))<br />
+            <label for="TicketStatusCode">Ticket Status</label>
+            @Html.DropDownList("TicketStatusCode", new SelectList(Model.TicketStatus, "Value", "Text"))<br />
+            <label for="SoldTo1">Sold To</label>
+            <input class="form-control text-box single-line: type="text" name="SoldTo" id="SoldTo" value=""/><br />
+            <label for="Zone">Zone</label>
+            @Html.DropDownList("Zone", new SelectList(Model.Zones, "Value", "Text"))<br />
+            <label for="notes">Notes</label><br />
+            <textarea id="Notes" name="Notes" rows="3" cols="40"></textarea>
+            <!--input type="checkbox" id="Paid" value="Paid" /-->
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            <input type="button" tabindex="-1" style="position:absolute; top:-1000px" onclick="">
         </fieldset>
     </form>
 </div>
@@ -116,44 +124,111 @@
             document.forms[0].submit();
         }
 
-        function addUser() {
-            var valid = true;
 
-            if ( valid ) {                   
-                dialog.dialog( "close" );
-            }
-            return valid;
+        function updatePage(ticketId)
+        {
+            var controlId = "#TicketContainer-" + ticketId;
+            var response = "";
+            var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
+            })
+                .done(function (data) {
+                    $("#tktCat-" + ticketId).text(data.Data.CategoryDescription);
+                    $("#tktNum-" + ticketId).text(data.Data.AgentName);
+                    $("#tktStatus-" + ticketId).text(data.Data.TicketStatusDescription);
+                })
+                .fail(function () {
+                    alert("error");
+                })
+                .always(function () {
+                });
+            jqxhr.always(function () {
+            });
         }
+
+
+
+        function UpdateTicket(dialogToClose)
+        {
+            var $form = $("#quickEdit");
+            var $inputs = $form.find("input, select, button, textarea");
+            var serializedData = $form.serialize();
+            $inputs.prop("disabled", true);
+            request = $.ajax({
+                url: "/api/TicketB",
+                type: "post",
+                data: serializedData
+            });
+            request.done(function (response, textStatus, jqXHR) {
+                updatePage($("#TicketNumber").val());
+                dialogToClose.dialog("close");
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                $("#error").text('Error: ' + jqXHR.responseText);
+                console.error(
+                    "The following error occurred: " +
+                    textStatus, errorThrown
+                );
+            });
+            request.always(function () {
+                $inputs.prop("disabled", false);
+            });
+        }
+
+        function GetTicketDetails(ticketId, dialogToOpen) {
+            // Abort any pending request
+            var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
+            })
+                .done(function (data) {
+                    $("#editingTicketNumber").text(data.Data.TicketNumber);
+                    $("#TicketNumber").val(data.Data.TicketNumber);
+                    $("#Agent").val(data.Data.AgentCode);
+                    $("#Category").val(data.Data.Category);
+                    $("#TicketStatusCode").val(data.Data.TicketStatusCode);
+                    $("#Zone").val(data.Data.Zone);
+                    $("#Notes").val(data.Data.Notes);
+                    $("#SoldTo").val(data.Data.SoldTo);
+                    dialogToOpen.dialog("open");
+                })
+                .fail(function () {
+                    alert("error");
+                })
+                .always(function () {
+                });
+            jqxhr.always(function () {
+            });
+
+        }
+
         $(function () {
             var dialog;
             dialog = $("#dialog-form").dialog({
                 autoOpen: false,
-                height: 400,
-                width: 350,
+                height: 450,
+                width: 550,
                 modal: true,
                 buttons: {
-                    "Create an account": addUser,
+                    "Update Ticket": addTicket,
                     Cancel: function () {
                         dialog.dialog("close");
                     }
                 },
                 close: function () {
-                    form[0].reset();
+                    $('#quickEdit')[0].reset();
                 }
             });
 
-            form = dialog.find("form").on("submit", function (event) {
-                event.preventDefault();
-                addUser();
-            });
+            function addTicket() {
+                var valid = true;
+                if (valid) {
+                    UpdateTicket(dialog);
+                }
+                return valid;
+            }
 
             $(".editDialog").on("click", function (event) {
                 event.preventDefault();
-                alert(event.target);
                 var id = this.getAttribute('random');
-                var controlId = "#TicketContainer-" + id;
-                alert($(controlId).html());
-                //dialog.dialog("open");
+                var data = GetTicketDetails(id, dialog);
             });
 
         });

@@ -21,5 +21,7 @@ namespace Models
 
         public IEnumerable<SelectListItem> RecordsPerPage { get; set; }
 
+        public IEnumerable<SelectListItem> Zones { get; set; }
+
     }
 }

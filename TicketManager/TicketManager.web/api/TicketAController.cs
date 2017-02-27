@@ -25,17 +25,10 @@ namespace TicketManager.web.Controllers
         }
 
         // GET: api/TicketA/5
-        public JsonResult Get(string ticketNumber)
+        public JsonResult Get(string id)
         {
-            var ticketManagerResponse = ticketManagerService.GetTicket(ticketNumber);
-            var foundData = new TicketsIssued() { Category = ticketManagerResponse.ItemResuested.Category, TicketNumber = ticketManagerResponse.ItemResuested.TicketNumber };
-            return new JsonResult { Data = foundData };
-        }
-
-        public JsonResult GetFull(string ticketNumber)
-        {
-            var ticketManagerResponse = ticketManagerService.GetTicket(ticketNumber);
-            var foundData = new TicketsIssued() { Category = ticketManagerResponse.ItemResuested.Category, TicketNumber = ticketManagerResponse.ItemResuested.TicketNumber };
+            var ticketManagerResponse = ticketManagerService.GetTicket(id);
+            var foundData = ticketManagerResponse.ItemReturned;
             return new JsonResult { Data = foundData };
         }
 

@@ -5,11 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c2f5160615da41f0a666fa68194a8764" Name="Diagram1">
-        <EntityTypeShape EntityType="TicketingModel.Agent" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="TicketingModel.TicketsIssued" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="TicketingModel.TicketStatu" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
-        <AssociationConnector Association="TicketingModel.fk_Agent" ManuallyRouted="false" />
         <AssociationConnector Association="TicketingModel.fk_TicketStatus" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TicketingModel.Agent" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="TicketingModel.TicketCategory" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="TicketingModel.fk_Agent" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

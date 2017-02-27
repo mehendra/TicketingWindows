@@ -90,6 +90,13 @@ namespace TicketManager.web.Controllers
                 Text = a.Value,
                 Value = a.Key
             });
+
+            searchViewModel.Zones = staticDataService.GetZones().Select(a =>
+            new SelectListItem
+            {
+                Text = a.Value,
+                Value = a.Key
+            });
         }
 
         // GET: Tickets/Details/5

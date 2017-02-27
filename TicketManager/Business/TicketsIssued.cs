@@ -20,8 +20,12 @@ namespace Business
         public string TicketStatusCode { get; set; }
         public Nullable<System.DateTime> ArrivedAt { get; set; }
         public string ArrivalConfirmedBy { get; set; }
+        public Nullable<System.DateTime> Paid { get; set; }
+        public string Notes { get; set; }
+        public string SoldTo { get; set; }
+        public string Zone { get; set; }
     
-        public virtual Agent Agent { get; set; }
         public virtual TicketStatu TicketStatu { get; set; }
+        public virtual Agent Agent { get; set; }
     }
 }
