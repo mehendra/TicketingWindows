@@ -39,15 +39,17 @@ INSERT [dbo].[TicketCategory] ([TicketCategoryCode], [TicketCategory]) VALUES (N
 GO
 INSERT [dbo].[TicketCategory] ([TicketCategoryCode], [TicketCategory]) VALUES (N'VI', N'VIP')
 GO
-INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'CANC', N'Cancelled                                         ')
+INSERT [dbo].[TicketCategory] ([TicketCategoryCode], [TicketCategory]) VALUES (N'UN',N'Unspecified')
 GO
-INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'INIT', N'Inital Creation                                   ')
+INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'CANC', N'Cancelled')
 GO
-INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'ISSU', N'Issued                                            ')
+INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'INIT', N'Inital Creation')
 GO
-INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'SCOL', N'Sold Please Collect Money                         ')
+INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'ISSU', N'Issued')
 GO
-INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'SPAD', N'Sold and Paid                                     ')
+INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'SCOL', N'Sold Please Collect Money')
 GO
-INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'SUNP', N'Sold and UNPAID {Dont Collect Money}              ')
+INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'SPAD', N'Sold and Paid')
+GO
+INSERT [dbo].[TicketStatus] ([TicketStatusCode], [TicketStatus]) VALUES (N'SUNP', N'Sold and UNPAID {Dont Collect Money}')
 GO

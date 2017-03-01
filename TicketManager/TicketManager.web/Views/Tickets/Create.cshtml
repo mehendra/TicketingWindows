@@ -1,11 +1,10 @@
-﻿@model Business.TicketsIssued
+﻿@model TicketManager.web.Models.TicketDetailsViewModel
 
 @{
     ViewBag.Title = "Create";
 }
 
 <h2>Create</h2>
-
 
 @using (Html.BeginForm()) 
 {
@@ -16,50 +15,71 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.TicketNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="TicketNumber" class="control-label col-md-2">Ticket Number: </label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TicketNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TicketNumber, "", new { @class = "text-danger" })
+
+                @Html.EditorFor(model => model.TicketDetails.TicketNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.TicketNumber, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AgentCode, "AgentCode", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TicketDetails.TicketStatusCode, "Ticket Status", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("AgentCode", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AgentCode, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.TicketDetails.TicketStatusCode, new SelectList(Model.TicketStatus, "Value", "Text"), "-- Please Select --")
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="AgentCode" class="control-label col-md-2">Agent Code: </label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.TicketDetails.AgentCode, new SelectList(Model.Agents, "Value", "Text"), "-- Please Select --")
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TicketStatusCode, "TicketStatusCode", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TicketDetails.Category, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("TicketStatusCode", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TicketStatusCode, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.TicketDetails.Category,new SelectList(Model.Categories, "Value", "Text"), "-- Please Select --")
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ArrivedAt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="ArrivedAt" class="control-label col-md-2">Arrived At: </label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ArrivedAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ArrivedAt, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.TicketDetails.ArrivedAt, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.ArrivedAt, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ArrivalConfirmedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="ArrivalConfirmedBy" class="control-label col-md-2">Arrival Confirmed By: </label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ArrivalConfirmedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ArrivalConfirmedBy, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.TicketDetails.ArrivalConfirmedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.ArrivalConfirmedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Notes" class="control-label col-md-2">Notes: </label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.TicketDetails.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.Notes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="SoldTo" class="control-label col-md-2">SoldTo: </label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TicketDetails.SoldTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.SoldTo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Zone" class="control-label col-md-2">Zone: </label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TicketDetails.Zone, new SelectList(Model.Zones, "Value", "Text"), "-- Please Select --")
             </div>
         </div>
 
@@ -74,7 +94,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

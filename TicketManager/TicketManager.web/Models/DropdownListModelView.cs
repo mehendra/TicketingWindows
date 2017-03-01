@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
-namespace Models
+namespace TicketManager.web.Models
 {
-    public class TicketSearchInfoViewModel<T>
+    public class DropdownListModelView
     {
-        public TicketSearchParams SearchParameters { get; set; }
-        public SearchResultsWrapper<T> SearchResults { get; set; }
-
-
         public IEnumerable<SelectListItem> Categories { get; set; }
 
         public IEnumerable<SelectListItem> Agents { get; set; }
@@ -22,6 +17,5 @@ namespace Models
         public IEnumerable<SelectListItem> RecordsPerPage { get; set; }
 
         public IEnumerable<SelectListItem> Zones { get; set; }
-
     }
 }

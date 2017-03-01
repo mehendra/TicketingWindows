@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Business.Constants;
+using Models;
 using Models.Services;
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,18 @@ namespace Business
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(ticket.Category))
+                {                    
+                    var ticketCategoryCode = GetTheCategoryFromTicketNumber(ticket.TicketNumber);
+                    if (string.IsNullOrEmpty(ticketCategoryCode))
+                    {
+                        ticket.Category = Defaults.TicketCategory;
+                    }
+                    else
+                    {
+                        ticket.Category = ticketCategoryCode;
+                    }
+                }
                 if (db.TicketsIssueds.Any(a => a.TicketNumber == ticket.TicketNumber))
                 {
                     var ticketIssued = db.TicketsIssueds.First(b => b.TicketNumber == ticket.TicketNumber);
@@ -125,6 +138,15 @@ namespace Business
                 };
             }
         }
+
+        private string GetTheCategoryFromTicketNumber(string ticketNumber)
+        {
+            var allCategories = staticData.GetTicketCategory();
+            var strippedTicketNumber = ticketNumber.Replace(Constants.Defaults.TicketNumberPrefix, "");
+            return allCategories.FirstOrDefault(a => strippedTicketNumber.StartsWith(a.Key)).Key;
+
+        }
+
         public BusinessHandlerResponse<TicketsIssued> GetTicket(string ticketNumber)
         {
             try
@@ -181,9 +203,9 @@ namespace Business
         {
             var ticketNumberFormatted = parameters.TicketNumber;
             var allCategories = staticData.GetTicketCategory();
-            if (!string.IsNullOrWhiteSpace(parameters.TicketNumber) && !parameters.TicketNumber.StartsWith("BNS2017"))
+            if (!string.IsNullOrWhiteSpace(parameters.TicketNumber) && !parameters.TicketNumber.StartsWith(Constants.Defaults.TicketNumberPrefix))
             {
-                ticketNumberFormatted = "BNS2017" + ticketNumberFormatted;
+                ticketNumberFormatted = Constants.Defaults.TicketNumberPrefix + ticketNumberFormatted;
             }
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
             var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Category, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();

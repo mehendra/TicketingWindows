@@ -10,6 +10,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TicketManager.web;
+using TicketManager.web.Models;
 
 namespace TicketManager.web.Controllers
 {
@@ -60,7 +61,7 @@ namespace TicketManager.web.Controllers
             return View(searchInfo);
         }
 
-        private void AddViewData(TicketSearchInfoViewModel<Business.SeachTickets_Result> searchViewModel)
+        private void AddViewData(DropdownListModelView searchViewModel)
         {
             searchViewModel.Agents = staticDataService.GetAgents().Select(a =>
             new SelectListItem
@@ -114,33 +115,6 @@ namespace TicketManager.web.Controllers
             return View(ticketsIssued);
         }
 
-        // GET: Tickets/Create
-        public ActionResult Create()
-        {
-            ViewBag.AgentCode = new SelectList(db.Agents, "AgentCode", "AgentName");
-            ViewBag.TicketStatusCode = new SelectList(db.TicketStatus, "TicketStatusCode", "TicketStatus");
-            return View();
-        }
-
-        // POST: Tickets/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TicketNumber,AgentCode,Category,TicketStatusCode,ArrivedAt,ArrivalConfirmedBy")] TicketsIssued ticketsIssued)
-        {
-            if (ModelState.IsValid)
-            {
-                db.TicketsIssueds.Add(ticketsIssued);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.AgentCode = new SelectList(db.Agents, "AgentCode", "AgentName", ticketsIssued.AgentCode);
-            ViewBag.TicketStatusCode = new SelectList(db.TicketStatus, "TicketStatusCode", "TicketStatus", ticketsIssued.TicketStatusCode);
-            return View(ticketsIssued);
-        }
-
         // GET: Tickets/Edit/5
         public ActionResult Edit(string id)
         {
@@ -176,6 +150,20 @@ namespace TicketManager.web.Controllers
             return View(ticketsIssued);
         }
 
+        public ActionResult Create()
+        {
+            var emptyMdoel = new TicketDetailsViewModel();
+            AddViewData(emptyMdoel);
+            return View(emptyMdoel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(TicketDetailsViewModel data)
+        {
+            ticketService.AddOrIssue(data.TicketDetails);
+            return RedirectToAction("index");
+        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult BulkCreate(string ticketsIssued)

@@ -58,6 +58,7 @@
     <Compile Include="Agent.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Constants\DefaultValues.cs" />
     <Compile Include="Constants\FixedAgents.cs" />
     <Compile Include="Constants\TicketStatus.cs" />
     <Compile Include="Logger.cs" />
