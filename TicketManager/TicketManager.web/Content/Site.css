@@ -31,3 +31,16 @@ textarea {
 #quickEdit label{
     width: 100px;
 }
+
+.displayTicketTable{
+    border: 1px solid #ddd;
+    padding:3px;   
+    border-collapse: collapse; 
+    width:90%
+}
+
+.displayTicketTable tr, .displayTicketTable td{
+    border: 1px solid #ddd;
+    padding:8px;   
+    text-align: left;
+}

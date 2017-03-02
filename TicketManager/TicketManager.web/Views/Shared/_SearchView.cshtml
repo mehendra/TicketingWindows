@@ -15,7 +15,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = Model.TicketNumber }, new { @class = "editDialog", random=Model.TicketNumber }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Details", "Details", new { id = Model.TicketNumber }, new { @class = "displayDialog", random = Model.TicketNumber }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.TicketNumber }, new { @class = "deleteDialog", random = Model.TicketNumber })
         </td>
     </tr>

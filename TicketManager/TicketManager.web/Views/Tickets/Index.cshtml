@@ -113,9 +113,21 @@
         </fieldset>
     </form>
 </div>
+
+<div id="view_dialog">
+    <table class="displayTicketTable">        
+        <tr><td width="30%">Ticket Number</td><td id="ticket_ticketnumber_display"></td></tr>
+        <tr><td>Agent</td><td id="agent_display"></td></tr>
+        <tr><td>Ticket Category</td><td id="ticket_category_display"></td></tr>
+        <tr><td>Ticket Status</td><td id="ticket_status_display"></td></tr>
+        <tr><td>Zone</td><td id="ticket_zone_display"></td></tr>
+        <tr><td>Notes</td><td id="ticket_notes_display"></td></tr>
+        <tr><td>Sold To</td><td id="ticket_soldto_display"></td></tr>
+    </table>
+</div>
+
     <script>
-        function postPage(pageId)
-        {
+        function postPage(pageId) {
             $("#SearchParameters_PagingStartIndex").val(pageId)
             document.forms[0].submit();
         }
@@ -125,8 +137,7 @@
         }
 
 
-        function updatePage(ticketId)
-        {
+        function updatePage(ticketId) {
             var controlId = "#TicketContainer-" + ticketId;
             var response = "";
             var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
@@ -147,8 +158,7 @@
 
 
 
-        function UpdateTicket(dialogToClose)
-        {
+        function UpdateTicket(dialogToClose) {
             var $form = $("#quickEdit");
             var $inputs = $form.find("input, select, button, textarea");
             var serializedData = $form.serialize();
@@ -175,6 +185,35 @@
         }
 
         function GetTicketDetails(ticketId, dialogToOpen) {
+            // Abort any pending request
+            var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
+            })
+                .done(function (data) {
+                    assignTicketToView(data.Data.AgentName, data.Data.CategoryDescription, data.Data.TicketStatusDescription, data.Data.Zone, data.Data.Notes, data.Data.SoldTo, data.Data.TicketNumber);
+                    dialogToOpen.dialog("open");
+                })
+                .fail(function () {
+                    alert("error");
+                })
+                .always(function () {
+                });
+            jqxhr.always(function () {
+            });
+
+        }
+
+        function assignTicketToView(agentDetails, categoryDescription, ticketStatusDescription, zone, notes, soldTo, ticketNumber)
+        {
+            $("#agent_display").text(agentDetails);
+            $("#ticket_category_display").text(categoryDescription);
+            $("#ticket_status_display").text(ticketStatusDescription);
+            $("#ticket_zone_display").text(zone);
+            $("#ticket_notes_display").text(notes);
+            $("#ticket_soldto_display").text(soldTo);
+            $("#ticket_ticketnumber_display").text(ticketNumber);
+        }
+
+        function GetTicketDetailsToEdit(ticketId, dialogToOpen) {
             // Abort any pending request
             var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
             })
@@ -217,6 +256,8 @@
                 }
             });
 
+
+
             function addTicket() {
                 var valid = true;
                 if (valid) {
@@ -228,21 +269,45 @@
             $(".editDialog").on("click", function (event) {
                 event.preventDefault();
                 var id = this.getAttribute('random');
-                var data = GetTicketDetails(id, dialog);
+                var data = GetTicketDetailsToEdit(id, dialog);
+            });
+        });
+
+        $(function () {
+            var dialog;
+            dialog = $("#view_dialog").dialog({
+                autoOpen: false,
+                height: 450,
+                width: 550,
+                modal: true,
+                buttons: {
+                    Cancel: function () {
+                        dialog.dialog("close");
+                    }
+                },
+                close: function () {
+                    assignTicketToView("","","","","","","");
+                }
             });
 
+            $(".displayDialog").on("click", function (event) {
+                event.preventDefault();
+                var id = this.getAttribute('random');
+                var data = GetTicketDetails(id, dialog);
+            });
         });
-    </script>
-<div class="pager">
-    <ul>
-        @{ 
-            int i = 1;
-            while (i  < Math.Ceiling((decimal)Model.SearchResults.RecordCiount/ Model.SearchParameters.RecordsPerPage.Value) +1)
-            {
-                <li>&nbsp; <a href="#" onclick="postPage(@i);">@i</a></li>
-                i++;
-            }
-        }
 
-    </ul>
-</div>
+    </script>
+    <div class="pager">
+        <ul>
+            @{
+                int i = 1;
+                while (i < Math.Ceiling((decimal)Model.SearchResults.RecordCiount / Model.SearchParameters.RecordsPerPage.Value) + 1)
+                {
+                    <li>&nbsp; <a href="#" onclick="postPage(@i);">@i</a></li>
+                    i++;
+                }
+            }
+
+        </ul>
+    </div>

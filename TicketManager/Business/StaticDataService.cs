@@ -35,9 +35,7 @@ namespace Business
 
         public Dictionary<string, string> GetTicketCategory()
         {
-            var allCats = new Dictionary<string, string>();
-            allCats.Add("GA", "General Admission");
-            allCats.Add("VIP", "VIP Admission");
+            var allCats = db.TicketCategories.ToDictionary(x => x.TicketCategoryCode, x => x.TicketCategory1);
             return allCats;
         }
 
