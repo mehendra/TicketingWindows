@@ -15,4 +15,6 @@ namespace Business.Constants
         public const string Paid = "SPAD";
         public const string PaidNoCharge = "SUNP";
     }
+
+
 }

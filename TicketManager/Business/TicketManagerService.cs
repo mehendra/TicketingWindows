@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace Business
 {
+    class TicketSubInfo
+    {
+        public string Category { get; set; }
+        public string Zone { get; set; }
+    }
+
     public class TicketManagerService
     {
         private TicketingEntities db;
@@ -83,14 +89,15 @@ namespace Business
                 if (string.IsNullOrWhiteSpace(ticket.Category))
                 {                    
                     var ticketCategoryCode = GetTheCategoryFromTicketNumber(ticket.TicketNumber);
-                    if (string.IsNullOrEmpty(ticketCategoryCode))
+                    if (string.IsNullOrEmpty(ticketCategoryCode.Category))
                     {
                         ticket.Category = Defaults.TicketCategory;
                     }
                     else
                     {
-                        ticket.Category = ticketCategoryCode;
+                        ticket.Category = ticketCategoryCode.Category;
                     }
+                    ticket.Zone = ticketCategoryCode.Zone;
                 }
                 if (db.TicketsIssueds.Any(a => a.TicketNumber == ticket.TicketNumber))
                 {
@@ -139,12 +146,26 @@ namespace Business
             }
         }
 
-        private string GetTheCategoryFromTicketNumber(string ticketNumber)
+        private TicketSubInfo GetTheCategoryFromTicketNumber(string ticketNumber)
         {
+            var ticketSubInfo = new TicketSubInfo();
             var allCategories = staticData.GetTicketCategory();
             var strippedTicketNumber = ticketNumber.Replace(Constants.Defaults.TicketNumberPrefix, "");
-            return allCategories.FirstOrDefault(a => strippedTicketNumber.StartsWith(a.Key)).Key;
-
+            var category = allCategories.FirstOrDefault(a => strippedTicketNumber.StartsWith(a.Key)).Key;
+            if (category == ZonedCategories.ZoneA)
+            {
+                ticketSubInfo.Zone = "Zone1";
+            }
+            else if (category == ZonedCategories.ZoneB)
+            {
+                ticketSubInfo.Zone = "ZoneB";
+            }
+            else
+            {
+                ticketSubInfo.Zone = "UnZoned";
+            }
+            ticketSubInfo.Category = category;
+            return ticketSubInfo;
         }
 
         public BusinessHandlerResponse<TicketsIssued> GetTicket(string ticketNumber)

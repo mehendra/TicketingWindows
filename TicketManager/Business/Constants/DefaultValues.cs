@@ -11,4 +11,10 @@ namespace Business.Constants
         public const string TicketCategory = "UN";
         public const string TicketNumberPrefix = "BNS2017";
     }
+
+    public struct ZonedCategories
+    {
+        public const string ZoneA = "ZOA";
+        public const string ZoneB = "ZOB";
+    }
 }
