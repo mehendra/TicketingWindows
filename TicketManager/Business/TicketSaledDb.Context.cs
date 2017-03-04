@@ -27,10 +27,10 @@ namespace Business
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<TicketsIssued> TicketsIssueds { get; set; }
         public virtual DbSet<TicketStatu> TicketStatus { get; set; }
         public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<TicketCategory> TicketCategories { get; set; }
+        public virtual DbSet<TicketsIssued> TicketsIssueds { get; set; }
     
         public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string category, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
         {

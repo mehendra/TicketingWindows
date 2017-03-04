@@ -24,7 +24,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
         </EntityType>
         <EntityType Name="TicketsIssued">
           <Key>
-            <PropertyRef Name="TicketNumber" />
+            <PropertyRef Name="TicketId" />
           </Key>
           <Property Name="TicketNumber" Type="varchar" MaxLength="17" Nullable="false" />
           <Property Name="AgentCode" Type="varchar" MaxLength="4" Nullable="false" />
@@ -36,6 +36,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Property Name="Notes" Type="varchar" MaxLength="500" />
           <Property Name="SoldTo" Type="varchar" MaxLength="255" />
           <Property Name="Zone" Type="varchar" MaxLength="10" />
+          <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="TicketStatus">
           <Key>
@@ -101,50 +102,16 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TicketingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="TicketsIssued">
-          <Key>
-            <PropertyRef Name="TicketNumber" />
-          </Key>
-          <Property Name="TicketNumber" Type="String" MaxLength="17" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AgentCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="ArrivedAt" Type="DateTime" Precision="3" />
-          <Property Name="ArrivalConfirmedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TicketStatu" Relationship="Self.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatus" />
-          <Property Name="Paid" Type="DateTime" Precision="0" />
-          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SoldTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Zone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Agent" Relationship="TicketingModel.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
-        </EntityType>
         <EntityType Name="TicketStatu">
           <Key>
             <PropertyRef Name="TicketStatusCode" />
           </Key>
           <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TicketStatus" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="TicketsIssueds" Relationship="Self.fk_TicketStatus" FromRole="TicketStatus" ToRole="TicketsIssued" />
+          <NavigationProperty Name="TicketsIssueds" Relationship="TicketingModel.fk_TicketStatus" FromRole="TicketStatu" ToRole="TicketsIssued" />
         </EntityType>
-        <Association Name="fk_TicketStatus">
-          <End Role="TicketStatus" Type="Self.TicketStatu" Multiplicity="0..1" />
-          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TicketStatus">
-              <PropertyRef Name="TicketStatusCode" />
-            </Principal>
-            <Dependent Role="TicketsIssued">
-              <PropertyRef Name="TicketStatusCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="TicketingEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="TicketsIssueds" EntityType="Self.TicketsIssued" />
           <EntitySet Name="TicketStatus" EntityType="Self.TicketStatu" />
-          <AssociationSet Name="fk_TicketStatus" Association="Self.fk_TicketStatus">
-            <End Role="TicketStatus" EntitySet="TicketStatus" />
-            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
-          </AssociationSet>
           <FunctionImport Name="SeachTickets" ReturnType="Collection(TicketingModel.SeachTickets_Result)">
             <Parameter Name="TicketNumber" Mode="In" Type="String" />
             <Parameter Name="AgentCode" Mode="In" Type="String" />
@@ -157,8 +124,13 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           </FunctionImport>
           <EntitySet Name="Agents" EntityType="TicketingModel.Agent" />
           <EntitySet Name="TicketCategories" EntityType="TicketingModel.TicketCategory" />
+          <EntitySet Name="TicketsIssueds" EntityType="TicketingModel.TicketsIssued" />
           <AssociationSet Name="fk_Agent" Association="TicketingModel.fk_Agent">
             <End Role="Agent" EntitySet="Agents" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TicketStatus" Association="TicketingModel.fk_TicketStatus">
+            <End Role="TicketStatu" EntitySet="TicketStatus" />
             <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
           </AssociationSet>
         </EntityContainer>
@@ -189,6 +161,24 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Property Name="TicketCategoryCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="TicketCategory1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="TicketsIssued">
+          <Key>
+            <PropertyRef Name="TicketId" />
+          </Key>
+          <Property Name="TicketNumber" Type="String" Nullable="false" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="AgentCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TicketStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ArrivedAt" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalConfirmedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Paid" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SoldTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Zone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Agent" Relationship="TicketingModel.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
+          <NavigationProperty Name="TicketStatu" Relationship="TicketingModel.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatu" />
+        </EntityType>
         <Association Name="fk_Agent">
           <End Type="TicketingModel.Agent" Role="Agent" Multiplicity="1" />
           <End Type="TicketingModel.TicketsIssued" Role="TicketsIssued" Multiplicity="*" />
@@ -201,28 +191,24 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_TicketStatus">
+          <End Type="TicketingModel.TicketStatu" Role="TicketStatu" Multiplicity="0..1" />
+          <End Type="TicketingModel.TicketsIssued" Role="TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatu">
+              <PropertyRef Name="TicketStatusCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="TicketStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TicketingModelStoreContainer" CdmEntityContainer="TicketingEntities">
-          <EntitySetMapping Name="TicketsIssueds">
-            <EntityTypeMapping TypeName="TicketingModel.TicketsIssued">
-              <MappingFragment StoreEntitySet="TicketsIssued">
-                <ScalarProperty Name="Zone" ColumnName="Zone" />
-                <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Paid" ColumnName="Paid" />
-                <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
-                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
-                <ScalarProperty Name="Category" ColumnName="Category" />
-                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
-                <ScalarProperty Name="ArrivedAt" ColumnName="ArrivedAt" />
-                <ScalarProperty Name="ArrivalConfirmedBy" ColumnName="ArrivalConfirmedBy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TicketStatus">
             <EntityTypeMapping TypeName="TicketingModel.TicketStatu">
               <MappingFragment StoreEntitySet="TicketStatus">
@@ -259,6 +245,23 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
               <MappingFragment StoreEntitySet="TicketCategory">
                 <ScalarProperty Name="TicketCategory1" ColumnName="TicketCategory" />
                 <ScalarProperty Name="TicketCategoryCode" ColumnName="TicketCategoryCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketsIssueds">
+            <EntityTypeMapping TypeName="TicketingModel.TicketsIssued">
+              <MappingFragment StoreEntitySet="TicketsIssued">
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
+                <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="ArrivalConfirmedBy" ColumnName="ArrivalConfirmedBy" />
+                <ScalarProperty Name="ArrivedAt" ColumnName="ArrivedAt" />
+                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
