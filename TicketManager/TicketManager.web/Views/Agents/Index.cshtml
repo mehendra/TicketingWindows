@@ -25,8 +25,7 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.AgentCode }) |
             @Html.ActionLink("Details", "Details", new { id=item.AgentCode }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AgentCode }) |
-            @Html.ActionLink("Assign Tickets", "AssignTicket", "Tickets", new { agentCode = item.AgentCode }, null)
+            @Html.ActionLink("Delete", "Delete", new { id=item.AgentCode })
         </td>
     </tr>
 }

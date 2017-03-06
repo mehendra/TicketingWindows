@@ -230,7 +230,11 @@ namespace TicketManager.web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        
+        public ActionResult SummaryByAgent()
+        {
+            return View();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
