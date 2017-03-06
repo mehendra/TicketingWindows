@@ -1,21 +1,24 @@
 ﻿@model Business.SeachTickets_Result
 
-    <tr id="TicketContainer-@Model.TicketNumber">
-        <td>
+    <tr id="TicketContainer-@Model.TicketId">
+        <td id="tktNumber-@Model.TicketId">
             @Html.DisplayFor(model => model.TicketNumber)
         </td>
-        <td id="tktCat-@Model.TicketNumber">
+        <td id="tktCat-@Model.TicketId">
             @Html.DisplayFor(model => model.SearchCategoryDescription)
         </td id="TicketContainer-@Model.TicketNumber">
-        <td id="tktNum-@Model.TicketNumber">
+        <td id="tktNum-@Model.TicketId">
             @Html.DisplayFor(model => model.AgentName)
         </td>
-        <td id="tktStatus-@Model.TicketNumber">
+        <td id="tktStatus-@Model.TicketId">
             @Html.DisplayFor(model => model.TicketStatus)
         </td>
+        <td id="tktSoldTo-@Model.TicketId">
+            @Html.DisplayFor(model => model.SoldTo)
+        </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.TicketNumber }, new { @class = "editDialog", random=Model.TicketNumber }) |
-            @Html.ActionLink("Details", "Details", new { id = Model.TicketNumber }, new { @class = "displayDialog", random = Model.TicketNumber }) |
-            @Html.ActionLink("Delete", "Delete", new { id = Model.TicketNumber }, new { @class = "deleteDialog", random = Model.TicketNumber })
+            @Html.ActionLink("Edit", "Edit", new { id = Model.TicketId }, new { @class = "editDialog", random=Model.TicketId }) |
+            @Html.ActionLink("Details", "Details", new { id = Model.TicketId }, new { @class = "displayDialog", random = Model.TicketId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.TicketId }, new { @class = "deleteDialog", random = Model.TicketId })
         </td>
     </tr>

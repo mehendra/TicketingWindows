@@ -17,6 +17,7 @@ as begin
 declare @AllRecords as table
 (
 	[idx] int not null identity (1,1),
+	TicketId int not null,
 	[TicketNumber] [varchar](17) NOT NULL,
 	[AgentCode] [varchar](10) NULL,
 	[Category] [varchar](50) NULL,
@@ -28,7 +29,7 @@ declare @AllRecords as table
 	[Zone] varchar(10) null,
 	[SoldTo] [varchar](255) NULL
 )
-insert into @AllRecords( [TicketNumber]
+insert into @AllRecords( TicketId, [TicketNumber]
       ,[AgentCode]
       ,[Category]
       ,[TicketStatusCode]
@@ -36,12 +37,13 @@ insert into @AllRecords( [TicketNumber]
       ,[ArrivalConfirmedBy]
 	  ,AgentName
 	  ,[TicketStatus], Zone,SoldTo )
-select t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo  from dbo.TicketsIssued t inner join dbo.Agent a
+select t.TicketId, t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo  from dbo.TicketsIssued t inner join dbo.Agent a
 on t.AgentCode = a.AgentCode left join [dbo].[TicketStatus] ts
 on ts.TicketStatusCode = t.TicketStatusCode
 where t.AgentCode = case when @AgentCode is null then t.AgentCode else @AgentCode  end
 and t.TicketNumber like case when @TicketNumber is null then t.TicketNumber else @TicketNumber + '%' end
 and isnull(t.TicketStatusCode,'') = case when @TicketStatusCode is null then isnull(t.TicketStatusCode,'') else @TicketStatusCode end
+and isnull(t.Category,'') = case when @Category is null then isnull(t.Category,'') else @Category end
 
 
 SELECT @RcordCount = count(*) from @allRecords

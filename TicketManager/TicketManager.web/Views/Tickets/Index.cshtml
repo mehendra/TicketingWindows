@@ -94,7 +94,9 @@
     <form id="quickEdit">
         <fieldset>
             <div id="editingTicketNumber"></div>
-            <input type="hidden" name="TicketNumber" id="TicketNumber" value="" />
+            <input type="hidden" name="TicketId" id="TicketId" value="" />
+            <label for="TicketNumber">Ticket Number</label>
+            <input type="text" name="TicketNumber" id="TicketNumber" value="" /><br>
             <label for="Agent" >Agent</label>
             @Html.DropDownList("Agent", new SelectList(Model.Agents, "Value", "Text"))<br />
             <label for="Category">Category</label>
@@ -102,7 +104,7 @@
             <label for="TicketStatusCode">Ticket Status</label>
             @Html.DropDownList("TicketStatusCode", new SelectList(Model.TicketStatus, "Value", "Text"))<br />
             <label for="SoldTo1">Sold To</label>
-            <input class="form-control text-box single-line: type="text" name="SoldTo" id="SoldTo" value=""/><br />
+            <input type="text" name="SoldTo" id="SoldTo" value=""/><br />
             <label for="Zone">Zone</label>
             @Html.DropDownList("Zone", new SelectList(Model.Zones, "Value", "Text"))<br />
             <label for="notes">Notes</label><br />
@@ -143,9 +145,11 @@
             var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
             })
                 .done(function (data) {
+                    $("#tktNumber-" + ticketId).text(data.Data.TicketNumber);
                     $("#tktCat-" + ticketId).text(data.Data.CategoryDescription);
                     $("#tktNum-" + ticketId).text(data.Data.AgentName);
                     $("#tktStatus-" + ticketId).text(data.Data.TicketStatusDescription);
+                    $("#tktSoldTo-" + ticketId).text(data.Data.SoldTo);
                 })
                 .fail(function () {
                     alert("error");
@@ -169,7 +173,7 @@
                 data: serializedData
             });
             request.done(function (response, textStatus, jqXHR) {
-                updatePage($("#TicketNumber").val());
+                updatePage($("#TicketId").val());
                 dialogToClose.dialog("close");
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
@@ -219,6 +223,7 @@
             })
                 .done(function (data) {
                     $("#editingTicketNumber").text(data.Data.TicketNumber);
+                    $("#TicketId").val(data.Data.TicketId);
                     $("#TicketNumber").val(data.Data.TicketNumber);
                     $("#Agent").val(data.Data.AgentCode);
                     $("#Category").val(data.Data.Category);
@@ -242,7 +247,7 @@
             var dialog;
             dialog = $("#dialog-form").dialog({
                 autoOpen: false,
-                height: 450,
+                height: 500,
                 width: 550,
                 modal: true,
                 buttons: {

@@ -22,5 +22,8 @@ namespace Business
         public string ArrivalConfirmedBy { get; set; }
         public string AgentName { get; set; }
         public string TicketStatus { get; set; }
+        public int TicketId { get; set; }
+        public string Zone { get; set; }
+        public string SoldTo { get; set; }
     }
 }

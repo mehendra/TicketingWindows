@@ -24,7 +24,8 @@ namespace TicketManager.web.api
                 Category = value.Category,
                 SoldTo = value.SoldTo,
                 Zone = value.Zone,
-                Notes = value.Notes                
+                Notes = value.Notes,
+                TicketId = value.TicketId                
             });
 
             if (ticketManagerResponse.IsASuccess)

@@ -2,6 +2,7 @@
 {
     public class ApiTicketsIssued
     {
+        public int TicketId { get; set; }
         public string Agent { get; set; }
         public string Category { get; set; }
         public string TicketStatusCode { get; set; }

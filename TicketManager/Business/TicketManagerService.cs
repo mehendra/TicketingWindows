@@ -33,7 +33,7 @@ namespace Business
         {
             try
             {
-                var ticketFromDb = db.TicketsIssueds.FirstOrDefault(a => a.TicketNumber == ticket.TicketNumber);
+                var ticketFromDb = db.TicketsIssueds.FirstOrDefault(a => a.TicketId == ticket.TicketId);
                 if (ticketFromDb != null)
                 {
                     if (ticketFromDb.AgentCode != ticket.AgentCode)
@@ -59,6 +59,10 @@ namespace Business
                     if (ticketFromDb.SoldTo != ticket.SoldTo)
                     {
                         ticketFromDb.SoldTo = (string.IsNullOrWhiteSpace(ticket.SoldTo)) ? ticket.SoldTo : ticket.SoldTo.Trim();
+                    }
+                    if (ticketFromDb.TicketNumber != ticket.TicketNumber)
+                    {
+                        ticketFromDb.TicketNumber = ticket.TicketNumber;
                     }
                 }
                 else
@@ -168,13 +172,13 @@ namespace Business
             return ticketSubInfo;
         }
 
-        public BusinessHandlerResponse<TicketsIssued> GetTicket(string ticketNumber)
+        public BusinessHandlerResponse<TicketsIssued> GetTicket(int ticketId)
         {
             try
             {
                 var ticketCats = staticData.GetTicketCategory();
                 var ticketStatus = staticData.GetTicketStatuses();
-                var tickets = db.TicketsIssueds.Include("Agent").Include("TicketStatu").FirstOrDefault(a => a.TicketNumber == ticketNumber);
+                var tickets = db.TicketsIssueds.Include("Agent").Include("TicketStatu").FirstOrDefault(a => a.TicketId == ticketId);
                 if (tickets != null)
                 {
                     var item = new BusinessHandlerResponse<TicketsIssued>()
@@ -204,7 +208,7 @@ namespace Business
                     return new BusinessHandlerResponse<TicketsIssued>()
                     {
                         IsASuccess = false,
-                        Errors = new List<string> { "Unable to find the ticket number " + ticketNumber }
+                        Errors = new List<string> { "Unable to find the ticket number " + ticketId }
                     };
                 }
 

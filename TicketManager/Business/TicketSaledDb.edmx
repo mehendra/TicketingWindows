@@ -136,7 +136,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
         </EntityContainer>
         <ComplexType Name="SeachTickets_Result">
           <Property Type="Int32" Name="idx" Nullable="false" />
-          <Property Type="String" Name="TicketNumber" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="TicketNumber" Nullable="false" MaxLength="17" />
           <Property Type="String" Name="AgentCode" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="TicketStatusCode" Nullable="true" MaxLength="4" />
@@ -144,6 +144,9 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Property Type="String" Name="ArrivalConfirmedBy" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="AgentName" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="TicketStatus" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="TicketId" Nullable="false" />
+          <Property Type="String" Name="Zone" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="SoldTo" Nullable="true" MaxLength="255" />
         </ComplexType>
         <EntityType Name="Agent">
           <Key>
@@ -229,6 +232,9 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
                 <ScalarProperty Name="ArrivalConfirmedBy" ColumnName="ArrivalConfirmedBy" />
                 <ScalarProperty Name="AgentName" ColumnName="AgentName" />
                 <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
+                <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

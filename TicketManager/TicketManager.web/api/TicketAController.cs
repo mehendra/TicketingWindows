@@ -25,7 +25,7 @@ namespace TicketManager.web.Controllers
         }
 
         // GET: api/TicketA/5
-        public JsonResult Get(string id)
+        public JsonResult Get(int id)
         {
             var ticketManagerResponse = ticketManagerService.GetTicket(id);
             var foundData = ticketManagerResponse.ItemReturned;
