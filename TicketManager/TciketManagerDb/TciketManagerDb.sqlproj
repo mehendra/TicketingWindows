@@ -70,6 +70,7 @@
     <Build Include="dbo\Tables\TicketsIssued.sql" />
     <Build Include="dbo\Tables\TicketCategory.sql" />
     <Build Include="dbo\Stored Procedures\SeachTickets.sql" />
+    <Build Include="dbo\Stored Procedures\ReportTicketSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\DatInserts\Script.InsertData.sql" />

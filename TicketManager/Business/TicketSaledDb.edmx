@@ -69,6 +69,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ReportTicketSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SeachTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TicketNumber" Type="varchar" Mode="In" />
           <Parameter Name="AgentCode" Type="varchar" Mode="In" />
@@ -133,6 +134,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
             <End Role="TicketStatu" EntitySet="TicketStatus" />
             <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
           </AssociationSet>
+          <FunctionImport Name="ReportTicketSummary" ReturnType="Collection(TicketingModel.ReportTicketSummary_Result)" />
         </EntityContainer>
         <ComplexType Name="SeachTickets_Result">
           <Property Type="Int32" Name="idx" Nullable="false" />
@@ -206,6 +208,15 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="ReportTicketSummary_Result">
+          <Property Type="String" Name="AgentName" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="AgentCode" Nullable="false" MaxLength="4" />
+          <Property Type="Int32" Name="Column1" Nullable="true" />
+          <Property Type="String" Name="TicketCategory" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TicketStatusCode" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="TicketStatus" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -271,6 +282,19 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ReportTicketSummary" FunctionName="TicketingModel.Store.ReportTicketSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketingModel.ReportTicketSummary_Result">
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+                <ScalarProperty Name="TicketCategory" ColumnName="TicketCategory" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+                <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -91,7 +91,7 @@ namespace Business
             try
             {
                 if (string.IsNullOrWhiteSpace(ticket.Category))
-                {                    
+                {
                     var ticketCategoryCode = GetTheCategoryFromTicketNumber(ticket.TicketNumber);
                     if (string.IsNullOrEmpty(ticketCategoryCode.Category))
                     {
@@ -132,7 +132,7 @@ namespace Business
                     }
 
                     db.TicketsIssueds.Add(ticket);
-                }                
+                }
                 db.SaveChanges();
                 return new BusinessHandlerResponse<TicketsIssued>()
                 {
@@ -190,7 +190,7 @@ namespace Business
                     if (item.ItemReturned.TicketStatusCode == null)
                     {
                         item.ItemReturned.TicketStatusCode = Constants.TicketStatus.Initial;
-                        item.ItemReturned.TicketStatusDescription = ticketStatus.First(a=>a.TicketStatusCode == Constants.TicketStatus.Initial).TicketStatus;
+                        item.ItemReturned.TicketStatusDescription = ticketStatus.First(a => a.TicketStatusCode == Constants.TicketStatus.Initial).TicketStatus;
                     }
                     else {
                         item.ItemReturned.TicketStatusDescription = tickets.TicketStatu.TicketStatus;
@@ -199,7 +199,7 @@ namespace Business
                     if (!string.IsNullOrEmpty(item.ItemReturned.Category))
                     {
                         item.ItemReturned.CategoryDescription = ticketCats.First(a => a.Key == item.ItemReturned.Category).Value;
-                    }                    
+                    }
                     item.ItemReturned.Agent = null;
                     return item;
                 }
@@ -238,7 +238,23 @@ namespace Business
             {
                 searchResults[i].SearchCategoryDescription = allCategories.First(a => a.Key == searchResults[i].Category).Value;
             }
-            return new SearchResultsWrapper<SeachTickets_Result> { RecordCiount = (int)recordCount.Value , Results = searchResults };
+            return new SearchResultsWrapper<SeachTickets_Result> { RecordCiount = (int)recordCount.Value, Results = searchResults };
+        }
+
+        public bool DeleteTicket(int ticketId) {
+            var ticket = db.TicketsIssueds.FirstOrDefault(a => a.TicketId == ticketId);
+            if (ticket != null)
+            {
+                db.TicketsIssueds.Remove(ticket);
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<ReportTicketSummary_Result> GetTicketsSummary()
+        {
+            return db.ReportTicketSummary().ToList<ReportTicketSummary_Result>();
         }
     }
  }

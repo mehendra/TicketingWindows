@@ -53,8 +53,14 @@ namespace TicketManager.web.Controllers
         }
 
         // DELETE: api/TicketA/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            if (ticketManagerService.DeleteTicket(id))
+            {
+                return Request.CreateResponse(HttpStatusCode.OK);
+            } else {
+                return Request.CreateResponse(HttpStatusCode.Gone);
+            }
         }
     }
 }

@@ -64,5 +64,10 @@ namespace Business
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, categoryParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
         }
+    
+        public virtual ObjectResult<ReportTicketSummary_Result> ReportTicketSummary()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportTicketSummary_Result>("ReportTicketSummary");
+        }
     }
 }

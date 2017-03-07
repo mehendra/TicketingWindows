@@ -128,6 +128,10 @@
     </table>
 </div>
 
+<div id="delete_dialog">
+    <input type="hidden" id="ticketNumberToDelete" />
+    Are you sure you want to delete <span id="ticket_ticketnumber_display_for_delete"></span>
+</div>
     <script>
         function postPage(pageId) {
             $("#SearchParameters_PagingStartIndex").val(pageId)
@@ -160,7 +164,27 @@
             });
         }
 
-
+        function DeleteTicket(dialogToClose, ticketId) {
+            request = $.ajax({
+                url: "/api/TicketA/" + ticketId,
+                type: "DELETE",
+                data: { id: ticketId }
+            });
+            request.done(function (response, textStatus, jqXHR) {
+                var controlId = "#TicketContainer-" + ticketId;
+                $(controlId).remove();
+                dialogToClose.dialog("close");
+                return true;
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                $("#error").text('Error: ' + jqXHR.responseText);
+                console.error(
+                    "The following error occurred: " +
+                    textStatus, errorThrown
+                );
+                return false;
+            })
+        }
 
         function UpdateTicket(dialogToClose) {
             var $form = $("#quickEdit");
@@ -188,12 +212,17 @@
             });
         }
 
-        function GetTicketDetails(ticketId, dialogToOpen) {
+        function GetTicketDetails(ticketId, dialogToOpen, forEdit) {
             // Abort any pending request
             var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
             })
                 .done(function (data) {
-                    assignTicketToView(data.Data.AgentName, data.Data.CategoryDescription, data.Data.TicketStatusDescription, data.Data.Zone, data.Data.Notes, data.Data.SoldTo, data.Data.TicketNumber);
+                    if(forEdit){
+                        assignTicketToView(data.Data.AgentName, data.Data.CategoryDescription, data.Data.TicketStatusDescription, data.Data.Zone, data.Data.Notes, data.Data.SoldTo, data.Data.TicketNumber);
+                    }
+                    else {
+                        assignTicketToDelete(data.Data.TicketId, data.Data.TicketNumber)
+                    }
                     dialogToOpen.dialog("open");
                 })
                 .fail(function () {
@@ -206,6 +235,12 @@
 
         }
 
+        function assignTicketToDelete(ticketId, ticketNumber)
+        {
+            $("#ticketNumberToDelete").val(ticketId);
+            $("#ticket_ticketnumber_display_for_delete").text(ticketNumber);
+        }
+
         function assignTicketToView(agentDetails, categoryDescription, ticketStatusDescription, zone, notes, soldTo, ticketNumber)
         {
             $("#agent_display").text(agentDetails);
@@ -214,7 +249,8 @@
             $("#ticket_zone_display").text(zone);
             $("#ticket_notes_display").text(notes);
             $("#ticket_soldto_display").text(soldTo);
-            $("#ticket_ticketnumber_display").text(ticketNumber);
+            $("#ticket_ticketnumber_display").text(ticketNumber);            
+
         }
 
         function GetTicketDetailsToEdit(ticketId, dialogToOpen) {
@@ -278,6 +314,37 @@
             });
         });
 
+
+        $(function () {
+            var dialog;
+            dialog = $("#delete_dialog").dialog({
+                autoOpen: false,
+                height: 150,
+                width: 550,
+                modal: true,
+                buttons: {
+                    Cancel: function () {
+                        
+                    },
+                    Delete: function () {
+                        if(DeleteTicket(dialog, $('#ticketNumberToDelete').val()))
+                        {
+                            dialog.dialog("close");
+                        }
+                    }
+                },
+                close: function () {
+                    assignTicketToView("", "", "", "", "", "", "");
+                }
+            });
+
+            $(".deleteDialog").on("click", function (event) {
+                event.preventDefault();
+                var id = this.getAttribute('random');                
+                var data = GetTicketDetails(id, dialog, false);
+            });
+        });
+
         $(function () {
             var dialog;
             dialog = $("#view_dialog").dialog({
@@ -291,14 +358,14 @@
                     }
                 },
                 close: function () {
-                    assignTicketToView("","","","","","","");
+                    assignTicketToView("", "", "", "", "", "", "");
                 }
             });
 
             $(".displayDialog").on("click", function (event) {
                 event.preventDefault();
                 var id = this.getAttribute('random');
-                var data = GetTicketDetails(id, dialog);
+                var data = GetTicketDetails(id, dialog, true);
             });
         });
 
