@@ -80,6 +80,10 @@
 <br />
 @if (Model.SearchResults != null || Model.SearchResults.Results.Count() > 0)
 {
+    <div>
+        Total Number of Records: @Model.SearchResults.RecordCiount
+    </div>
+
     <table class="table">
     <tr>
         <th>Ticket Number</th>
