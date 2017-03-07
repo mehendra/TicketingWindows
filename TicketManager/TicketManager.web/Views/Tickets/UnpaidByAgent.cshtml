@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Business.ReportTicketAllUnpaid_Result>
+
+@{
+    ViewBag.Title = "UnpaidByAgent";
+}
+
+<h2>Unpaid Tickets By Agent</h2>
+<script>
+    function postToPage(category, agentCode)
+    {
+
+        var form = $('<form action="/Tickets" method="POST">' +
+            '<input type="hidden" name="SearchParameters.TicketNumber" value="">' +
+            '<input type="hidden" name="SearchParameters.AgentCode" value="' + agentCode + '">' +
+            '<input type="hidden" name="SearchParameters.TicketStatusCode" value="">' +
+            '<input type="hidden" name="SearchParameters.Category" value="' + category + '">' +
+            '<input type="hidden" name="SearchParameters.Zone" value="">' +
+            '<input type="hidden" name="SearchParameters.RecordsPerPage" value="150">' +
+            '<input type="hidden" name="SearchParameters.RcordCount" value="0">' +
+            '<input type="hidden" name="SearchParameters.PagingStartIndex" value="1">' +
+            '<input type="hidden" name="SearchParameters.RecordCiount" value="0">' +
+            '</form>');
+        $(document.body).append(form);
+        document.forms[0].submit();
+    }
+</script>
+
+<table class="table">
+    <tr>
+        <th>
+            Agent Name
+        </th>
+        <th>
+            Ticket Category
+        </th>
+        <th width="10%">
+            total Owing
+        </th>
+        <th width="10%">
+            Number Of Tickets
+        </th>
+        <th>&nbsp;</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketCategory)
+            </td>
+            <td style="text-align:right; padding-right:15px;">
+                @Html.DisplayFor(modelItem => item.TotalOwing)
+            </td>
+            <td style="text-align:right; padding-right:15px;">
+                @Html.DisplayFor(modelItem => item.NumberOfTickets)
+            </td>
+            <td>
+                <a href="#" onclick="postToPage('@item.Category','@item.AgentCode');">Show Tickets</a>
+            </td>
+        </tr>
+    }
+
+</table>

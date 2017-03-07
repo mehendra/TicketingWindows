@@ -71,6 +71,7 @@
     <Build Include="dbo\Tables\TicketCategory.sql" />
     <Build Include="dbo\Stored Procedures\SeachTickets.sql" />
     <Build Include="dbo\Stored Procedures\ReportTicketSummary.sql" />
+    <Build Include="dbo\Stored Procedures\ReportTicketAllUnpaid.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\DatInserts\Script.InsertData.sql" />

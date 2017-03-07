@@ -219,6 +219,12 @@ namespace TicketManager.web.Controllers
             return View(ticketSummary);
         }
 
+        public ActionResult UnpaidByAgent()
+        {
+            var ticketSummary = ticketService.GetAllUnpaid();
+            return View(ticketSummary);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

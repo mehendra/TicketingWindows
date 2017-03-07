@@ -256,5 +256,11 @@ namespace Business
         {
             return db.ReportTicketSummary().ToList<ReportTicketSummary_Result>();
         }
+
+
+        public List<ReportTicketAllUnpaid_Result> GetAllUnpaid()
+        {
+            return db.ReportTicketAllUnpaid().ToList<ReportTicketAllUnpaid_Result>();
+        }
     }
  }

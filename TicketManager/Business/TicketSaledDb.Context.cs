@@ -73,5 +73,10 @@ namespace Business
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportTicketSummary_Result>("ReportTicketSummary");
         }
+    
+        public virtual ObjectResult<ReportTicketAllUnpaid_Result> ReportTicketAllUnpaid()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportTicketAllUnpaid_Result>("ReportTicketAllUnpaid");
+        }
     }
 }
