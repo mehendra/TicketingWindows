@@ -74,6 +74,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Parameter Name="TicketNumber" Type="varchar" Mode="In" />
           <Parameter Name="AgentCode" Type="varchar" Mode="In" />
           <Parameter Name="TicketStatusCode" Type="varchar" Mode="In" />
+          <Parameter Name="Zone" Type="varchar" Mode="In" />
           <Parameter Name="Category" Type="varchar" Mode="In" />
           <Parameter Name="RcordCount" Type="int" Mode="In" />
           <Parameter Name="RecordsPerPage" Type="int" Mode="In" />
@@ -117,6 +118,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
             <Parameter Name="TicketNumber" Mode="In" Type="String" />
             <Parameter Name="AgentCode" Mode="In" Type="String" />
             <Parameter Name="TicketStatusCode" Mode="In" Type="String" />
+            <Parameter Name="Zone" Mode="In" Type="String" />
             <Parameter Name="Category" Mode="In" Type="String" />
             <Parameter Name="RcordCount" Mode="In" Type="Int32" />
             <Parameter Name="RecordsPerPage" Mode="In" Type="Int32" />

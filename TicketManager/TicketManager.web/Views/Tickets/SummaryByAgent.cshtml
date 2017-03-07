@@ -5,10 +5,26 @@
 }
 
 <h2>SummaryByAgent</h2>
+<script>
+    function postToPage(category, agentCode, ticketStatusCode, zone)
+    {
+        
+        var form = $('<form action="/Tickets" method="POST">' +
+            '<input type="hidden" name="SearchParameters.TicketNumber" value="">' +
+            '<input type="hidden" name="SearchParameters.AgentCode" value="' + agentCode + '">' +
+            '<input type="hidden" name="SearchParameters.TicketStatusCode" value="' + ticketStatusCode + '">' +
+            '<input type="hidden" name="SearchParameters.Category" value="' + category + '">' +
+            '<input type="hidden" name="SearchParameters.Zone" value="' + zone + '">' +
+            '<input type="hidden" name="SearchParameters.RecordsPerPage" value="150">' +
+            '<input type="hidden" name="SearchParameters.RcordCount" value="0">' +
+            '<input type="hidden" name="SearchParameters.PagingStartIndex" value="1">' +
+            '<input type="hidden" name="SearchParameters.RecordCiount" value="0">' +
+            '</form>');
+        $(document.body).append(form);
+        document.forms[0].submit();
+    }
+</script>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -26,6 +42,7 @@
         <th>
             Number Of Tickets
         </th>
+        <th>&nbsp;</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -55,6 +72,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.NumberOfTickets)
+        </td>
+        <td>
+            <a href="#" onclick="postToPage('@item.Category','@item.AgentCode','@item.TicketStatusCode','@item.Zone');">Show Tickets</a>
         </td>
     </tr>
 }

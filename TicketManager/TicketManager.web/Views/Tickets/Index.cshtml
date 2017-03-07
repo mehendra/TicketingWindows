@@ -48,6 +48,14 @@
                 @Html.DropDownListFor(model => model.SearchParameters.Category, new SelectList(Model.Categories, "Value", "Text"), "--Select Category--")
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.Zone, "Zone", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.Zone, new SelectList(Model.Zones, "Value", "Text"), "--Select Zone--")
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.SearchParameters.RecordsPerPage,"Records per page", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -78,6 +86,8 @@
         <th>Category</th>
         <th>Agent Name</th>
         <th>Ticket Status</th>
+        <th>Sold To</th>
+        <th>Zone</th>
         <th>&nbsp;</th>
     </tr>
     @foreach (var item in Model.SearchResults.Results)
@@ -154,6 +164,7 @@
                     $("#tktNum-" + ticketId).text(data.Data.AgentName);
                     $("#tktStatus-" + ticketId).text(data.Data.TicketStatusDescription);
                     $("#tktSoldTo-" + ticketId).text(data.Data.SoldTo);
+                    $("#tktZone-" + ticketId).text(data.Data.Zone);
                 })
                 .fail(function () {
                     alert("error");

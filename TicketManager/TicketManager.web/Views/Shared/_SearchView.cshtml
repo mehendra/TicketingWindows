@@ -16,6 +16,9 @@
         <td id="tktSoldTo-@Model.TicketId">
             @Html.DisplayFor(model => model.SoldTo)
         </td>
+        <td id="tktZone-@Model.TicketId">
+            @Html.DisplayFor(model => model.Zone)
+        </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = Model.TicketId }, new { @class = "editDialog", random=Model.TicketId }) |
             @Html.ActionLink("Details", "Details", new { id = Model.TicketId }, new { @class = "displayDialog", random = Model.TicketId }) |

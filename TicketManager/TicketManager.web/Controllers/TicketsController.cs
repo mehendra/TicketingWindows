@@ -49,16 +49,23 @@ namespace TicketManager.web.Controllers
         [HttpPost]
         public ActionResult Index(TicketSearchInfoViewModel<Business.SeachTickets_Result> searchInfo)
         {
+            SearchRecordsAndUpdateView(searchInfo);
+            return View(searchInfo);
+        }
+
+
+        private void SearchRecordsAndUpdateView(TicketSearchInfoViewModel<Business.SeachTickets_Result> searchInfo)
+        {
             if (searchInfo.SearchParameters == null)
             {
-                searchInfo.SearchParameters = new TicketSearchParams() {
+                searchInfo.SearchParameters = new TicketSearchParams()
+                {
                     RecordsPerPage = 50,
                     PagingStartIndex = 1
                 };
             }
             searchInfo.SearchResults = ticketService.SeachTickets(searchInfo.SearchParameters);
             AddViewData(searchInfo);
-            return View(searchInfo);
         }
 
         private void AddViewData(DropdownListModelView searchViewModel)
@@ -211,6 +218,8 @@ namespace TicketManager.web.Controllers
             var ticketSummary = ticketService.GetTicketsSummary();
             return View(ticketSummary);
         }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
