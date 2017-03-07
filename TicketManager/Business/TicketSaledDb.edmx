@@ -211,11 +211,12 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
         <ComplexType Name="ReportTicketSummary_Result">
           <Property Type="String" Name="AgentName" Nullable="false" MaxLength="255" />
           <Property Type="String" Name="AgentCode" Nullable="false" MaxLength="4" />
-          <Property Type="Int32" Name="Column1" Nullable="true" />
+          <Property Type="Int32" Name="NumberOfTickets" Nullable="true" />
           <Property Type="String" Name="TicketCategory" Nullable="false" MaxLength="255" />
           <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="TicketStatusCode" Nullable="true" MaxLength="4" />
           <Property Type="String" Name="TicketStatus" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Zone" Nullable="true" MaxLength="10" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -287,11 +288,12 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
               <ComplexTypeMapping TypeName="TicketingModel.ReportTicketSummary_Result">
                 <ScalarProperty Name="AgentName" ColumnName="AgentName" />
                 <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
-                <ScalarProperty Name="Column1" ColumnName="Column1" />
+                <ScalarProperty Name="NumberOfTickets" ColumnName="NumberOfTickets" />
                 <ScalarProperty Name="TicketCategory" ColumnName="TicketCategory" />
                 <ScalarProperty Name="Category" ColumnName="Category" />
                 <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
                 <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

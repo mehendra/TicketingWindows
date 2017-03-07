@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Business.ReportTicketSummary_Result>
+
+@{
+    ViewBag.Title = "SummaryByAgent";
+}
+
+<h2>SummaryByAgent</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+           Agent Name
+        </th>
+        <th>
+            Ticket Category
+        </th>
+        <th>
+            Tickets Status (Paid)
+        </th>
+        <th>
+            Zone
+        </th>
+        <th>
+            Number Of Tickets
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    var colorMap = new Dictionary<string, string>()
+    {
+        { "CANC", "#fff"},
+        { "INIT", "#fff"},
+        { "ISSU", "#fff"},
+        { "SCOL", "#fff"},
+        { "SPAD", "#ccffcc"},
+        { "SUNP", "#fff"},
+    };
+    
+    var trColor = colorMap[item.TicketStatusCode];
+    <tr style="background-color:@trColor">
+        <td>
+            @Html.DisplayFor(modelItem => item.AgentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketCategory)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Zone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfTickets)
+        </td>
+    </tr>
+}
+
+</table>

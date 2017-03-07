@@ -205,35 +205,11 @@ namespace TicketManager.web.Controllers
         public ActionResult BulkCreate() {
             return View();
         }
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketsIssued ticketsIssued = db.TicketsIssueds.Find(id);
-            if (ticketsIssued == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ticketsIssued);
-        }
-
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            TicketsIssued ticketsIssued = db.TicketsIssueds.Find(id);
-            db.TicketsIssueds.Remove(ticketsIssued);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
         
         public ActionResult SummaryByAgent()
         {
-            return View();
+            var ticketSummary = ticketService.GetTicketsSummary();
+            return View(ticketSummary);
         }
         protected override void Dispose(bool disposing)
         {
