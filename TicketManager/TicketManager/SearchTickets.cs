@@ -3,6 +3,7 @@ using Models;
 using Models.Services;
 using System;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 using Utilities;
 
@@ -47,14 +48,24 @@ namespace TicketManager
         {
             var currentText = SimpleTicketNumberTextBox.Text.ToUpper();
             numberOfIterationForScanner++;
-            if (currentText.Length == 14)
+            if (currentText.Length == 15)
             {
                 logger.logMessage(string.Format("Ticket {0} scanned", currentText), LogLevel.message);
                 var scannedTicket = new ScannedTicket(currentText, currentSystemInformation);
                 var ticketMarked = new Business.TicketConfirmerService(logger).ConfirmArrival(scannedTicket);
-                if (ticketMarked)
+                var userMessage = new StringBuilder();
+                if (ticketMarked.StatusOfScan == TicketScannedStatus.Ok)
                 {
                     Console.WriteLine(currentText);
+                    
+                    if (ticketMarked.ZoneBTicket)
+                    {
+                        userMessage.AppendLine("This is a ZoneB Ticket");
+                    }
+                    if (ticketMarked.TicketNotPaid)
+                    {
+                        userMessage.AppendLine("This ticket is not paid for, Please collect money");
+                    }
                     SimpleTicketNumberTextBox.Clear();
                     ScannerTimer.Enabled = false;
                     ScannerTabPage.BackColor = Color.LightGreen;
@@ -65,7 +76,7 @@ namespace TicketManager
                     ScannerTabPage.BackColor = Color.Red;
                     ScannerTimer.Enabled = false;
                     ScannedTextBoxInError = true;
-                    MessageBox.Show("Failed to mark the ticket as scanned.");
+                    MessageBox.Show("Ticket not found.");
                 }
 
             }

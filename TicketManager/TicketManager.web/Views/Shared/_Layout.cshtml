@@ -35,9 +35,9 @@
         </div>
     </div>
     <div style="padding:10px;text-align:right;font-weight:bold">
-        @if (Session["UserName"] != null)
+        @if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
             {
-            <span>Hi @Session["UserName"], @Html.ActionLink("Click Here to log off", "LogOff", "Account")</span>
+            <span>Hi @HttpContext.Current.User.Identity.Name, @Html.ActionLink("Click Here to log off", "LogOff", "Account")</span>
         }
         else
         {

@@ -13,29 +13,35 @@ namespace Business
         {
             this.logger = logger;
         }
-        public bool ConfirmArrival(ScannedTicket scannedTicket)
+        public ScannedStatus ConfirmArrival(ScannedTicket scannedTicket)
         {
             logger.logMessage("Request to mak ticket " + scannedTicket.TicketNumber, LogLevel.debug);
             var ticketScanned = db.TicketsIssueds.FirstOrDefault(a => a.TicketNumber == scannedTicket.TicketNumber);
+            var ticketScannedOutcome = new ScannedStatus();
             if (ticketScanned == null)
             {
-                return false;
+                return new ScannedStatus { StatusOfScan = TicketScannedStatus.TicketDoesNotExist};
             }
-            else {
+            else
+            {
                 if (ticketScanned.ArrivedAt != null)
                 {
-                    return false;
+                    ticketScannedOutcome.StatusOfScan = TicketScannedStatus.TicketAlreadyScanned;
+                    ticketScannedOutcome.TicketScannedMessage = string.Format("Ticket was scanned at {0} using machine {1}", ticketScanned.ArrivedAt, ticketScanned.ArrivalConfirmedBy);
+
                 }
                 else
                 {
                     ticketScanned.ArrivalConfirmedBy = scannedTicket.ScannedBy;
                     ticketScanned.ArrivedAt = DateTime.Now;
                     db.SaveChanges();
+                    ticketScannedOutcome.StatusOfScan = TicketScannedStatus.Ok;
+                    ticketScannedOutcome.ZoneBTicket = ticketScanned.Zone == Constants.ZonedCategories.ZoneB;
+                    ticketScannedOutcome.TicketNotPaid = ticketScanned.TicketStatusCode != Constants.TicketStatus.Paid && ticketScanned.TicketStatusCode != Constants.TicketStatus.PaidNoCharge;                    
                 }
             }
+            return ticketScannedOutcome;
 
-            return true;
         }
-
     }
 }

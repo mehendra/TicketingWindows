@@ -80,6 +80,7 @@
     <Compile Include="SearchResultsWrapper.cs" />
     <Compile Include="Services\ILogger.cs" />
     <Compile Include="Services\ITicketConfirmer.cs" />
+    <Compile Include="Services\ScannedStatus.cs" />
     <Compile Include="TicketSearchParams.cs" />
   </ItemGroup>
   <ItemGroup>

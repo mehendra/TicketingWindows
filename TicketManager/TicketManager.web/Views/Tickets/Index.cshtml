@@ -339,7 +339,7 @@
                 modal: true,
                 buttons: {
                     Cancel: function () {
-                        
+                        dialog.dialog("close");
                     },
                     Delete: function () {
                         if(DeleteTicket(dialog, $('#ticketNumberToDelete').val()))
