@@ -234,12 +234,14 @@
     <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="api\TicketAController.cs" />
+    <Compile Include="Controllers\MyTicketsController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddTicketToAgent.cs" />
     <Compile Include="Models\DropdownListModelView.cs" />
+    <Compile Include="Models\MyTicketViewModel.cs" />
     <Compile Include="Models\TicketDetailsViewModel.cs" />
     <Compile Include="Models\TicketSearchInfoViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -264,6 +266,7 @@
     <Content Include="Views\Tickets\SummaryByAgent.cshtml" />
     <Content Include="Views\Tickets\UnpaidByAgent.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\MyTickets\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
