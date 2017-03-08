@@ -24,6 +24,7 @@ namespace TicketManager.web.Controllers
             return new string[] { "value1", "value2" };
         }
 
+
         // GET: api/TicketA/5
         public JsonResult Get(int id)
         {
@@ -32,7 +33,7 @@ namespace TicketManager.web.Controllers
             return new JsonResult { Data = foundData };
         }
 
-
+        [System.Web.Http.Authorize]
         // POST: api/TicketA
         public HttpResponseMessage Post(AddTicketToAgent value)
         {
@@ -51,7 +52,7 @@ namespace TicketManager.web.Controllers
         public void Put(int id, [FromBody]string value)
         {
         }
-
+        [System.Web.Http.Authorize]
         // DELETE: api/TicketA/5
         public HttpResponseMessage Delete(int id)
         {

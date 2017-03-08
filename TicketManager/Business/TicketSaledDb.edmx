@@ -38,6 +38,15 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Property Name="Zone" Type="varchar" MaxLength="10" />
           <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="TicketSiteUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="TicketStatus">
           <Key>
             <PropertyRef Name="TicketStatusCode" />
@@ -85,6 +94,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
         <EntityContainer Name="TicketingModelStoreContainer">
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketsIssued" EntityType="Self.TicketsIssued" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketSiteUser" EntityType="Self.TicketSiteUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketStatus" EntityType="Self.TicketStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketCategory" EntityType="Self.TicketCategory" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -139,6 +149,7 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           </AssociationSet>
           <FunctionImport Name="ReportTicketSummary" ReturnType="Collection(TicketingModel.ReportTicketSummary_Result)" />
           <FunctionImport Name="ReportTicketAllUnpaid" ReturnType="Collection(TicketingModel.ReportTicketAllUnpaid_Result)" />
+          <EntitySet Name="TicketSiteUsers" EntityType="TicketingModel.TicketSiteUser" />
         </EntityContainer>
         <ComplexType Name="SeachTickets_Result">
           <Property Type="Int32" Name="idx" Nullable="false" />
@@ -230,6 +241,15 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="TotalOwing" Nullable="true" Precision="19" />
         </ComplexType>
+        <EntityType Name="TicketSiteUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -321,6 +341,16 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="TicketSiteUsers">
+            <EntityTypeMapping TypeName="TicketingModel.TicketSiteUser">
+              <MappingFragment StoreEntitySet="TicketSiteUser">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="TicketingModel.TicketsIssued" Width="1.5" PointX="3" PointY="2.625" />
         <AssociationConnector Association="TicketingModel.fk_Agent" />
         <AssociationConnector Association="TicketingModel.fk_TicketStatus" />
+        <EntityTypeShape EntityType="TicketingModel.TicketSiteUser" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

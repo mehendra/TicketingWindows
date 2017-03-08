@@ -230,6 +230,7 @@
     <Compile Include="api\TicketBController.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="api\TicketAController.cs" />
@@ -241,6 +242,7 @@
     <Compile Include="Models\DropdownListModelView.cs" />
     <Compile Include="Models\TicketDetailsViewModel.cs" />
     <Compile Include="Models\TicketSearchInfoViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -252,7 +254,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Agents\Create.cshtml" />
-    <Content Include="Views\Agents\Delete.cshtml" />
     <Content Include="Views\Agents\Details.cshtml" />
     <Content Include="Views\Agents\Edit.cshtml" />
     <Content Include="Views\Agents\Index.cshtml" />
@@ -262,6 +263,7 @@
     <Content Include="Views\Tickets\Create.cshtml" />
     <Content Include="Views\Tickets\SummaryByAgent.cshtml" />
     <Content Include="Views\Tickets\UnpaidByAgent.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -30,6 +30,7 @@ namespace TicketManager.web.Controllers
             return View(ticketsIssueds.ToList());
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             var searchInfo = new TicketSearchInfoViewModel<Business.SeachTickets_Result>();
@@ -46,6 +47,7 @@ namespace TicketManager.web.Controllers
             return View(searchInfo);
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Index(TicketSearchInfoViewModel<Business.SeachTickets_Result> searchInfo)
         {
@@ -122,41 +124,7 @@ namespace TicketManager.web.Controllers
             return View(ticketsIssued);
         }
 
-        // GET: Tickets/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketsIssued ticketsIssued = db.TicketsIssueds.Find(id);
-            if (ticketsIssued == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.AgentCode = new SelectList(db.Agents, "AgentCode", "AgentName", ticketsIssued.AgentCode);
-            ViewBag.TicketStatusCode = new SelectList(db.TicketStatus, "TicketStatusCode", "TicketStatus", ticketsIssued.TicketStatusCode);
-            return View(ticketsIssued);
-        }
-
-        // POST: Tickets/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TicketNumber,AgentCode,Category,TicketStatusCode,ArrivedAt,ArrivalConfirmedBy")] TicketsIssued ticketsIssued)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(ticketsIssued).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.AgentCode = new SelectList(db.Agents, "AgentCode", "AgentName", ticketsIssued.AgentCode);
-            ViewBag.TicketStatusCode = new SelectList(db.TicketStatus, "TicketStatusCode", "TicketStatus", ticketsIssued.TicketStatusCode);
-            return View(ticketsIssued);
-        }
-
+        [Authorize]
         public ActionResult Create()
         {
             var emptyMdoel = new TicketDetailsViewModel();
@@ -164,13 +132,15 @@ namespace TicketManager.web.Controllers
             return View(emptyMdoel);
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Create(TicketDetailsViewModel data)
         {
             ticketService.AddOrIssue(data.TicketDetails);
             return RedirectToAction("index");
         }
-        
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult BulkCreate(string ticketsIssued)
@@ -209,6 +179,7 @@ namespace TicketManager.web.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult BulkCreate() {
             return View();
         }

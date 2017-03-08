@@ -34,6 +34,18 @@
             </div>
         </div>
     </div>
+    <div style="padding:10px;text-align:right;font-weight:bold">
+        @if (Session["UserName"] != null)
+            {
+            <span>Hi @Session["UserName"], @Html.ActionLink("Click Here to log off", "LogOff", "Account")</span>
+        }
+        else
+        {
+            <span>You are currently not logged in</span>
+        }
+    </div>
+
+
 
     <div class="container body-content">
         @RenderBody()

@@ -32,12 +32,14 @@ namespace TicketManager.web.Controllers
             return View(agent);
         }
 
+        [Authorize]
         // GET: Agents/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         // POST: Agents/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -55,6 +57,7 @@ namespace TicketManager.web.Controllers
             return View(agent);
         }
 
+        [Authorize]
         // GET: Agents/Edit/5
         public ActionResult Edit(string id)
         {
@@ -70,6 +73,7 @@ namespace TicketManager.web.Controllers
             return View(agent);
         }
 
+        [Authorize]
         // POST: Agents/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -85,33 +89,7 @@ namespace TicketManager.web.Controllers
             }
             return View(agent);
         }
-
-        // GET: Agents/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Agent agent = db.Agents.Find(id);
-            if (agent == null)
-            {
-                return HttpNotFound();
-            }
-            return View(agent);
-        }
-
-        // POST: Agents/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            Agent agent = db.Agents.Find(id);
-            db.Agents.Remove(agent);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

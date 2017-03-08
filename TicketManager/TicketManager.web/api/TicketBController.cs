@@ -13,6 +13,7 @@ namespace TicketManager.web.api
         private ILogger logger = new Logger();
         private TicketManagerService ticketManagerService = new TicketManagerService();
 
+        [System.Web.Http.Authorize]
         // POST: api/TicketB
         public HttpResponseMessage Post(ApiTicketsIssued value)
         {

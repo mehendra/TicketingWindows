@@ -62,6 +62,7 @@
     <Compile Include="Constants\FixedAgents.cs" />
     <Compile Include="Constants\TicketStatus.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="LoginService.cs" />
     <Compile Include="ReportTicketAllUnpaid_Result.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
@@ -98,6 +99,9 @@
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
     <Compile Include="TicketsIssuedExt.cs" />
+    <Compile Include="TicketSiteUser.cs">
+      <DependentUpon>TicketSaledDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="TicketStatu.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
