@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Business;
+using Models.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Utilities;
 
 namespace TicketManager
 {
@@ -15,9 +18,13 @@ namespace TicketManager
         private int? ticketNumber;
         private Business.TicketsIssued currentTicket;
         private Business.TicketManagerService ticketManagerService;
+        private Business.TicketConfirmerService ticketConfirmationService;
+        ILogger logger = new Logger();
+
         public TicketDetails(int? ticketNumber = null)
         {
             ticketManagerService = new Business.TicketManagerService();
+            ticketConfirmationService = new Business.TicketConfirmerService(logger);
             if (ticketNumber.HasValue)
             {
                 this.ticketNumber = ticketNumber;
@@ -49,6 +56,7 @@ namespace TicketManager
             try
             {
                 ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.Paid, NotesTextBox.Text);
+                ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
                 Close();
             }
             catch (Exception ex)
@@ -60,7 +68,9 @@ namespace TicketManager
 
         private void IncompletePaymentButton_Click(object sender, EventArgs e)
         {
-
+            ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.Paid, NotesTextBox.Text);
+            ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
+            Close();
         }
 
         private void TicketDetails_Leave(object sender, EventArgs e)
@@ -71,6 +81,12 @@ namespace TicketManager
         private void TicketDetails_Deactivate(object sender, EventArgs e)
         {
 
+        }
+
+        private void MarkAsArrivedButton_Click(object sender, EventArgs e)
+        {
+            ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
+            Close();
         }
     }
 }

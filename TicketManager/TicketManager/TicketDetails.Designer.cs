@@ -48,6 +48,7 @@
             this.ScannedTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.ScannedByTextBox = new System.Windows.Forms.TextBox();
+            this.MarkAsArrivedButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -193,7 +194,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(357, 106);
+            this.label8.Location = new System.Drawing.Point(354, 151);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(63, 13);
             this.label8.TabIndex = 16;
@@ -201,7 +202,7 @@
             // 
             // ScannedTextBox
             // 
-            this.ScannedTextBox.Location = new System.Drawing.Point(360, 122);
+            this.ScannedTextBox.Location = new System.Drawing.Point(357, 167);
             this.ScannedTextBox.Name = "ScannedTextBox";
             this.ScannedTextBox.ReadOnly = true;
             this.ScannedTextBox.Size = new System.Drawing.Size(216, 20);
@@ -210,7 +211,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(360, 161);
+            this.label9.Location = new System.Drawing.Point(357, 206);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 13);
             this.label9.TabIndex = 18;
@@ -218,17 +219,28 @@
             // 
             // ScannedByTextBox
             // 
-            this.ScannedByTextBox.Location = new System.Drawing.Point(363, 178);
+            this.ScannedByTextBox.Location = new System.Drawing.Point(360, 223);
             this.ScannedByTextBox.Name = "ScannedByTextBox";
             this.ScannedByTextBox.ReadOnly = true;
             this.ScannedByTextBox.Size = new System.Drawing.Size(213, 20);
             this.ScannedByTextBox.TabIndex = 19;
+            // 
+            // MarkAsArrivedButton
+            // 
+            this.MarkAsArrivedButton.Location = new System.Drawing.Point(357, 104);
+            this.MarkAsArrivedButton.Name = "MarkAsArrivedButton";
+            this.MarkAsArrivedButton.Size = new System.Drawing.Size(130, 38);
+            this.MarkAsArrivedButton.TabIndex = 20;
+            this.MarkAsArrivedButton.Text = "Arrived";
+            this.MarkAsArrivedButton.UseVisualStyleBackColor = true;
+            this.MarkAsArrivedButton.Click += new System.EventHandler(this.MarkAsArrivedButton_Click);
             // 
             // TicketDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(588, 289);
+            this.Controls.Add(this.MarkAsArrivedButton);
             this.Controls.Add(this.ScannedByTextBox);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.ScannedTextBox);
@@ -281,5 +293,6 @@
         private System.Windows.Forms.TextBox ScannedTextBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox ScannedByTextBox;
+        private System.Windows.Forms.Button MarkAsArrivedButton;
     }
 }

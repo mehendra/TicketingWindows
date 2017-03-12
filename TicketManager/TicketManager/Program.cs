@@ -16,7 +16,7 @@ namespace TicketManager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TickerManagerForm());
+            Application.Run(new SearchTicketsForm());
         }
     }
 }

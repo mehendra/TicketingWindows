@@ -73,37 +73,6 @@ namespace TicketManager
             }
         }
 
-
-        /*
-         private void SimpleTicketNumberTextBox_TextChanged(object sender, EventArgs e)
-        {
-            
-            var currentText = SimpleTicketNumberTextBox.Text.ToUpper();
-            numberOfIterationForScanner++;
-            if (currentText.Length == 15)
-            {
-                UpdateTicketStatus(currentText);
-            }
-            else if (numberOfIterationForScanner < 14)
-            {
-                logger.logMessage(string.Format("Unable to find ticket {0}", currentText), LogLevel.debug);
-                Console.WriteLine("Please wait");
-            }
-            else
-            {
-                logger.logMessage(string.Format("Ticket {0} failed due to format error", currentText), LogLevel.error);
-                ScannerTabPage.BackColor = Color.Red;
-                if (!ScannedTextBoxInError)
-                {
-                    MessageBox.Show(string.Format("Scanned text {0} should be exactly 8 characters long", currentText));
-                }
-                ScannedTextBoxInError = true;
-            }
-            ScannerTabPage.BackColor = Color.Yellow;
-            
-        }
-        */
-
         private void UpdateTicketStatus(string ticketNumber)
         {
 
