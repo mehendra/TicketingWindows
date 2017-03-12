@@ -2,7 +2,9 @@
 using Models;
 using Models.Services;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Utilities;
@@ -13,18 +15,39 @@ namespace TicketManager
     {        
 
         ILogger logger = new Logger();
-        TicketConfirmerService ticketService;
+        TicketConfirmerService ticketConfirmationService;
+        TicketManagerService ticketManagerService;
+        StaticDataService staticDataService;
 
-        private TicketConfirmerService GetTicketService()
+        private TicketManagerService GetTicketManagerService()
         {
-            if (ticketService == null)
+            if (ticketManagerService == null)
             {
-                ticketService = new TicketConfirmerService(logger);
+                ticketManagerService = new TicketManagerService();
             }
-            return ticketService;
+            return ticketManagerService;
         }
 
-        public bool ScannedTextBoxInError { get; set; }
+        private TicketConfirmerService GetTicketConfirmationService()
+        {
+            if (ticketConfirmationService == null)
+            {
+                ticketConfirmationService = new TicketConfirmerService(logger);
+            }
+            return ticketConfirmationService;
+        }
+
+        private StaticDataService GetStaticDataService()
+        {
+            if (staticDataService == null)
+            {
+                staticDataService = new StaticDataService();
+            }
+            return staticDataService;
+        }
+
+
+        //public bool ScannedTextBoxInError { get; set; }
 
         ISystemInformation currentSystemInformation;
         int numberOfIterationForScanner = 0;
@@ -36,49 +59,30 @@ namespace TicketManager
             this.ActiveControl = SimpleTicketNumberTextBox;
             currentSystemInformation = new CurrentSysInfo();
             logger.logMessage("Ready for action", LogLevel.debug);
+            SimpleTicketNumberTextBox.KeyDown += new KeyEventHandler(tb_KeyDown);
+
+
         }
 
-        private void SimpleTicketNumberTextBox_TextChanged(object sender, EventArgs e)
+        private void tb_KeyDown(object sender, KeyEventArgs e)
         {
-            ScannerTimer.Enabled = true;
-            ScannerTabPage.BackColor = Color.Yellow;
+            if (e.KeyCode == Keys.Enter)
+            {
+                ScannerTabPage.BackColor = Color.Yellow;
+                UpdateTicketStatus(((TextBox)sender).Text);
+            }
         }
 
-        private void ScannerTimer_Tick(object sender, EventArgs e)
+
+        /*
+         private void SimpleTicketNumberTextBox_TextChanged(object sender, EventArgs e)
         {
+            
             var currentText = SimpleTicketNumberTextBox.Text.ToUpper();
             numberOfIterationForScanner++;
             if (currentText.Length == 15)
             {
-                logger.logMessage(string.Format("Ticket {0} scanned", currentText), LogLevel.message);
-                var scannedTicket = new ScannedTicket(currentText, currentSystemInformation);
-                var ticketMarked = new Business.TicketConfirmerService(logger).ConfirmArrival(scannedTicket);
-                var userMessage = new StringBuilder();
-                if (ticketMarked.StatusOfScan == TicketScannedStatus.Ok)
-                {
-                    Console.WriteLine(currentText);
-                    
-                    if (ticketMarked.ZoneBTicket)
-                    {
-                        userMessage.AppendLine("This is a ZoneB Ticket");
-                    }
-                    if (ticketMarked.TicketNotPaid)
-                    {
-                        userMessage.AppendLine("This ticket is not paid for, Please collect money");
-                    }
-                    SimpleTicketNumberTextBox.Clear();
-                    ScannerTimer.Enabled = false;
-                    ScannerTabPage.BackColor = Color.LightGreen;
-                    ScannedTextBoxInError = false;
-                }
-                else
-                {
-                    ScannerTabPage.BackColor = Color.Red;
-                    ScannerTimer.Enabled = false;
-                    ScannedTextBoxInError = true;
-                    MessageBox.Show("Ticket not found.");
-                }
-
+                UpdateTicketStatus(currentText);
             }
             else if (numberOfIterationForScanner < 14)
             {
@@ -89,14 +93,129 @@ namespace TicketManager
             {
                 logger.logMessage(string.Format("Ticket {0} failed due to format error", currentText), LogLevel.error);
                 ScannerTabPage.BackColor = Color.Red;
-                ScannerTimer.Enabled = false;
                 if (!ScannedTextBoxInError)
                 {
                     MessageBox.Show(string.Format("Scanned text {0} should be exactly 8 characters long", currentText));
-                }                
+                }
                 ScannedTextBoxInError = true;
             }
+            ScannerTabPage.BackColor = Color.Yellow;
+            
+        }
+        */
 
+        private void UpdateTicketStatus(string ticketNumber)
+        {
+
+                logger.logMessage(string.Format("Ticket {0} scanned", ticketNumber), LogLevel.message);
+                var scannedTicket = new ScannedTicket(ticketNumber, currentSystemInformation);
+                var ticketMarked = new Business.TicketConfirmerService(logger).ConfirmArrival(scannedTicket);
+                var userMessage = new StringBuilder();
+                if (ticketMarked.StatusOfScan == TicketScannedStatus.Ok)
+                {
+                    Console.WriteLine(ticketNumber);
+
+                    if (ticketMarked.ZoneBTicket)
+                    {
+                        MessageBox.Show("This is a ZoneB Ticket");
+                    }
+                    if (ticketMarked.TicketNotPaid)
+                    {
+                        userMessage.AppendLine("This ticket is not paid for, Please collect money");
+                    }
+                    SimpleTicketNumberTextBox.Clear();
+
+                    ScannerTabPage.BackColor = Color.LightGreen;
+                    //ScannedTextBoxInError = false;
+                }
+                else
+                {
+                    if (ticketMarked.StatusOfScan == TicketScannedStatus.TicketAlreadyScanned)
+                    {
+                        SimpleTicketNumberTextBox.SelectAll();
+                        ScannerTabPage.BackColor = Color.Red;
+                        //ScannedTextBoxInError = true;
+                        MessageBox.Show(ticketMarked.TicketScannedMessage);
+                    }
+                    else
+                    {
+                        SimpleTicketNumberTextBox.SelectAll();
+                        ScannerTabPage.BackColor = Color.Red;
+                        //ScannedTextBoxInError = true;
+                        MessageBox.Show("Ticket not found.");
+                    }
+                }
+            }
+
+        private void DataSearchTab_Selected(object sender, TabControlEventArgs e)
+        {
+            if (e.TabPage.Name == "ScannerTabPage")
+            {
+                SimpleTicketNumberTextBox.Focus();
+                SimpleTicketNumberTextBox.Select();
+            }            
+        }
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            SearchTickets();
+        }
+
+        private void AdavancedTabSearch_Enter(object sender, EventArgs e)
+        {
+            //Load the drop down values
+            var cats = GetStaticDataService().GetTicketCategory();
+            cats.Add("", "");
+            CategoryCombo.DataSource =cats.Keys.Select(a => new DropdownValus { DropdownValue = a, DropdownText = cats[a] }).ToList();
+            CategoryCombo.Text = "";
+        }
+
+        private void TicketListGridView_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SearchTickets()
+        {
+            string categoryComboValue = null;
+            if (CategoryCombo.SelectedValue != null && !string.IsNullOrWhiteSpace(CategoryCombo.SelectedValue.ToString()))
+            {
+                categoryComboValue = CategoryCombo.SelectedValue.ToString();
+            }
+            var searchedResult = GetTicketManagerService().SeachTicketsWithWildCards(new TicketSearchParams
+            {
+                TicketNumber = TicketNumberTextBox.Text,
+                Category = categoryComboValue,
+                AgentCode = SoldByTextBox.Text,
+                SoldTo = SoldToTextBox.Text,
+                PagingStartIndex = 1,
+                RecordsPerPage = 100
+            });
+            TicketListGridView.DataSource = searchedResult.Results;
+        }
+
+        private void ob_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+            SearchTickets();
+        }
+
+
+        private void TicketListGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var row = TicketListGridView.CurrentRow;
+            if (row != null)
+            {
+                var id = (int)(row.Cells[0].Value);
+                var ticketDetailsForm = new TicketDetails(id);
+                ticketDetailsForm.FormClosed += new FormClosedEventHandler(ob_FormClosed);
+                ticketDetailsForm.Show(this);
+
+            }
+        }
+
+        private void ScannerTabPage_Click(object sender, EventArgs e)
+        {
         }
     }
 }

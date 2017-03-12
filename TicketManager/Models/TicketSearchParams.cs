@@ -13,6 +13,7 @@ namespace Models
         public string AgentCode { get; set; }
         public string TicketStatusCode { get; set; }
         public string Zone { get; set; }
+        public string SoldTo { get; set; }
         public string Category { get; set; }
         public int? RcordCount { get; set; }
         public int? RecordsPerPage { get; set; }

@@ -10,6 +10,6 @@ namespace Models
     public class SearchResultsWrapper<T>
     {
         public IEnumerable<T> Results { get; set;}
-        public int RecordCiount { get; set; }
+        public int RecordCount { get; set; }
     }
 }

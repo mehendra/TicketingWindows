@@ -27,7 +27,7 @@ namespace Business
                 if (ticketScanned.ArrivedAt != null)
                 {
                     ticketScannedOutcome.StatusOfScan = TicketScannedStatus.TicketAlreadyScanned;
-                    ticketScannedOutcome.TicketScannedMessage = string.Format("Ticket was scanned at {0} using machine {1}", ticketScanned.ArrivedAt, ticketScanned.ArrivalConfirmedBy);
+                    ticketScannedOutcome.TicketScannedMessage = string.Format("Ticket was scanned at {0} and was sold by {1} to {2}", ticketScanned.ArrivedAt, ticketScanned.Agent.AgentName, ticketScanned.SoldTo);
 
                 }
                 else
@@ -36,7 +36,7 @@ namespace Business
                     ticketScanned.ArrivedAt = DateTime.Now;
                     db.SaveChanges();
                     ticketScannedOutcome.StatusOfScan = TicketScannedStatus.Ok;
-                    ticketScannedOutcome.ZoneBTicket = ticketScanned.Zone == Constants.ZonedCategories.ZoneB;
+                    ticketScannedOutcome.ZoneBTicket = ticketScanned.Zone == Constants.ZonedCategoryText.ZoneB;
                     ticketScannedOutcome.TicketNotPaid = ticketScanned.TicketStatusCode != Constants.TicketStatus.Paid && ticketScanned.TicketStatusCode != Constants.TicketStatus.PaidNoCharge;                    
                 }
             }

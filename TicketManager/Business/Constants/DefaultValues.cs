@@ -17,4 +17,9 @@ namespace Business.Constants
         public const string ZoneA = "ZOA";
         public const string ZoneB = "ZOB";
     }
+    public struct ZonedCategoryText
+    {
+        public const string ZoneA = "ZoneA";
+        public const string ZoneB = "ZoneB";
+    }
 }

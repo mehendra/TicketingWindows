@@ -35,7 +35,19 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TicketNumberTextBox = new System.Windows.Forms.TextBox();
+            this.AgentTextBox = new System.Windows.Forms.TextBox();
+            this.TicketCategoryTextBox = new System.Windows.Forms.TextBox();
+            this.TicketStatusTextBox = new System.Windows.Forms.TextBox();
+            this.ZoneTextBox = new System.Windows.Forms.TextBox();
+            this.SoldToTextBox = new System.Windows.Forms.TextBox();
+            this.NotesTextBox = new System.Windows.Forms.TextBox();
+            this.MarkedPaidButton = new System.Windows.Forms.Button();
+            this.IncompletePaymentButton = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.ScannedTextBox = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ScannedByTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -96,25 +108,140 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 185);
+            this.label7.Location = new System.Drawing.Point(13, 193);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(35, 13);
             this.label7.TabIndex = 6;
             this.label7.Text = "Notes";
             // 
-            // textBox1
+            // TicketNumberTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(97, 13);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 7;
+            this.TicketNumberTextBox.Location = new System.Drawing.Point(97, 13);
+            this.TicketNumberTextBox.Name = "TicketNumberTextBox";
+            this.TicketNumberTextBox.ReadOnly = true;
+            this.TicketNumberTextBox.Size = new System.Drawing.Size(171, 20);
+            this.TicketNumberTextBox.TabIndex = 7;
+            // 
+            // AgentTextBox
+            // 
+            this.AgentTextBox.Location = new System.Drawing.Point(97, 39);
+            this.AgentTextBox.Name = "AgentTextBox";
+            this.AgentTextBox.ReadOnly = true;
+            this.AgentTextBox.Size = new System.Drawing.Size(254, 20);
+            this.AgentTextBox.TabIndex = 8;
+            // 
+            // TicketCategoryTextBox
+            // 
+            this.TicketCategoryTextBox.Location = new System.Drawing.Point(97, 65);
+            this.TicketCategoryTextBox.Name = "TicketCategoryTextBox";
+            this.TicketCategoryTextBox.ReadOnly = true;
+            this.TicketCategoryTextBox.Size = new System.Drawing.Size(254, 20);
+            this.TicketCategoryTextBox.TabIndex = 9;
+            // 
+            // TicketStatusTextBox
+            // 
+            this.TicketStatusTextBox.Location = new System.Drawing.Point(97, 99);
+            this.TicketStatusTextBox.Name = "TicketStatusTextBox";
+            this.TicketStatusTextBox.ReadOnly = true;
+            this.TicketStatusTextBox.Size = new System.Drawing.Size(254, 20);
+            this.TicketStatusTextBox.TabIndex = 10;
+            // 
+            // ZoneTextBox
+            // 
+            this.ZoneTextBox.Location = new System.Drawing.Point(97, 129);
+            this.ZoneTextBox.Name = "ZoneTextBox";
+            this.ZoneTextBox.ReadOnly = true;
+            this.ZoneTextBox.Size = new System.Drawing.Size(254, 20);
+            this.ZoneTextBox.TabIndex = 11;
+            // 
+            // SoldToTextBox
+            // 
+            this.SoldToTextBox.Location = new System.Drawing.Point(97, 155);
+            this.SoldToTextBox.Name = "SoldToTextBox";
+            this.SoldToTextBox.ReadOnly = true;
+            this.SoldToTextBox.Size = new System.Drawing.Size(254, 20);
+            this.SoldToTextBox.TabIndex = 12;
+            // 
+            // NotesTextBox
+            // 
+            this.NotesTextBox.Location = new System.Drawing.Point(97, 186);
+            this.NotesTextBox.Multiline = true;
+            this.NotesTextBox.Name = "NotesTextBox";
+            this.NotesTextBox.Size = new System.Drawing.Size(254, 91);
+            this.NotesTextBox.TabIndex = 13;
+            // 
+            // MarkedPaidButton
+            // 
+            this.MarkedPaidButton.Location = new System.Drawing.Point(357, 9);
+            this.MarkedPaidButton.Name = "MarkedPaidButton";
+            this.MarkedPaidButton.Size = new System.Drawing.Size(130, 41);
+            this.MarkedPaidButton.TabIndex = 14;
+            this.MarkedPaidButton.Text = "Marked As Paid";
+            this.MarkedPaidButton.UseVisualStyleBackColor = true;
+            this.MarkedPaidButton.Click += new System.EventHandler(this.MarkedPaidButton_Click);
+            // 
+            // IncompletePaymentButton
+            // 
+            this.IncompletePaymentButton.Location = new System.Drawing.Point(357, 56);
+            this.IncompletePaymentButton.Name = "IncompletePaymentButton";
+            this.IncompletePaymentButton.Size = new System.Drawing.Size(130, 41);
+            this.IncompletePaymentButton.TabIndex = 15;
+            this.IncompletePaymentButton.Text = "Incomplete Payment";
+            this.IncompletePaymentButton.UseVisualStyleBackColor = true;
+            this.IncompletePaymentButton.Click += new System.EventHandler(this.IncompletePaymentButton_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(357, 106);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(63, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Scanned At";
+            // 
+            // ScannedTextBox
+            // 
+            this.ScannedTextBox.Location = new System.Drawing.Point(360, 122);
+            this.ScannedTextBox.Name = "ScannedTextBox";
+            this.ScannedTextBox.ReadOnly = true;
+            this.ScannedTextBox.Size = new System.Drawing.Size(216, 20);
+            this.ScannedTextBox.TabIndex = 17;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(360, 161);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "Scanned By";
+            // 
+            // ScannedByTextBox
+            // 
+            this.ScannedByTextBox.Location = new System.Drawing.Point(363, 178);
+            this.ScannedByTextBox.Name = "ScannedByTextBox";
+            this.ScannedByTextBox.ReadOnly = true;
+            this.ScannedByTextBox.Size = new System.Drawing.Size(213, 20);
+            this.ScannedByTextBox.TabIndex = 19;
             // 
             // TicketDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 343);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(588, 289);
+            this.Controls.Add(this.ScannedByTextBox);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.ScannedTextBox);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.IncompletePaymentButton);
+            this.Controls.Add(this.MarkedPaidButton);
+            this.Controls.Add(this.NotesTextBox);
+            this.Controls.Add(this.SoldToTextBox);
+            this.Controls.Add(this.ZoneTextBox);
+            this.Controls.Add(this.TicketStatusTextBox);
+            this.Controls.Add(this.TicketCategoryTextBox);
+            this.Controls.Add(this.AgentTextBox);
+            this.Controls.Add(this.TicketNumberTextBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -123,7 +250,10 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "TicketDetails";
-            this.Text = "TicketDetails";
+            this.Text = "BNS2016KID17005";
+            this.Deactivate += new System.EventHandler(this.TicketDetails_Deactivate);
+            this.Load += new System.EventHandler(this.TicketDetails_Load);
+            this.Leave += new System.EventHandler(this.TicketDetails_Leave);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,6 +268,18 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TicketNumberTextBox;
+        private System.Windows.Forms.TextBox AgentTextBox;
+        private System.Windows.Forms.TextBox TicketCategoryTextBox;
+        private System.Windows.Forms.TextBox TicketStatusTextBox;
+        private System.Windows.Forms.TextBox ZoneTextBox;
+        private System.Windows.Forms.TextBox SoldToTextBox;
+        private System.Windows.Forms.TextBox NotesTextBox;
+        private System.Windows.Forms.Button MarkedPaidButton;
+        private System.Windows.Forms.Button IncompletePaymentButton;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox ScannedTextBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox ScannedByTextBox;
     }
 }

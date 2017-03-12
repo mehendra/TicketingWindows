@@ -29,6 +29,30 @@ namespace Business
             db.Configuration.ProxyCreationEnabled = false;
         }
 
+
+        public BusinessHandlerResponse<TicketsIssued> UpdateTicketStatusAndNotes(int ticketId, string StatusCode, string Notes)
+        {
+            try
+            {
+
+                db.UpdateTicketNotesAndPaymentState(ticketId, StatusCode, Notes);
+
+                return new BusinessHandlerResponse<TicketsIssued>()
+                {
+                    IsASuccess = true
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.logMessage(ex.Message, LogLevel.error);
+                return new BusinessHandlerResponse<TicketsIssued>()
+                {
+                    IsASuccess = false,
+                    Errors = new List<string> { "Failed due to an unknown error please check the logs" }
+                };
+            }
+        }
+
         public BusinessHandlerResponse<TicketsIssued> UpdateTicket(TicketsIssued ticket)
         {
             try
@@ -224,6 +248,13 @@ namespace Business
             }
         }
 
+        public SearchResultsWrapper<SeachTicketsWithWildCards_Result> SeachTicketsWithWildCards(TicketSearchParams parameters)
+        {
+            ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
+            var searchResults = db.SeachTicketsWithWildCards(parameters.TicketNumber, parameters.Category,parameters.AgentCode,parameters.SoldTo, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
+            return new SearchResultsWrapper<SeachTicketsWithWildCards_Result> { RecordCount = (int)recordCount.Value, Results = searchResults };
+        }
+
         public SearchResultsWrapper<SeachTickets_Result> SeachTickets(TicketSearchParams parameters)
         {
             var ticketNumberFormatted = parameters.TicketNumber;
@@ -238,7 +269,7 @@ namespace Business
             {
                 searchResults[i].SearchCategoryDescription = allCategories.First(a => a.Key == searchResults[i].Category).Value;
             }
-            return new SearchResultsWrapper<SeachTickets_Result> { RecordCiount = (int)recordCount.Value, Results = searchResults };
+            return new SearchResultsWrapper<SeachTickets_Result> { RecordCount = (int)recordCount.Value, Results = searchResults };
         }
 
         public bool DeleteTicket(int ticketId) {

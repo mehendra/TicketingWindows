@@ -91,6 +91,21 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Parameter Name="PagingStartIndex" Type="int" Mode="In" />
           <Parameter Name="TotalRecords" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="SeachTicketsWithWildCards" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TicketNumber" Type="varchar" Mode="In" />
+          <Parameter Name="Category" Type="varchar" Mode="In" />
+          <Parameter Name="SoldBy" Type="varchar" Mode="In" />
+          <Parameter Name="SoldTo" Type="varchar" Mode="In" />
+          <Parameter Name="RcordCount" Type="int" Mode="In" />
+          <Parameter Name="RecordsPerPage" Type="int" Mode="In" />
+          <Parameter Name="PagingStartIndex" Type="int" Mode="In" />
+          <Parameter Name="TotalRecords" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="UpdateTicketNotesAndPaymentState" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TicketId" Type="int" Mode="In" />
+          <Parameter Name="TicketStatusCode" Type="varchar" Mode="In" />
+          <Parameter Name="Notes" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="TicketingModelStoreContainer">
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketsIssued" EntityType="Self.TicketsIssued" Schema="dbo" store:Type="Tables" />
@@ -150,6 +165,21 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <FunctionImport Name="ReportTicketSummary" ReturnType="Collection(TicketingModel.ReportTicketSummary_Result)" />
           <FunctionImport Name="ReportTicketAllUnpaid" ReturnType="Collection(TicketingModel.ReportTicketAllUnpaid_Result)" />
           <EntitySet Name="TicketSiteUsers" EntityType="TicketingModel.TicketSiteUser" />
+          <FunctionImport Name="SeachTicketsWithWildCards" ReturnType="Collection(TicketingModel.SeachTicketsWithWildCards_Result)">
+            <Parameter Name="TicketNumber" Mode="In" Type="String" />
+            <Parameter Name="Category" Mode="In" Type="String" />
+            <Parameter Name="SoldBy" Mode="In" Type="String" />
+            <Parameter Name="SoldTo" Mode="In" Type="String" />
+            <Parameter Name="RcordCount" Mode="In" Type="Int32" />
+            <Parameter Name="RecordsPerPage" Mode="In" Type="Int32" />
+            <Parameter Name="PagingStartIndex" Mode="In" Type="Int32" />
+            <Parameter Name="TotalRecords" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateTicketNotesAndPaymentState">
+            <Parameter Name="TicketId" Mode="In" Type="Int32" />
+            <Parameter Name="TicketStatusCode" Mode="In" Type="String" />
+            <Parameter Name="Notes" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SeachTickets_Result">
           <Property Type="Int32" Name="idx" Nullable="false" />
@@ -250,6 +280,20 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
           <Property Name="Password" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
+        <ComplexType Name="SeachTicketsWithWildCards_Result">
+          <Property Type="Int32" Name="idx" Nullable="false" />
+          <Property Type="Int32" Name="TicketId" Nullable="false" />
+          <Property Type="String" Name="TicketNumber" Nullable="false" MaxLength="17" />
+          <Property Type="String" Name="AgentCode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TicketStatusCode" Nullable="true" MaxLength="4" />
+          <Property Type="DateTime" Name="ArrivedAt" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ArrivalConfirmedBy" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="AgentName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TicketStatus" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Zone" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="SoldTo" Nullable="true" MaxLength="255" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -351,6 +395,25 @@ warning 6002: The table/view 'Ticketing.dbo.TicketCategory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SeachTicketsWithWildCards" FunctionName="TicketingModel.Store.SeachTicketsWithWildCards">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketingModel.SeachTicketsWithWildCards_Result">
+                <ScalarProperty Name="idx" ColumnName="idx" />
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+                <ScalarProperty Name="ArrivedAt" ColumnName="ArrivedAt" />
+                <ScalarProperty Name="ArrivalConfirmedBy" ColumnName="ArrivalConfirmedBy" />
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+                <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
+                <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateTicketNotesAndPaymentState" FunctionName="TicketingModel.Store.UpdateTicketNotesAndPaymentState" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DropdownValus.cs" />
     <Compile Include="EntryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +99,9 @@
       <DependentUpon>TicketDetails.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Business.SeachTickets_Result.datasource" />
+    <None Include="Properties\DataSources\Business.TicketCategory.datasource" />
+    <None Include="Properties\DataSources\DropdownValus.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

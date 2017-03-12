@@ -69,6 +69,9 @@
     <Compile Include="ReportTicketSummary_Result.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="SeachTicketsWithWildCards_Result.cs">
+      <DependentUpon>TicketSaledDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="SeachTickets_Result.cs">
       <DependentUpon>TicketSaledDb.tt</DependentUpon>
     </Compile>
