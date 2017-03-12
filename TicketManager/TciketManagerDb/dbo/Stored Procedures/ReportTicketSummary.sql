@@ -1,4 +1,4 @@
-﻿CREATE procedure [dbo].[ReportTicketSummary]
+﻿create procedure ReportTicketSummary
 as begin
 select a.AgentName, ti.AgentCode, count(*) as NumberOfTickets,tc.TicketCategory ,ti.Category, ti.TicketStatusCode, ts.TicketStatus, ti.Zone
 from 
