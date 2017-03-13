@@ -68,7 +68,7 @@ namespace TicketManager
 
         private void IncompletePaymentButton_Click(object sender, EventArgs e)
         {
-            ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.Paid, NotesTextBox.Text);
+            ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.PariallyPaid, NotesTextBox.Text);
             ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
             Close();
         }

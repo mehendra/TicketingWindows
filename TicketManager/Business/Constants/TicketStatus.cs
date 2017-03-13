@@ -14,6 +14,7 @@ namespace Business.Constants
         public const string SoldCollectMoney ="SCOL";
         public const string Paid = "SPAD";
         public const string PaidNoCharge = "SUNP";
+        public const string PariallyPaid = "PARP";
     }
 
 

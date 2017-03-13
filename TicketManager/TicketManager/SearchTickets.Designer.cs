@@ -78,7 +78,7 @@
             this.AdavancedTabSearch.Margin = new System.Windows.Forms.Padding(2);
             this.AdavancedTabSearch.Name = "AdavancedTabSearch";
             this.AdavancedTabSearch.Padding = new System.Windows.Forms.Padding(2);
-            this.AdavancedTabSearch.Size = new System.Drawing.Size(758, 384);
+            this.AdavancedTabSearch.Size = new System.Drawing.Size(820, 384);
             this.AdavancedTabSearch.TabIndex = 1;
             this.AdavancedTabSearch.Text = "Advanced";
             this.AdavancedTabSearch.UseVisualStyleBackColor = true;
@@ -160,7 +160,7 @@
             this.TicketListGridView.DataSource = this.seachTicketsResultBindingSource;
             this.TicketListGridView.Location = new System.Drawing.Point(5, 111);
             this.TicketListGridView.Name = "TicketListGridView";
-            this.TicketListGridView.Size = new System.Drawing.Size(748, 268);
+            this.TicketListGridView.Size = new System.Drawing.Size(810, 268);
             this.TicketListGridView.TabIndex = 3;
             this.TicketListGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TicketListGridView_CellContentClick);
             // 
@@ -178,13 +178,15 @@
             this.ticketNumberDataGridViewTextBoxColumn.HeaderText = "Ticket Number";
             this.ticketNumberDataGridViewTextBoxColumn.Name = "ticketNumberDataGridViewTextBoxColumn";
             this.ticketNumberDataGridViewTextBoxColumn.ReadOnly = true;
+            this.ticketNumberDataGridViewTextBoxColumn.Width = 150;
             // 
             // searchCategoryDescriptionDataGridViewTextBoxColumn
             // 
-            this.searchCategoryDescriptionDataGridViewTextBoxColumn.DataPropertyName = "SearchCategoryDescription";
+            this.searchCategoryDescriptionDataGridViewTextBoxColumn.DataPropertyName = "Category";
             this.searchCategoryDescriptionDataGridViewTextBoxColumn.HeaderText = "Categoty";
             this.searchCategoryDescriptionDataGridViewTextBoxColumn.Name = "searchCategoryDescriptionDataGridViewTextBoxColumn";
             this.searchCategoryDescriptionDataGridViewTextBoxColumn.ReadOnly = true;
+            this.searchCategoryDescriptionDataGridViewTextBoxColumn.Width = 150;
             // 
             // soldToDataGridViewTextBoxColumn
             // 
@@ -192,6 +194,7 @@
             this.soldToDataGridViewTextBoxColumn.HeaderText = "SoldTo";
             this.soldToDataGridViewTextBoxColumn.Name = "soldToDataGridViewTextBoxColumn";
             this.soldToDataGridViewTextBoxColumn.ReadOnly = true;
+            this.soldToDataGridViewTextBoxColumn.Width = 180;
             // 
             // arrivedAtDataGridViewTextBoxColumn
             // 
@@ -203,9 +206,10 @@
             // agentNameDataGridViewTextBoxColumn
             // 
             this.agentNameDataGridViewTextBoxColumn.DataPropertyName = "AgentName";
-            this.agentNameDataGridViewTextBoxColumn.HeaderText = "Agent Name";
+            this.agentNameDataGridViewTextBoxColumn.HeaderText = "Agent";
             this.agentNameDataGridViewTextBoxColumn.Name = "agentNameDataGridViewTextBoxColumn";
             this.agentNameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.agentNameDataGridViewTextBoxColumn.Width = 70;
             // 
             // zoneDataGridViewTextBoxColumn
             // 
@@ -213,6 +217,7 @@
             this.zoneDataGridViewTextBoxColumn.HeaderText = "Zone";
             this.zoneDataGridViewTextBoxColumn.Name = "zoneDataGridViewTextBoxColumn";
             this.zoneDataGridViewTextBoxColumn.ReadOnly = true;
+            this.zoneDataGridViewTextBoxColumn.Width = 70;
             // 
             // seachTicketsResultBindingSource
             // 
@@ -246,7 +251,7 @@
             this.ScannerTabPage.Margin = new System.Windows.Forms.Padding(2);
             this.ScannerTabPage.Name = "ScannerTabPage";
             this.ScannerTabPage.Padding = new System.Windows.Forms.Padding(2);
-            this.ScannerTabPage.Size = new System.Drawing.Size(758, 384);
+            this.ScannerTabPage.Size = new System.Drawing.Size(780, 384);
             this.ScannerTabPage.TabIndex = 0;
             this.ScannerTabPage.Text = "Simple";
             this.ScannerTabPage.UseVisualStyleBackColor = true;
@@ -269,7 +274,7 @@
             this.DataSearchTab.Margin = new System.Windows.Forms.Padding(2);
             this.DataSearchTab.Name = "DataSearchTab";
             this.DataSearchTab.SelectedIndex = 0;
-            this.DataSearchTab.Size = new System.Drawing.Size(766, 410);
+            this.DataSearchTab.Size = new System.Drawing.Size(828, 410);
             this.DataSearchTab.TabIndex = 0;
             this.DataSearchTab.Selected += new System.Windows.Forms.TabControlEventHandler(this.DataSearchTab_Selected);
             // 
@@ -281,7 +286,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(786, 431);
+            this.ClientSize = new System.Drawing.Size(848, 431);
             this.Controls.Add(this.DataSearchTab);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SearchTicketsForm";
@@ -314,6 +319,10 @@
         private System.Windows.Forms.TextBox SoldToTextBox;
         private System.Windows.Forms.TextBox TicketNumberTextBox;
         private System.Windows.Forms.BindingSource seachTicketsResultBindingSource;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox CategoryCombo;
+        private System.Windows.Forms.BindingSource ticketCategoryBindingSource;
+        private System.Windows.Forms.BindingSource dropdownValusBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn ticketIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ticketNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn searchCategoryDescriptionDataGridViewTextBoxColumn;
@@ -321,9 +330,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn arrivedAtDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn agentNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn zoneDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox CategoryCombo;
-        private System.Windows.Forms.BindingSource ticketCategoryBindingSource;
-        private System.Windows.Forms.BindingSource dropdownValusBindingSource;
     }
 }
