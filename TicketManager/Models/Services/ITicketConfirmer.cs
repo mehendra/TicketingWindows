@@ -8,6 +8,6 @@ namespace Models.Services
 {
     public interface ITicketConfirmer
     {
-        ScannedStatus ConfirmArrival(ScannedTicket scannedTicket);
+        ScannedStatus ConfirmArrival(ScannedTicket scannedTicket,  bool forceUpdate = false);
     }
 }

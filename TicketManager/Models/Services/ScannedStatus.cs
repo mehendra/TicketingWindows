@@ -21,5 +21,7 @@ namespace Models.Services
         public bool TicketNotPaid { get; set; }
 
         public bool ZoneBTicket { get; set; }
+
+        public int TicketId { get; set; }
     }
 }

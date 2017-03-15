@@ -60,8 +60,6 @@ namespace TicketManager
             currentSystemInformation = new CurrentSysInfo();
             logger.logMessage("Ready for action", LogLevel.debug);
             SimpleTicketNumberTextBox.KeyDown += new KeyEventHandler(tb_KeyDown);
-
-
         }
 
         private void tb_KeyDown(object sender, KeyEventArgs e)
@@ -86,11 +84,13 @@ namespace TicketManager
 
                     if (ticketMarked.ZoneBTicket)
                     {
-                        MessageBox.Show("This is a ZoneB Ticket");
+                    MessageBox.Show("This is a ZoneB Ticket");
                     }
                     if (ticketMarked.TicketNotPaid)
                     {
-                        userMessage.AppendLine("This ticket is not paid for, Please collect money");
+                        var ticketDetailsForm = new TicketDetails(ticketMarked.TicketId, "This ticket is not paid for, Please collect money");
+                        ticketDetailsForm.FormClosed += new FormClosedEventHandler(ob_FormClosed);
+                        ticketDetailsForm.Show(this);
                     }
                     SimpleTicketNumberTextBox.Clear();
 
@@ -166,7 +166,7 @@ namespace TicketManager
         private void ob_FormClosed(object sender, FormClosedEventArgs e)
         {
 
-            SearchTickets();
+            //SearchTickets();
         }
 
 
@@ -183,8 +183,15 @@ namespace TicketManager
             }
         }
 
+
+
         private void ScannerTabPage_Click(object sender, EventArgs e)
         {
+        }
+
+        private void UIUpdateTimer_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

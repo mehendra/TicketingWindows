@@ -21,7 +21,7 @@ namespace TicketManager
         private Business.TicketConfirmerService ticketConfirmationService;
         ILogger logger = new Logger();
 
-        public TicketDetails(int? ticketNumber = null)
+        public TicketDetails(int? ticketNumber = null, string message = null)
         {
             ticketManagerService = new Business.TicketManagerService();
             ticketConfirmationService = new Business.TicketConfirmerService(logger);
@@ -31,6 +31,10 @@ namespace TicketManager
                 currentTicket = ticketManagerService.GetTicket(this.ticketNumber.Value).ItemReturned;
             }
             InitializeComponent();
+            if (!string.IsNullOrEmpty(message))
+            {
+                MessageLabel.Text = message;
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -56,7 +60,7 @@ namespace TicketManager
             try
             {
                 ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.Paid, NotesTextBox.Text);
-                ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
+                ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()), true);
                 Close();
             }
             catch (Exception ex)
@@ -69,7 +73,7 @@ namespace TicketManager
         private void IncompletePaymentButton_Click(object sender, EventArgs e)
         {
             ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.PariallyPaid, NotesTextBox.Text);
-            ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
+            ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()),true);
             Close();
         }
 
@@ -85,7 +89,8 @@ namespace TicketManager
 
         private void MarkAsArrivedButton_Click(object sender, EventArgs e)
         {
-            ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()));
+            ticketManagerService.UpdateTicketStatusAndNotes(this.ticketNumber.Value, Business.Constants.TicketStatus.Paid, NotesTextBox.Text);
+            ticketConfirmationService.ConfirmArrival(new Models.ScannedTicket(TicketNumberTextBox.Text, new CurrentSysInfo()), true);
             Close();
         }
     }

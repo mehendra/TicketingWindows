@@ -13,7 +13,7 @@ namespace Business
         {
             this.logger = logger;
         }
-        public ScannedStatus ConfirmArrival(ScannedTicket scannedTicket)
+        public ScannedStatus ConfirmArrival(ScannedTicket scannedTicket, bool forceUpdate = false)
         {
             logger.logMessage("Request to mak ticket " + scannedTicket.TicketNumber, LogLevel.debug);
             var ticketScanned = db.TicketsIssueds.FirstOrDefault(a => a.TicketNumber == scannedTicket.TicketNumber);
@@ -24,6 +24,7 @@ namespace Business
             }
             else
             {
+                ticketScannedOutcome.TicketId = ticketScanned.TicketId;
                 if (ticketScanned.ArrivedAt != null)
                 {
                     ticketScannedOutcome.StatusOfScan = TicketScannedStatus.TicketAlreadyScanned;
@@ -34,10 +35,20 @@ namespace Business
                 {
                     ticketScanned.ArrivalConfirmedBy = scannedTicket.ScannedBy;
                     ticketScanned.ArrivedAt = DateTime.Now;
-                    db.SaveChanges();
                     ticketScannedOutcome.StatusOfScan = TicketScannedStatus.Ok;
                     ticketScannedOutcome.ZoneBTicket = ticketScanned.Zone == Constants.ZonedCategoryText.ZoneB;
-                    ticketScannedOutcome.TicketNotPaid = ticketScanned.TicketStatusCode != Constants.TicketStatus.Paid && ticketScanned.TicketStatusCode != Constants.TicketStatus.PaidNoCharge;                    
+                    ticketScannedOutcome.TicketNotPaid = ticketScanned.TicketStatusCode != Constants.TicketStatus.Paid && ticketScanned.TicketStatusCode != Constants.TicketStatus.PaidNoCharge;
+                    if (ticketScannedOutcome.TicketNotPaid)
+                    {
+                        if (forceUpdate)
+                        {
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        db.SaveChanges();
+                    }                    
                 }
             }
             return ticketScannedOutcome;

@@ -264,7 +264,7 @@ namespace Business
                 ticketNumberFormatted = Constants.Defaults.TicketNumberPrefix + ticketNumberFormatted;
             }
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
-            var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Zone,parameters.Category, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
+            var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Zone,parameters.Category, parameters.SoldTo,parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
             for (int i = 0; i < searchResults.Count; i++)
             {
                 searchResults[i].SearchCategoryDescription = allCategories.First(a => a.Key == searchResults[i].Category).Value;

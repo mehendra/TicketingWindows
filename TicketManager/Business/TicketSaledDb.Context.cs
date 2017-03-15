@@ -33,7 +33,7 @@ namespace Business
         public virtual DbSet<TicketsIssued> TicketsIssueds { get; set; }
         public virtual DbSet<TicketSiteUser> TicketSiteUsers { get; set; }
     
-        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string zone, string category, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
+        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string zone, string category, string soldTo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
         {
             var ticketNumberParameter = ticketNumber != null ?
                 new ObjectParameter("TicketNumber", ticketNumber) :
@@ -55,6 +55,10 @@ namespace Business
                 new ObjectParameter("Category", category) :
                 new ObjectParameter("Category", typeof(string));
     
+            var soldToParameter = soldTo != null ?
+                new ObjectParameter("SoldTo", soldTo) :
+                new ObjectParameter("SoldTo", typeof(string));
+    
             var rcordCountParameter = rcordCount.HasValue ?
                 new ObjectParameter("RcordCount", rcordCount) :
                 new ObjectParameter("RcordCount", typeof(int));
@@ -67,7 +71,7 @@ namespace Business
                 new ObjectParameter("PagingStartIndex", pagingStartIndex) :
                 new ObjectParameter("PagingStartIndex", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, zoneParameter, categoryParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, zoneParameter, categoryParameter, soldToParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
         }
     
         public virtual ObjectResult<ReportTicketSummary_Result> ReportTicketSummary()

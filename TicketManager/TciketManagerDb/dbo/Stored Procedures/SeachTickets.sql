@@ -4,6 +4,7 @@
 	@TicketStatusCode varchar(4) = null,
 	@Zone varchar(10) = null,
 	@Category varchar(50) = null,
+	@SoldTo varchar(100) = null,
 	@RcordCount int = 0,
 	@RecordsPerPage int = 0,
 	@PagingStartIndex int = 1,
@@ -46,7 +47,7 @@ and t.TicketNumber like case when @TicketNumber is null then t.TicketNumber else
 and isnull(t.TicketStatusCode,'') = case when @TicketStatusCode is null then isnull(t.TicketStatusCode,'') else @TicketStatusCode end
 and isnull(t.Category,'') = case when @Category is null then isnull(t.Category,'') else @Category end
 and isnull(t.Zone,'') = case when @Zone is null then isnull(t.Zone,'') else @Zone end
-
+and t.SoldTo like case when @SoldTo is null then t.SoldTo else '%' + @SoldTo + '%' end
 
 SELECT @RcordCount = count(*) from @allRecords
 
