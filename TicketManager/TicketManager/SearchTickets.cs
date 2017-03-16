@@ -82,9 +82,9 @@ namespace TicketManager
                 {
                     Console.WriteLine(ticketNumber);
 
-                    if (ticketMarked.ZoneBTicket)
-                    {
-                    MessageBox.Show("This is a ZoneB Ticket");
+                    if (ticketMarked.Zone == Business.Constants.ZonedCategories.ZoneBLeft || ticketMarked.Zone == Business.Constants.ZonedCategories.ZoneBRight)
+                {
+                    MessageBox.Show(string.Format(@"This is a {0} Ticket", ticketMarked.Zone));
                     }
                     if (ticketMarked.TicketNotPaid)
                     {

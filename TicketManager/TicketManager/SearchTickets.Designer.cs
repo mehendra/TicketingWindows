@@ -53,19 +53,8 @@
             this.SimpleTicketNumberTextBox = new System.Windows.Forms.TextBox();
             this.DataSearchTab = new System.Windows.Forms.TabControl();
             this.ticketCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.KIDSArrivedTextBox = new System.Windows.Forms.Label();
-            this.GeneralArrivedTextBox = new System.Windows.Forms.Label();
-            this.ZONEBArrivedTextBox = new System.Windows.Forms.Label();
-            this.ZONEAArrivedTextBox = new System.Windows.Forms.Label();
-            this.ZONEAPendingTextBox = new System.Windows.Forms.Label();
-            this.ZONEBPendingTextBox = new System.Windows.Forms.Label();
-            this.GeneralPendingTextBox = new System.Windows.Forms.Label();
-            this.KIDSPendingTextBox = new System.Windows.Forms.Label();
             this.UIUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.AdavancedTabSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dropdownValusBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TicketListGridView)).BeginInit();
@@ -73,6 +62,7 @@
             this.ScannerTabPage.SuspendLayout();
             this.DataSearchTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ticketCategoryBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // AdavancedTabSearch
@@ -172,7 +162,9 @@
             this.zoneDataGridViewTextBoxColumn});
             this.TicketListGridView.DataSource = this.seachTicketsResultBindingSource;
             this.TicketListGridView.Location = new System.Drawing.Point(5, 111);
+            this.TicketListGridView.MultiSelect = false;
             this.TicketListGridView.Name = "TicketListGridView";
+            this.TicketListGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TicketListGridView.Size = new System.Drawing.Size(810, 268);
             this.TicketListGridView.TabIndex = 3;
             this.TicketListGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TicketListGridView_CellContentClick);
@@ -259,18 +251,7 @@
             // 
             // ScannerTabPage
             // 
-            this.ScannerTabPage.Controls.Add(this.ZONEAPendingTextBox);
-            this.ScannerTabPage.Controls.Add(this.ZONEBPendingTextBox);
-            this.ScannerTabPage.Controls.Add(this.GeneralPendingTextBox);
-            this.ScannerTabPage.Controls.Add(this.KIDSPendingTextBox);
-            this.ScannerTabPage.Controls.Add(this.ZONEAArrivedTextBox);
-            this.ScannerTabPage.Controls.Add(this.ZONEBArrivedTextBox);
-            this.ScannerTabPage.Controls.Add(this.GeneralArrivedTextBox);
-            this.ScannerTabPage.Controls.Add(this.KIDSArrivedTextBox);
-            this.ScannerTabPage.Controls.Add(this.label8);
-            this.ScannerTabPage.Controls.Add(this.label7);
-            this.ScannerTabPage.Controls.Add(this.label6);
-            this.ScannerTabPage.Controls.Add(this.label5);
+            this.ScannerTabPage.Controls.Add(this.dataGridView1);
             this.ScannerTabPage.Controls.Add(this.SimpleTicketNumberTextBox);
             this.ScannerTabPage.Location = new System.Drawing.Point(4, 22);
             this.ScannerTabPage.Margin = new System.Windows.Forms.Padding(2);
@@ -307,118 +288,21 @@
             // 
             this.ticketCategoryBindingSource.DataSource = typeof(Business.TicketCategory);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(75, 164);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 13);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "ZONE A Tickets:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(75, 200);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(88, 13);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "ZONE B Tickets:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(75, 233);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 13);
-            this.label7.TabIndex = 3;
-            this.label7.Text = "KIDS Tickets:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(75, 266);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(99, 13);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "GENERAL Tickets:";
-            // 
-            // KIDSArrivedTextBox
-            // 
-            this.KIDSArrivedTextBox.AutoSize = true;
-            this.KIDSArrivedTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KIDSArrivedTextBox.Location = new System.Drawing.Point(180, 225);
-            this.KIDSArrivedTextBox.Name = "KIDSArrivedTextBox";
-            this.KIDSArrivedTextBox.Size = new System.Drawing.Size(0, 19);
-            this.KIDSArrivedTextBox.TabIndex = 5;
-            // 
-            // GeneralArrivedTextBox
-            // 
-            this.GeneralArrivedTextBox.AutoSize = true;
-            this.GeneralArrivedTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GeneralArrivedTextBox.Location = new System.Drawing.Point(180, 260);
-            this.GeneralArrivedTextBox.Name = "GeneralArrivedTextBox";
-            this.GeneralArrivedTextBox.Size = new System.Drawing.Size(0, 19);
-            this.GeneralArrivedTextBox.TabIndex = 6;
-            // 
-            // ZONEBArrivedTextBox
-            // 
-            this.ZONEBArrivedTextBox.AutoSize = true;
-            this.ZONEBArrivedTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ZONEBArrivedTextBox.Location = new System.Drawing.Point(180, 192);
-            this.ZONEBArrivedTextBox.Name = "ZONEBArrivedTextBox";
-            this.ZONEBArrivedTextBox.Size = new System.Drawing.Size(0, 19);
-            this.ZONEBArrivedTextBox.TabIndex = 7;
-            // 
-            // ZONEAArrivedTextBox
-            // 
-            this.ZONEAArrivedTextBox.AutoSize = true;
-            this.ZONEAArrivedTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ZONEAArrivedTextBox.Location = new System.Drawing.Point(180, 158);
-            this.ZONEAArrivedTextBox.Name = "ZONEAArrivedTextBox";
-            this.ZONEAArrivedTextBox.Size = new System.Drawing.Size(0, 19);
-            this.ZONEAArrivedTextBox.TabIndex = 8;
-            // 
-            // ZONEAPendingTextBox
-            // 
-            this.ZONEAPendingTextBox.AutoSize = true;
-            this.ZONEAPendingTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ZONEAPendingTextBox.Location = new System.Drawing.Point(257, 158);
-            this.ZONEAPendingTextBox.Name = "ZONEAPendingTextBox";
-            this.ZONEAPendingTextBox.Size = new System.Drawing.Size(0, 19);
-            this.ZONEAPendingTextBox.TabIndex = 12;
-            // 
-            // ZONEBPendingTextBox
-            // 
-            this.ZONEBPendingTextBox.AutoSize = true;
-            this.ZONEBPendingTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ZONEBPendingTextBox.Location = new System.Drawing.Point(257, 192);
-            this.ZONEBPendingTextBox.Name = "ZONEBPendingTextBox";
-            this.ZONEBPendingTextBox.Size = new System.Drawing.Size(0, 19);
-            this.ZONEBPendingTextBox.TabIndex = 11;
-            // 
-            // GeneralPendingTextBox
-            // 
-            this.GeneralPendingTextBox.AutoSize = true;
-            this.GeneralPendingTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GeneralPendingTextBox.Location = new System.Drawing.Point(257, 260);
-            this.GeneralPendingTextBox.Name = "GeneralPendingTextBox";
-            this.GeneralPendingTextBox.Size = new System.Drawing.Size(0, 19);
-            this.GeneralPendingTextBox.TabIndex = 10;
-            // 
-            // KIDSPendingTextBox
-            // 
-            this.KIDSPendingTextBox.AutoSize = true;
-            this.KIDSPendingTextBox.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KIDSPendingTextBox.Location = new System.Drawing.Point(257, 225);
-            this.KIDSPendingTextBox.Name = "KIDSPendingTextBox";
-            this.KIDSPendingTextBox.Size = new System.Drawing.Size(0, 19);
-            this.KIDSPendingTextBox.TabIndex = 9;
-            // 
             // UIUpdateTimer
             // 
             this.UIUpdateTimer.Interval = 10000;
             this.UIUpdateTimer.Tick += new System.EventHandler(this.UIUpdateTimer_Tick);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(5, 96);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(810, 283);
+            this.dataGridView1.TabIndex = 1;
             // 
             // SearchTicketsForm
             // 
@@ -438,6 +322,7 @@
             this.ScannerTabPage.PerformLayout();
             this.DataSearchTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ticketCategoryBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -468,18 +353,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn arrivedAtDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn agentNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn zoneDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Label ZONEAPendingTextBox;
-        private System.Windows.Forms.Label ZONEBPendingTextBox;
-        private System.Windows.Forms.Label GeneralPendingTextBox;
-        private System.Windows.Forms.Label KIDSPendingTextBox;
-        private System.Windows.Forms.Label ZONEAArrivedTextBox;
-        private System.Windows.Forms.Label ZONEBArrivedTextBox;
-        private System.Windows.Forms.Label GeneralArrivedTextBox;
-        private System.Windows.Forms.Label KIDSArrivedTextBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer UIUpdateTimer;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

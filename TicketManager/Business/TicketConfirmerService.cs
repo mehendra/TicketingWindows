@@ -36,7 +36,7 @@ namespace Business
                     ticketScanned.ArrivalConfirmedBy = scannedTicket.ScannedBy;
                     ticketScanned.ArrivedAt = DateTime.Now;
                     ticketScannedOutcome.StatusOfScan = TicketScannedStatus.Ok;
-                    ticketScannedOutcome.ZoneBTicket = ticketScanned.Zone == Constants.ZonedCategoryText.ZoneB;
+                    ticketScannedOutcome.Zone = ticketScanned.Zone;
                     ticketScannedOutcome.TicketNotPaid = ticketScanned.TicketStatusCode != Constants.TicketStatus.Paid && ticketScanned.TicketStatusCode != Constants.TicketStatus.PaidNoCharge;
                     if (ticketScannedOutcome.TicketNotPaid)
                     {

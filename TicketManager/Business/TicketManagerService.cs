@@ -184,9 +184,13 @@ namespace Business
             {
                 ticketSubInfo.Zone = "Zone1";
             }
-            else if (category == ZonedCategories.ZoneB)
+            else if (category == ZonedCategories.ZoneBLeft)
             {
-                ticketSubInfo.Zone = "ZoneB";
+                ticketSubInfo.Zone = "ZoneBLeft";
+            }
+            else if (category == ZonedCategories.ZoneBRight)
+            {
+                ticketSubInfo.Zone = "ZoneBRight";
             }
             else
             {

@@ -44,9 +44,10 @@ namespace Business
             var zones = new Dictionary<string, string>
             {
                 { "ZoneA","ZoneA"},
-                { "ZoneB","ZoneB"},
+                { "ZoneBLeft","ZoneBLeft"},
+                { "ZoneBRight","ZoneBRight"},
                 { "UnZoned","All Zones"}
-            };
+    };
             return zones;
 
         }

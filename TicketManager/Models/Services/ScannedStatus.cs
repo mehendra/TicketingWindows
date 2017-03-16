@@ -16,11 +16,12 @@ namespace Models.Services
     public class ScannedStatus
     {
         public TicketScannedStatus StatusOfScan { get; set; }
+
         public string TicketScannedMessage { get; set; }
 
         public bool TicketNotPaid { get; set; }
 
-        public bool ZoneBTicket { get; set; }
+        public string Zone { get; set; }
 
         public int TicketId { get; set; }
     }

@@ -15,11 +15,13 @@ namespace Business.Constants
     public struct ZonedCategories
     {
         public const string ZoneA = "ZOA";
-        public const string ZoneB = "ZOB";
+        public const string ZoneBLeft = "ZoneBLeft";
+        public const string ZoneBRight = "ZoneBRight";
     }
     public struct ZonedCategoryText
     {
         public const string ZoneA = "ZoneA";
-        public const string ZoneB = "ZoneB";
+        public const string ZoneBLeft = "ZoneBLeft";
+        public const string ZoneBRight = "ZoneBRight";
     }
 }
