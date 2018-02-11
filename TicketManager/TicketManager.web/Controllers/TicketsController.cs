@@ -31,6 +31,13 @@ namespace TicketManager.web.Controllers
         }
 
         [Authorize]
+        public ActionResult Unassigned()
+        {
+            var ticketsIssueds = db.TicketsIssueds.Where(a => a.AgentCode == "DOOR");
+            return View(ticketsIssueds.ToList());
+        }
+
+        [Authorize]
         public ActionResult Index()
         {
             var searchInfo = new TicketSearchInfoViewModel<Business.SeachTickets_Result>();

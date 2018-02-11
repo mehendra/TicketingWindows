@@ -36,24 +36,17 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <Property Name="Notes" Type="varchar" MaxLength="500" />
           <Property Name="SoldTo" Type="varchar" MaxLength="255" />
           <Property Name="Zone" Type="varchar" MaxLength="10" />
-          <Property Name="TicketId" Type="int" Nullable="false" />
+          <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketSiteUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TicketSiteUser">
           <Key>
             <PropertyRef Name="UserId" />
-            <PropertyRef Name="UserName" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="Role" />
           </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Role" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TicketStatus">
           <Key>
             <PropertyRef Name="TicketStatusCode" />
@@ -61,29 +54,49 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
           <Property Name="TicketStatusCode" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="TicketStatus" Type="nchar" MaxLength="50" />
         </EntityType>
+        <Association Name="fk_Agent">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
+          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="AgentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TicketStatus">
+          <End Role="TicketStatus" Type="Self.TicketStatus" Multiplicity="0..1" />
+          <End Role="TicketsIssued" Type="Self.TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatus">
+              <PropertyRef Name="TicketStatusCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="TicketStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MMunasinghe_TicketingModelStoreContainer">
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketsIssued" EntityType="Self.TicketsIssued" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketSiteUser" EntityType="Self.TicketSiteUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketStatus" EntityType="Self.TicketStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketCategory" EntityType="Self.TicketCategory" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TicketCategory].[TicketCategoryCode] AS [TicketCategoryCode], 
     [TicketCategory].[TicketCategory] AS [TicketCategory]
     FROM [dbo].[TicketCategory] AS [TicketCategory]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="TicketSiteUser" EntityType="Self.TicketSiteUser" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TicketSiteUser].[UserId] AS [UserId], 
-    [TicketSiteUser].[UserName] AS [UserName], 
-    [TicketSiteUser].[Password] AS [Password], 
-    [TicketSiteUser].[Role] AS [Role]
-    FROM [dbo].[TicketSiteUser] AS [TicketSiteUser]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="TicketStatus" EntityType="Self.TicketStatus" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TicketStatus].[TicketStatusCode] AS [TicketStatusCode], 
-    [TicketStatus].[TicketStatus] AS [TicketStatus]
-    FROM [dbo].[TicketStatus] AS [TicketStatus]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="fk_Agent" Association="Self.fk_Agent">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssued" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TicketStatus" Association="Self.fk_TicketStatus">
+            <End Role="TicketStatus" EntitySet="TicketStatus" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssued" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -92,9 +105,17 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
         <EntityContainer Name="MMunasinghe_TicketingEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Agents" EntityType="MMunasinghe_TicketingModel.Agent" />
           <EntitySet Name="TicketsIssueds" EntityType="MMunasinghe_TicketingModel.TicketsIssued" />
-          <EntitySet Name="TicketCategories" EntityType="MMunasinghe_TicketingModel.TicketCategory" />
           <EntitySet Name="TicketSiteUsers" EntityType="MMunasinghe_TicketingModel.TicketSiteUser" />
           <EntitySet Name="TicketStatus" EntityType="MMunasinghe_TicketingModel.TicketStatu" />
+          <EntitySet Name="TicketCategories" EntityType="MMunasinghe_TicketingModel.TicketCategory" />
+          <AssociationSet Name="fk_Agent" Association="MMunasinghe_TicketingModel.fk_Agent">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TicketStatus" Association="MMunasinghe_TicketingModel.fk_TicketStatus">
+            <End Role="TicketStatu" EntitySet="TicketStatus" />
+            <End Role="TicketsIssued" EntitySet="TicketsIssueds" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Agent">
           <Key>
@@ -102,6 +123,7 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
           </Key>
           <Property Name="AgentCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="AgentName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TicketsIssueds" Relationship="MMunasinghe_TicketingModel.fk_Agent" FromRole="Agent" ToRole="TicketsIssued" />
         </EntityType>
         <EntityType Name="TicketsIssued">
           <Key>
@@ -117,24 +139,15 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
           <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="SoldTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Zone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="TicketId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TicketCategory">
-          <Key>
-            <PropertyRef Name="TicketCategoryCode" />
-            <PropertyRef Name="TicketCategory1" />
-          </Key>
-          <Property Name="TicketCategoryCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="TicketCategory1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Agent" Relationship="MMunasinghe_TicketingModel.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
+          <NavigationProperty Name="TicketStatu" Relationship="MMunasinghe_TicketingModel.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatu" />
         </EntityType>
         <EntityType Name="TicketSiteUser">
           <Key>
             <PropertyRef Name="UserId" />
-            <PropertyRef Name="UserName" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="Role" />
           </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -145,8 +158,41 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
           </Key>
           <Property Name="TicketStatusCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="TicketStatus" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TicketsIssueds" Relationship="MMunasinghe_TicketingModel.fk_TicketStatus" FromRole="TicketStatu" ToRole="TicketsIssued" />
         </EntityType>
-      </Schema>
+        <EntityType Name="TicketCategory">
+          <Key>
+            <PropertyRef Name="TicketCategoryCode" />
+            <PropertyRef Name="TicketCategory1" />
+          </Key>
+          <Property Name="TicketCategoryCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="TicketCategory1" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_Agent">
+          <End Type="MMunasinghe_TicketingModel.Agent" Role="Agent" Multiplicity="1" />
+          <End Type="MMunasinghe_TicketingModel.TicketsIssued" Role="TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="AgentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TicketStatus">
+          <End Type="MMunasinghe_TicketingModel.TicketStatu" Role="TicketStatu" Multiplicity="0..1" />
+          <End Type="MMunasinghe_TicketingModel.TicketsIssued" Role="TicketsIssued" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketStatu">
+              <PropertyRef Name="TicketStatusCode" />
+            </Principal>
+            <Dependent Role="TicketsIssued">
+              <PropertyRef Name="TicketStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -177,14 +223,6 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TicketCategories">
-            <EntityTypeMapping TypeName="MMunasinghe_TicketingModel.TicketCategory">
-              <MappingFragment StoreEntitySet="TicketCategory">
-                <ScalarProperty Name="TicketCategory1" ColumnName="TicketCategory" />
-                <ScalarProperty Name="TicketCategoryCode" ColumnName="TicketCategoryCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TicketSiteUsers">
             <EntityTypeMapping TypeName="MMunasinghe_TicketingModel.TicketSiteUser">
               <MappingFragment StoreEntitySet="TicketSiteUser">
@@ -200,6 +238,14 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketStatus' does not h
               <MappingFragment StoreEntitySet="TicketStatus">
                 <ScalarProperty Name="TicketStatus" ColumnName="TicketStatus" />
                 <ScalarProperty Name="TicketStatusCode" ColumnName="TicketStatusCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketCategories">
+            <EntityTypeMapping TypeName="MMunasinghe_TicketingModel.TicketCategory">
+              <MappingFragment StoreEntitySet="TicketCategory">
+                <ScalarProperty Name="TicketCategory1" ColumnName="TicketCategory" />
+                <ScalarProperty Name="TicketCategoryCode" ColumnName="TicketCategoryCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

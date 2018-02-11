@@ -14,7 +14,16 @@ namespace ImportData
     
     public partial class Agent
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Agent()
+        {
+            this.TicketsIssueds = new HashSet<TicketsIssued>();
+        }
+    
         public string AgentCode { get; set; }
         public string AgentName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TicketsIssued> TicketsIssueds { get; set; }
     }
 }

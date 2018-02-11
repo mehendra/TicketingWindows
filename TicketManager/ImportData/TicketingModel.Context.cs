@@ -27,8 +27,8 @@ namespace ImportData
     
         public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<TicketsIssued> TicketsIssueds { get; set; }
-        public virtual DbSet<TicketCategory> TicketCategories { get; set; }
         public virtual DbSet<TicketSiteUser> TicketSiteUsers { get; set; }
         public virtual DbSet<TicketStatu> TicketStatus { get; set; }
+        public virtual DbSet<TicketCategory> TicketCategories { get; set; }
     }
 }

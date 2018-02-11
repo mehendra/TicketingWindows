@@ -14,7 +14,16 @@ namespace ImportData
     
     public partial class TicketStatu
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TicketStatu()
+        {
+            this.TicketsIssueds = new HashSet<TicketsIssued>();
+        }
+    
         public string TicketStatusCode { get; set; }
         public string TicketStatus { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TicketsIssued> TicketsIssueds { get; set; }
     }
 }

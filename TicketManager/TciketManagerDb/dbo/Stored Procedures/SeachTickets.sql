@@ -1,4 +1,4 @@
-﻿create procedure [dbo].[SeachTickets]
+﻿create  procedure [dbo].[SeachTickets]
 	@TicketNumber varchar(17) = null,
 	@AgentCode varchar(10) = null,
 	@TicketStatusCode varchar(4) = null,
@@ -39,15 +39,23 @@ insert into @AllRecords( TicketId, [TicketNumber]
       ,[ArrivalConfirmedBy]
 	  ,AgentName
 	  ,[TicketStatus], Zone,SoldTo )
-select t.TicketId, t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo  from dbo.TicketsIssued t inner join dbo.Agent a
+select t.TicketId, t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,
+t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo  
+from dbo.TicketsIssued t inner join dbo.Agent a
 on t.AgentCode = a.AgentCode 
 left join [dbo].[TicketStatus] ts on ts.TicketStatusCode = t.TicketStatusCode
+
 where t.AgentCode = case when @AgentCode is null then t.AgentCode else @AgentCode  end
+
 and t.TicketNumber like case when @TicketNumber is null then t.TicketNumber else @TicketNumber + '%' end
+
 and isnull(t.TicketStatusCode,'') = case when @TicketStatusCode is null then isnull(t.TicketStatusCode,'') else @TicketStatusCode end
+
 and isnull(t.Category,'') = case when @Category is null then isnull(t.Category,'') else @Category end
+
 and isnull(t.Zone,'') = case when @Zone is null then isnull(t.Zone,'') else @Zone end
-and t.SoldTo like case when @SoldTo is null then t.SoldTo else '%' + @SoldTo + '%' end
+
+and isnull(t.SoldTo,'') like case when @SoldTo is null then isnull(t.SoldTo,'') else '%' + @SoldTo + '%' end
 
 SELECT @RcordCount = count(*) from @allRecords
 
@@ -56,4 +64,3 @@ select @TotalRecords = @RcordCount
 select * from @AllRecords
 WHERE idx between (@RecordsPerPage * (@PagingStartIndex -1)) +1 and @RecordsPerPage * @PagingStartIndex
 end
-
