@@ -29,7 +29,8 @@ declare @AllRecords as table
 	[AgentName] [varchar](255) NULL,
 	[TicketStatus] nvarchar(50) null,
 	[Zone] varchar(10) null,
-	[SoldTo] [varchar](255) NULL
+	[SoldTo] [varchar](255) NULL, 
+	TableNumber int null
 )
 insert into @AllRecords( TicketId, [TicketNumber]
       ,[AgentCode]
@@ -38,9 +39,9 @@ insert into @AllRecords( TicketId, [TicketNumber]
       ,[ArrivedAt]
       ,[ArrivalConfirmedBy]
 	  ,AgentName
-	  ,[TicketStatus], Zone,SoldTo )
+	  ,[TicketStatus], Zone,SoldTo, TableNumber )
 select t.TicketId, t.TicketNumber,t.AgentCode, t.Category,t.TicketStatusCode,
-t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo  
+t.ArrivedAt,t.ArrivalConfirmedBy,a.AgentName,ts.TicketStatus, t.Zone,T.SoldTo, T.TableNumber  
 from dbo.TicketsIssued t inner join dbo.Agent a
 on t.AgentCode = a.AgentCode 
 left join [dbo].[TicketStatus] ts on ts.TicketStatusCode = t.TicketStatusCode

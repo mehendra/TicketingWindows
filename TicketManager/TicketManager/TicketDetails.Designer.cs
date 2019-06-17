@@ -50,6 +50,8 @@
             this.ScannedByTextBox = new System.Windows.Forms.TextBox();
             this.MarkAsArrivedButton = new System.Windows.Forms.Button();
             this.MessageLabel = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.TableNumberTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -195,7 +197,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(354, 196);
+            this.label8.Location = new System.Drawing.Point(357, 247);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(63, 13);
             this.label8.TabIndex = 16;
@@ -203,7 +205,7 @@
             // 
             // ScannedTextBox
             // 
-            this.ScannedTextBox.Location = new System.Drawing.Point(357, 212);
+            this.ScannedTextBox.Location = new System.Drawing.Point(360, 263);
             this.ScannedTextBox.Name = "ScannedTextBox";
             this.ScannedTextBox.ReadOnly = true;
             this.ScannedTextBox.Size = new System.Drawing.Size(216, 20);
@@ -212,7 +214,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(357, 251);
+            this.label9.Location = new System.Drawing.Point(360, 286);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 13);
             this.label9.TabIndex = 18;
@@ -220,7 +222,7 @@
             // 
             // ScannedByTextBox
             // 
-            this.ScannedByTextBox.Location = new System.Drawing.Point(360, 268);
+            this.ScannedByTextBox.Location = new System.Drawing.Point(363, 303);
             this.ScannedByTextBox.Name = "ScannedByTextBox";
             this.ScannedByTextBox.ReadOnly = true;
             this.ScannedByTextBox.Size = new System.Drawing.Size(213, 20);
@@ -246,11 +248,30 @@
             this.MessageLabel.Size = new System.Drawing.Size(0, 13);
             this.MessageLabel.TabIndex = 21;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(360, 206);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(74, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Table Number";
+            // 
+            // TableNumberTextBox
+            // 
+            this.TableNumberTextBox.Location = new System.Drawing.Point(360, 222);
+            this.TableNumberTextBox.Name = "TableNumberTextBox";
+            this.TableNumberTextBox.ReadOnly = true;
+            this.TableNumberTextBox.Size = new System.Drawing.Size(216, 20);
+            this.TableNumberTextBox.TabIndex = 23;
+            // 
             // TicketDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(588, 333);
+            this.Controls.Add(this.TableNumberTextBox);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.MessageLabel);
             this.Controls.Add(this.MarkAsArrivedButton);
             this.Controls.Add(this.ScannedByTextBox);
@@ -307,5 +328,7 @@
         private System.Windows.Forms.TextBox ScannedByTextBox;
         private System.Windows.Forms.Button MarkAsArrivedButton;
         private System.Windows.Forms.Label MessageLabel;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox TableNumberTextBox;
     }
 }

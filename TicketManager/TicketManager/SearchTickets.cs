@@ -151,15 +151,33 @@ namespace TicketManager
             {
                 categoryComboValue = CategoryCombo.SelectedValue.ToString();
             }
-            var searchedResult = GetTicketManagerService().SeachTicketsWithWildCards(new TicketSearchParams
+
+            var ticketSearchParameter = new TicketSearchParams
             {
                 TicketNumber = TicketNumberTextBox.Text,
                 Category = categoryComboValue,
                 AgentCode = SoldByTextBox.Text,
                 SoldTo = SoldToTextBox.Text,
                 PagingStartIndex = 1,
-                RecordsPerPage = 100
-            });
+                RecordsPerPage = 100,
+            };
+            int tableNo = 0;
+            if (!string.IsNullOrEmpty(TableNoTextbox.Text))
+            {
+                if (!int.TryParse(TableNoTextbox.Text, out tableNo))
+                {
+                    MessageBox.Show("Table No has to be number");
+                    return;
+                }
+                else
+                {
+                    ticketSearchParameter.TableNo = tableNo;
+                }
+            }
+            
+            
+            
+            var searchedResult = GetTicketManagerService().SeachTicketsWithWildCards(ticketSearchParameter);
             TicketListGridView.DataSource = searchedResult.Results;
         }
 
@@ -190,6 +208,11 @@ namespace TicketManager
         }
 
         private void UIUpdateTimer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

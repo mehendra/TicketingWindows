@@ -50,23 +50,27 @@
             this.SoldToTextBox = new System.Windows.Forms.TextBox();
             this.TicketNumberTextBox = new System.Windows.Forms.TextBox();
             this.ScannerTabPage = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.SimpleTicketNumberTextBox = new System.Windows.Forms.TextBox();
             this.DataSearchTab = new System.Windows.Forms.TabControl();
             this.ticketCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.UIUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.TableNoTextbox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.AdavancedTabSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dropdownValusBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TicketListGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seachTicketsResultBindingSource)).BeginInit();
             this.ScannerTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.DataSearchTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ticketCategoryBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // AdavancedTabSearch
             // 
+            this.AdavancedTabSearch.Controls.Add(this.label5);
+            this.AdavancedTabSearch.Controls.Add(this.TableNoTextbox);
             this.AdavancedTabSearch.Controls.Add(this.label4);
             this.AdavancedTabSearch.Controls.Add(this.CategoryCombo);
             this.AdavancedTabSearch.Controls.Add(this.SearchButton);
@@ -263,6 +267,18 @@
             this.ScannerTabPage.UseVisualStyleBackColor = true;
             this.ScannerTabPage.Click += new System.EventHandler(this.ScannerTabPage_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(5, 96);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(810, 283);
+            this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
             // SimpleTicketNumberTextBox
             // 
             this.SimpleTicketNumberTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -293,16 +309,21 @@
             this.UIUpdateTimer.Interval = 10000;
             this.UIUpdateTimer.Tick += new System.EventHandler(this.UIUpdateTimer_Tick);
             // 
-            // dataGridView1
+            // TableNoTextbox
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(5, 96);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(810, 283);
-            this.dataGridView1.TabIndex = 1;
+            this.TableNoTextbox.Location = new System.Drawing.Point(389, 50);
+            this.TableNoTextbox.Name = "TableNoTextbox";
+            this.TableNoTextbox.Size = new System.Drawing.Size(193, 20);
+            this.TableNoTextbox.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(337, 53);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Table";
             // 
             // SearchTicketsForm
             // 
@@ -320,9 +341,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.seachTicketsResultBindingSource)).EndInit();
             this.ScannerTabPage.ResumeLayout(false);
             this.ScannerTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.DataSearchTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ticketCategoryBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -355,5 +376,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn zoneDataGridViewTextBoxColumn;
         private System.Windows.Forms.Timer UIUpdateTimer;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox TableNoTextbox;
     }
 }

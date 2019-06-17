@@ -53,6 +53,7 @@ namespace TicketManager
             SoldToTextBox.Text = currentTicket.SoldTo;
             ScannedTextBox.Text = (currentTicket.ArrivedAt.HasValue) ? currentTicket.ArrivedAt.Value.ToString() : "";
             ScannedByTextBox.Text = currentTicket.ArrivalConfirmedBy;
+            TableNumberTextBox.Text = currentTicket.TableNumber;
         }
 
         private void MarkedPaidButton_Click(object sender, EventArgs e)
