@@ -221,5 +221,10 @@ namespace TicketManager
         {
 
         }
+
+        private void SimpleTicketNumberTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -34,18 +34,21 @@
             // 
             // AdministratorModeButton
             // 
-            this.AdministratorModeButton.Location = new System.Drawing.Point(12, 12);
+            this.AdministratorModeButton.Location = new System.Drawing.Point(9, 10);
+            this.AdministratorModeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AdministratorModeButton.Name = "AdministratorModeButton";
-            this.AdministratorModeButton.Size = new System.Drawing.Size(187, 87);
+            this.AdministratorModeButton.Size = new System.Drawing.Size(140, 71);
             this.AdministratorModeButton.TabIndex = 0;
             this.AdministratorModeButton.Text = "Admin Mode";
             this.AdministratorModeButton.UseVisualStyleBackColor = true;
+            this.AdministratorModeButton.Click += new System.EventHandler(this.AdministratorModeButton_Click);
             // 
             // ScanningModeButton
             // 
-            this.ScanningModeButton.Location = new System.Drawing.Point(12, 105);
+            this.ScanningModeButton.Location = new System.Drawing.Point(9, 85);
+            this.ScanningModeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ScanningModeButton.Name = "ScanningModeButton";
-            this.ScanningModeButton.Size = new System.Drawing.Size(187, 92);
+            this.ScanningModeButton.Size = new System.Drawing.Size(140, 75);
             this.ScanningModeButton.TabIndex = 1;
             this.ScanningModeButton.Text = "Scanning Mode";
             this.ScanningModeButton.UseVisualStyleBackColor = true;
@@ -53,11 +56,12 @@
             // 
             // TickerManagerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(211, 214);
+            this.ClientSize = new System.Drawing.Size(158, 174);
             this.Controls.Add(this.ScanningModeButton);
             this.Controls.Add(this.AdministratorModeButton);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TickerManagerForm";
             this.Text = "Ticket Manager";
             this.ResumeLayout(false);

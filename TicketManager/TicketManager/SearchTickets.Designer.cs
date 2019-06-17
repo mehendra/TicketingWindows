@@ -46,6 +46,7 @@
             this.soldToDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arrivedAtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.agentNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TableNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.seachTicketsResultBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.SoldByTextBox = new System.Windows.Forms.TextBox();
             this.SoldToTextBox = new System.Windows.Forms.TextBox();
@@ -56,7 +57,6 @@
             this.DataSearchTab = new System.Windows.Forms.TabControl();
             this.ticketCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.UIUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.TableNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AdavancedTabSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dropdownValusBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TicketListGridView)).BeginInit();
@@ -236,6 +236,12 @@
             this.agentNameDataGridViewTextBoxColumn.ReadOnly = true;
             this.agentNameDataGridViewTextBoxColumn.Width = 70;
             // 
+            // TableNumber
+            // 
+            this.TableNumber.DataPropertyName = "TableNumber";
+            this.TableNumber.HeaderText = "TableNumber";
+            this.TableNumber.Name = "TableNumber";
+            // 
             // seachTicketsResultBindingSource
             // 
             this.seachTicketsResultBindingSource.DataSource = typeof(Business.SeachTickets_Result);
@@ -296,6 +302,7 @@
             this.SimpleTicketNumberTextBox.Name = "SimpleTicketNumberTextBox";
             this.SimpleTicketNumberTextBox.Size = new System.Drawing.Size(370, 50);
             this.SimpleTicketNumberTextBox.TabIndex = 0;
+            this.SimpleTicketNumberTextBox.TextChanged += new System.EventHandler(this.SimpleTicketNumberTextBox_TextChanged);
             // 
             // DataSearchTab
             // 
@@ -317,12 +324,6 @@
             // 
             this.UIUpdateTimer.Interval = 10000;
             this.UIUpdateTimer.Tick += new System.EventHandler(this.UIUpdateTimer_Tick);
-            // 
-            // TableNumber
-            // 
-            this.TableNumber.DataPropertyName = "TableNumber";
-            this.TableNumber.HeaderText = "TableNumber";
-            this.TableNumber.Name = "TableNumber";
             // 
             // SearchTicketsForm
             // 
