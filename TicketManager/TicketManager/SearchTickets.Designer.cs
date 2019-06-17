@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AdavancedTabSearch = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.TableNoTextbox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.CategoryCombo = new System.Windows.Forms.ComboBox();
             this.dropdownValusBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -44,7 +46,6 @@
             this.soldToDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arrivedAtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.agentNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.zoneDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.seachTicketsResultBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.SoldByTextBox = new System.Windows.Forms.TextBox();
             this.SoldToTextBox = new System.Windows.Forms.TextBox();
@@ -55,8 +56,7 @@
             this.DataSearchTab = new System.Windows.Forms.TabControl();
             this.ticketCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.UIUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.TableNoTextbox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.TableNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AdavancedTabSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dropdownValusBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TicketListGridView)).BeginInit();
@@ -90,6 +90,22 @@
             this.AdavancedTabSearch.Text = "Advanced";
             this.AdavancedTabSearch.UseVisualStyleBackColor = true;
             this.AdavancedTabSearch.Enter += new System.EventHandler(this.AdavancedTabSearch_Enter);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(337, 53);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Table";
+            // 
+            // TableNoTextbox
+            // 
+            this.TableNoTextbox.Location = new System.Drawing.Point(389, 50);
+            this.TableNoTextbox.Name = "TableNoTextbox";
+            this.TableNoTextbox.Size = new System.Drawing.Size(193, 20);
+            this.TableNoTextbox.TabIndex = 10;
             // 
             // label4
             // 
@@ -163,7 +179,7 @@
             this.soldToDataGridViewTextBoxColumn,
             this.arrivedAtDataGridViewTextBoxColumn,
             this.agentNameDataGridViewTextBoxColumn,
-            this.zoneDataGridViewTextBoxColumn});
+            this.TableNumber});
             this.TicketListGridView.DataSource = this.seachTicketsResultBindingSource;
             this.TicketListGridView.Location = new System.Drawing.Point(5, 111);
             this.TicketListGridView.MultiSelect = false;
@@ -220,17 +236,10 @@
             this.agentNameDataGridViewTextBoxColumn.ReadOnly = true;
             this.agentNameDataGridViewTextBoxColumn.Width = 70;
             // 
-            // zoneDataGridViewTextBoxColumn
-            // 
-            this.zoneDataGridViewTextBoxColumn.DataPropertyName = "Zone";
-            this.zoneDataGridViewTextBoxColumn.HeaderText = "Zone";
-            this.zoneDataGridViewTextBoxColumn.Name = "zoneDataGridViewTextBoxColumn";
-            this.zoneDataGridViewTextBoxColumn.ReadOnly = true;
-            this.zoneDataGridViewTextBoxColumn.Width = 70;
-            // 
             // seachTicketsResultBindingSource
             // 
             this.seachTicketsResultBindingSource.DataSource = typeof(Business.SeachTickets_Result);
+            this.seachTicketsResultBindingSource.CurrentChanged += new System.EventHandler(this.seachTicketsResultBindingSource_CurrentChanged);
             // 
             // SoldByTextBox
             // 
@@ -309,21 +318,11 @@
             this.UIUpdateTimer.Interval = 10000;
             this.UIUpdateTimer.Tick += new System.EventHandler(this.UIUpdateTimer_Tick);
             // 
-            // TableNoTextbox
+            // TableNumber
             // 
-            this.TableNoTextbox.Location = new System.Drawing.Point(389, 50);
-            this.TableNoTextbox.Name = "TableNoTextbox";
-            this.TableNoTextbox.Size = new System.Drawing.Size(193, 20);
-            this.TableNoTextbox.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(337, 53);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Table";
+            this.TableNumber.DataPropertyName = "TableNumber";
+            this.TableNumber.HeaderText = "TableNumber";
+            this.TableNumber.Name = "TableNumber";
             // 
             // SearchTicketsForm
             // 
@@ -367,16 +366,16 @@
         private System.Windows.Forms.ComboBox CategoryCombo;
         private System.Windows.Forms.BindingSource ticketCategoryBindingSource;
         private System.Windows.Forms.BindingSource dropdownValusBindingSource;
+        private System.Windows.Forms.Timer UIUpdateTimer;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox TableNoTextbox;
         private System.Windows.Forms.DataGridViewTextBoxColumn ticketIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ticketNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn searchCategoryDescriptionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn soldToDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn arrivedAtDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn agentNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn zoneDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Timer UIUpdateTimer;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox TableNoTextbox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TableNumber;
     }
 }

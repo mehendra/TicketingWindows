@@ -216,5 +216,10 @@ namespace TicketManager
         {
 
         }
+
+        private void seachTicketsResultBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace Business
         public string SoldTo { get; set; }
         public string Zone { get; set; }
         public int TicketId { get; set; }
+        public Nullable<int> TableNumber { get; set; }
     
         public virtual Agent Agent { get; set; }
         public virtual TicketStatu TicketStatu { get; set; }

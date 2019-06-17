@@ -255,7 +255,7 @@ namespace Business
         public SearchResultsWrapper<SeachTicketsWithWildCards_Result> SeachTicketsWithWildCards(TicketSearchParams parameters)
         {
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
-            var searchResults = db.SeachTicketsWithWildCards(parameters.TicketNumber, parameters.Category,parameters.AgentCode,parameters.SoldTo, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
+            var searchResults = db.SeachTicketsWithWildCards(parameters.TicketNumber, parameters.Category,parameters.AgentCode,parameters.SoldTo, parameters.TableNo,parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
             return new SearchResultsWrapper<SeachTicketsWithWildCards_Result> { RecordCount = (int)recordCount.Value, Results = searchResults };
         }
 
