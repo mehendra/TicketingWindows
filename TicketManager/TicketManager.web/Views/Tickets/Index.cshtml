@@ -19,7 +19,7 @@
         <h4>TicketSearchParams</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-       
+
         <div class="form-group">
             @Html.LabelFor(model => model.SearchParameters.TicketNumber, "Ticket Number (BNS2017)", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -57,14 +57,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SearchParameters.Zone, "Zone", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SearchParameters.TableNo, "Table No", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.SearchParameters.Zone, new SelectList(Model.Zones, "Value", "Text"), "--Select Zone--")
+                @Html.EditorFor(model => model.SearchParameters.TableNo, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SearchParameters.RecordsPerPage,"Records per page", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SearchParameters.RecordsPerPage, "Records per page", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.SearchParameters.RecordsPerPage, new SelectList(Model.RecordsPerPage, "Value", "Text"))
             </div>
@@ -98,7 +98,7 @@
         <th>Agent Name</th>
         <th>Ticket Status</th>
         <th>Sold To</th>
-        <th>Zone</th>
+        <th>Table</th>
         <th>&nbsp;</th>
     </tr>
     @foreach (var item in Model.SearchResults.Results)
@@ -118,19 +118,18 @@
             <input type="hidden" name="TicketId" id="TicketId" value="" />
             <label for="TicketNumber">Ticket Number</label>
             <input type="text" name="TicketNumber" id="TicketNumber" value="" /><br>
-            <label for="Agent" >Agent</label>
+            <label for="Agent">Agent</label>
             @Html.DropDownList("Agent", new SelectList(Model.Agents, "Value", "Text"))<br />
             <label for="Category">Category</label>
             @Html.DropDownList("Category", new SelectList(Model.Categories, "Value", "Text"))<br />
             <label for="TicketStatusCode">Ticket Status</label>
             @Html.DropDownList("TicketStatusCode", new SelectList(Model.TicketStatus, "Value", "Text"))<br />
             <label for="SoldTo1">Sold To</label>
-            <input type="text" name="SoldTo" id="SoldTo" value=""/><br />
-            <label for="Zone">Zone</label>
-            @Html.DropDownList("Zone", new SelectList(Model.Zones, "Value", "Text"))<br />
+            <input type="text" name="SoldTo" id="SoldTo" value="" /><br />
             <label for="notes">Notes</label><br />
-            <textarea id="Notes" name="Notes" rows="3" cols="40"></textarea>
-            <!--input type="checkbox" id="Paid" value="Paid" /-->
+            <textarea id="Notes" name="Notes" rows="3" cols="40"></textarea><br/>
+            <label for="Paid">Paid</label><br />
+            <input type="checkbox" id="Paid" value="Paid" name="Paid"/>
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
             <input type="button" tabindex="-1" style="position:absolute; top:-1000px" onclick="">
         </fieldset>
@@ -143,7 +142,6 @@
         <tr><td>Agent</td><td id="agent_display"></td></tr>
         <tr><td>Ticket Category</td><td id="ticket_category_display"></td></tr>
         <tr><td>Ticket Status</td><td id="ticket_status_display"></td></tr>
-        <tr><td>Zone</td><td id="ticket_zone_display"></td></tr>
         <tr><td>Notes</td><td id="ticket_notes_display"></td></tr>
         <tr><td>Sold To</td><td id="ticket_soldto_display"></td></tr>
     </table>
@@ -175,7 +173,6 @@
                     $("#tktNum-" + ticketId).text(data.Data.AgentName);
                     $("#tktStatus-" + ticketId).text(data.Data.TicketStatusDescription);
                     $("#tktSoldTo-" + ticketId).text(data.Data.SoldTo);
-                    $("#tktZone-" + ticketId).text(data.Data.Zone);
                 })
                 .fail(function () {
                     alert("error");
@@ -210,7 +207,7 @@
 
         function UpdateTicket(dialogToClose) {
             var $form = $("#quickEdit");
-            var $inputs = $form.find("input, select, button, textarea");
+            var $inputs = $form.find("input, select, button, textarea, checkbox");
             var serializedData = $form.serialize();
             $inputs.prop("disabled", true);
             request = $.ajax({
@@ -268,7 +265,6 @@
             $("#agent_display").text(agentDetails);
             $("#ticket_category_display").text(categoryDescription);
             $("#ticket_status_display").text(ticketStatusDescription);
-            $("#ticket_zone_display").text(zone);
             $("#ticket_notes_display").text(notes);
             $("#ticket_soldto_display").text(soldTo);
             $("#ticket_ticketnumber_display").text(ticketNumber);            
@@ -286,9 +282,16 @@
                     $("#Agent").val(data.Data.AgentCode);
                     $("#Category").val(data.Data.Category);
                     $("#TicketStatusCode").val(data.Data.TicketStatusCode);
-                    $("#Zone").val(data.Data.Zone);
                     $("#Notes").val(data.Data.Notes);
                     $("#SoldTo").val(data.Data.SoldTo);
+                    
+                    if (data.Data.Paid) {
+                        $("#Paid").prop('checked', true);
+                        $("#Paid").val(data.Data.Paid);
+                    } else {
+                        $("#Paid").val("Paid");
+                    }
+                    
                     dialogToOpen.dialog("open");
                 })
                 .fail(function () {

@@ -37,6 +37,8 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <Property Name="SoldTo" Type="varchar" MaxLength="255" />
           <Property Name="Zone" Type="varchar" MaxLength="10" />
           <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableNumber" Type="int" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TicketSiteUser">
           <Key>
@@ -142,6 +144,8 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Agent" Relationship="MMunasinghe_TicketingModel.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
           <NavigationProperty Name="TicketStatu" Relationship="MMunasinghe_TicketingModel.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatu" />
+          <Property Name="TableNumber" Type="Int32" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TicketSiteUser">
           <Key>
@@ -209,6 +213,8 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <EntitySetMapping Name="TicketsIssueds">
             <EntityTypeMapping TypeName="MMunasinghe_TicketingModel.TicketsIssued">
               <MappingFragment StoreEntitySet="TicketsIssued">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="TableNumber" ColumnName="TableNumber" />
                 <ScalarProperty Name="TicketId" ColumnName="TicketId" />
                 <ScalarProperty Name="Zone" ColumnName="Zone" />
                 <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />

@@ -269,6 +269,7 @@
     <Content Include="Views\Tickets\UnpaidByAgent.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\MyTickets\Index.cshtml" />
+    <Content Include="Views\Tickets\ByTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

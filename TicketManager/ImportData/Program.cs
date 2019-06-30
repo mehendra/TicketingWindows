@@ -23,7 +23,6 @@ namespace ImportData
         {
             {"Sarath","SARA"},
             {"Dharshi","DHAR"},
-            {"Dharahi","DHAR"},
             {"Amila","AMIL"},
             {"Shashika","SHAK"},
             {"Manori","MANO"},
@@ -32,7 +31,7 @@ namespace ImportData
             {"Mehendra","MEHE"},
             {"Lilupa","LILU"},
             {"Chanaka","CHAN"},
-            {"Jay","JAYD"},
+            {"Jayasena","JAYD"},
             {"Harsha","HARS"},
             {"Shashi","SHAN"},
             {"Sold at door","DOOR"},
@@ -41,67 +40,70 @@ namespace ImportData
             {"Nalaka","NALA"},
             {"Unassigned","NONE"},
             {"Sandun","SAND"},
+            { "Haritha","HARI"},
             { "", "UNAS"}
         };
+
+        private static string GetBookedPerson(string person)
+        {
+            if (person.StartsWith("Dharshi"))
+            {
+                return nameCodes["Dharshi"];
+            }
+            else if(person.StartsWith("Amola"))
+            {
+                return nameCodes["Amila"];
+            }
+            else
+            {
+                return nameCodes[person];
+            }
+        }
 
         static void Main(string[] args)
         {
 
             var allTicketsSold = ReadGoogleSheet();
 
+
             var db = new MMunasinghe_TicketingEntities();
             var tktNumber = 0;
+            
             foreach (TicketRowOnSpredSheet soldTicket in allTicketsSold)
             {
                 if (!string.IsNullOrEmpty(soldTicket.Owner))
                 {
-                    var ticketCategory = string.Empty;
-
-                    if (soldTicket.Gold > 0)
-                    {
-                        ticketCategory = "Gold";
-                    }
-
-                    if (soldTicket.Silver > 0)
-                    {
-                        ticketCategory = "Silver Adult";
-                    }
-
-                    if (soldTicket.SilverChild > 0)
-                    {
-                        ticketCategory = "Silver Child";
-                    }
-
-                    if (soldTicket.GeneralAdult > 0)
-                    {
-                        ticketCategory = "General Adult";
-                    }
-
-                    if (soldTicket.GeneralChild > 0)
-                    {
-                        ticketCategory = "General Kid";
-                    }
-
-
+                    var ticketCategory = GetTicketCategory(soldTicket);
+                    
                     tktNumber++;
                     var ticketNumber = "TKT" + tktNumber;
 
-                    var agentCode = GetAgentCode(soldTicket.BookedBy);
-                    var lineCode = GetTicketCode(ticketCategory);
-                    if (!db.Agents.Any(a => agentCode == a.AgentCode))
+                    if (!db.Agents.Any(a => soldTicket.BookedBy == a.AgentCode))
                     {
-                        db.Agents.Add(new Agent { AgentCode = agentCode, AgentName = soldTicket.BookedBy });
+                        db.Agents.Add(new Agent { AgentCode = soldTicket.BookedBy, AgentName = soldTicket.BookedBy });
                         db.SaveChanges();
                     }
 
                     var ticketIssued = new TicketsIssued
                     {
-                        AgentCode = agentCode,
-                        Category = lineCode,
+                        AgentCode = soldTicket.BookedBy,
+                        Category = ticketCategory,
                         SoldTo = soldTicket.Owner,
                         TicketStatusCode = "INIT",
-                        TicketNumber = ticketNumber
+                        TicketNumber = ticketNumber,
+                        Notes = soldTicket.Notes,
                     };
+                    if(soldTicket.TableNumber > 0)
+                    {
+                        ticketIssued.TableNumber = soldTicket.TableNumber;
+                    }
+
+                    if(!string.IsNullOrEmpty(soldTicket.City))
+                    {
+                        ticketIssued.City = soldTicket.City;
+                    }
+
+                    
 
                     if (soldTicket.Paid)
                     {
@@ -113,8 +115,38 @@ namespace ImportData
                     db.SaveChanges();
                 }
             }
+            
         }
 
+
+        private static string GetTicketCategory(TicketRowOnSpredSheet valueFromSheet)
+        {
+            if(valueFromSheet.VIP == 1)
+            {
+                return "VIP";
+            }
+            else if(valueFromSheet.GeneralAdult == 1)
+            {
+                return "GEN";
+            }
+            else if (valueFromSheet.GeneralChild == 1)
+            {
+                return "KID";
+            }
+            else if (valueFromSheet.SeatedAdult == 1)
+            {
+                return "SIA";
+            }
+            else if (valueFromSheet.SeatedChild == 1)
+            {
+                return "SCH";
+            }
+            else if (valueFromSheet.Under5 == 1)
+            {
+                return "UN5";
+            }
+            return "USP";
+        }
 
         public static List<TicketRowOnSpredSheet> ReadGoogleSheet()
         {
@@ -143,52 +175,66 @@ namespace ImportData
                     ApplicationName = ApplicationName,
                 });
 
+            
+
             // Define request parameters.
 
             //https://docs.google.com/spreadsheets/d/1RIJFHsgYNEMWqC_C2lrI0NbEBQ58lOk2dVTEPW3oNjs/edit#gid=242709292
 
-            String spreadsheetId = "1RIJFHsgYNEMWqC_C2lrI0NbEBQ58lOk2dVTEPW3oNjs";
-            String range = "Sheet1!A2:K";
+            //String spreadsheetId = "1RIJFHsgYNEMWqC_C2lrI0NbEBQ58lOk2dVTEPW3oNjs";
+            String spreadsheetId = "1QfOzAuPG8zmmDWhpRRQUzne9d8YtaoTfM7YDcIggxl4";            
+            String range = "Sheet1!A2:P";
+
+            
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(spreadsheetId, range);
-            
+            request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.UNFORMATTEDVALUE;
+
             ValueRange response = request.Execute();
             IList<IList<Object>> values = response.Values;
             if (values != null && values.Count > 0)
             {
                 Console.WriteLine(string.Format("Totl Number of lines {0}",values.Count));
                 Console.WriteLine("Name, Major");
+                var rowNumber = 1;
+                var tableNumber = 0;
                 foreach (var row in values)
                 {
-
+                    
                     if (row.Count > 0 && row[0] != null)
                     {
                         if (row[0].ToString().Equals("Total"))
                         {
                             break;
                         }
-
+                        List<object> listOfItems = row.ToList();
+                        
                         var t = new TicketRowOnSpredSheet
                         {
+                            RowNumber = rowNumber,
                             Owner = row[0].ToString(),
-                            Gold = string.IsNullOrEmpty(row[1].ToString()) ? 0 : 1,
-                            Silver = string.IsNullOrEmpty(row[2].ToString()) ? 0 : 1,
-                            SilverChild = string.IsNullOrEmpty(row[3].ToString()) ? 0 : 1,
+                            VIP = string.IsNullOrEmpty(row[1].ToString()) ? 0 : 1,
+                            SeatedAdult = string.IsNullOrEmpty(row[2].ToString()) ? 0 : 1,
+                            SeatedChild = string.IsNullOrEmpty(row[3].ToString()) ? 0 : 1,
                             GeneralAdult = string.IsNullOrEmpty(row[4].ToString()) ? 0 : 1,
                             GeneralChild = string.IsNullOrEmpty(row[5].ToString()) ? 0 : 1,
-                            City = row[6].ToString(),
+                            Under5 = string.IsNullOrEmpty(row[6].ToString()) ? 0 : 1
                             
-                        };
-                        if (row.Count > 7)
+                    };
+                        if(string.IsNullOrEmpty(listOfItems[7].ToString()))
                         {
-                            t.BookedBy = row[7].ToString();
-                            if (row.Count > 8)
-                            {
-                                var paidYN = row[8].ToString();
-                                t.Paid = paidYN.Equals("Yes", StringComparison.CurrentCultureIgnoreCase) ? true : false;
-                            }
+                            t.TableNumber = 0;
+                        } else
+                        {
+                            t.TableNumber = int.Parse(listOfItems[7].ToString());
                         }
+
+                        t.City = listOfItems[8].ToString();
+                        t.Notes = string.Format("Booked By:" + listOfItems[9].ToString());
+                        t.BookedBy = GetBookedPerson(listOfItems[9].ToString().Trim());
+                        t.Paid = (listOfItems[10].ToString().Trim() == "Yes");
                         ticketOwners.Add(t);
+                    rowNumber++;
                     }    
                 }
                     // Print columns A and E, which correspond to indices 0 and 4.
@@ -222,35 +268,24 @@ namespace ImportData
             }
         }
 
-        public static string GetAgentCode(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return nameCodes[""];
-            }
-            else if (nameCodes.Keys.Contains(name.Trim()))
-            {
-                return nameCodes[name.Trim()];
-            }
-            else
-            {
-                throw new KeyNotFoundException(string.Format("Unable to find a matching name code for {0}", name));
-            }
-        }
-
     }
 
     public class TicketRowOnSpredSheet
     {
+        public int RowNumber { get; set; }
         public string Owner { get; set; }
-        public int Gold { get; set; }
-        public int Silver { get; set; }
-        public int SilverChild { get; set; }
+        public int VIP { get; set; }
+        public int SeatedAdult { get; set; }
+        public int SeatedChild { get; set; }
         public int GeneralAdult { get; set; }
         public int GeneralChild { get; set; }
+        public int Under5 { get; set; }
+        public int TableNumber { get; set; }
         public string City { get; set; }
         public string BookedBy { get; set; }
         public bool Paid { get; set; }
         public decimal AmoutPaid { get; set; }
+
+        public string Notes { get; set; }
     }
 }

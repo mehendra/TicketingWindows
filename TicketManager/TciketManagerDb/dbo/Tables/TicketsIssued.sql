@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[TicketsIssued] (
+﻿  CREATE TABLE [dbo].[TicketsIssued] (
     [TicketNumber]       VARCHAR (17)  NOT NULL,
     [AgentCode]          VARCHAR (4)   NOT NULL,
     [Category]           VARCHAR (50)  NULL,
@@ -10,10 +10,9 @@
     [SoldTo]             VARCHAR (255) NULL,
     [Zone]               VARCHAR (10)  NULL,
     [TicketId]           INT           IDENTITY (1, 1) NOT NULL,
+    [TableNumber] INT NULL, 
+	[City] VARCHAR(50) NULL
     CONSTRAINT [PK_TicketsIssued] PRIMARY KEY CLUSTERED ([TicketId] ASC),
     CONSTRAINT [fk_Agent] FOREIGN KEY ([AgentCode]) REFERENCES [dbo].[Agent] ([AgentCode]),
     CONSTRAINT [fk_TicketStatus] FOREIGN KEY ([TicketStatusCode]) REFERENCES [dbo].[TicketStatus] ([TicketStatusCode])
 );
-
-
-

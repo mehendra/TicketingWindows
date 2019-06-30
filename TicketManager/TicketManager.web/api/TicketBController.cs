@@ -1,6 +1,7 @@
 ﻿using Business;
 using Models.APIService;
 using Models.Services;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,7 +27,8 @@ namespace TicketManager.web.api
                 SoldTo = value.SoldTo,
                 Zone = value.Zone,
                 Notes = value.Notes,
-                TicketId = value.TicketId                
+                TicketId = value.TicketId,
+                Paid = GetDateValue(value)
             });
 
             if (ticketManagerResponse.IsASuccess)
@@ -37,6 +39,21 @@ namespace TicketManager.web.api
             {
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable, new HttpError(ticketManagerResponse.Errors.First()));
             }
+        }
+
+        private DateTime? GetDateValue(ApiTicketsIssued value)
+        {
+            if(string.IsNullOrEmpty(value.Paid))
+            {
+                return null;
+            }
+            else if(value.Paid.Equals("Paid"))
+            {
+                return DateTime.Now;
+            }
+
+                return DateTime.Parse(value.Paid);
+            
         }
     }
 }

@@ -88,6 +88,7 @@ namespace Business
                     {
                         ticketFromDb.TicketNumber = ticket.TicketNumber;
                     }
+                    ticketFromDb.Paid = ticket.Paid;
                 }
                 else
                 {
@@ -255,7 +256,7 @@ namespace Business
         public SearchResultsWrapper<SeachTicketsWithWildCards_Result> SeachTicketsWithWildCards(TicketSearchParams parameters)
         {
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
-            var searchResults = db.SeachTicketsWithWildCards(parameters.TicketNumber, parameters.Category,parameters.AgentCode,parameters.SoldTo, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
+            var searchResults = db.SeachTicketsWithWildCards(parameters.TicketNumber, parameters.Category,parameters.AgentCode,parameters.SoldTo, parameters.TableNo,parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
             return new SearchResultsWrapper<SeachTicketsWithWildCards_Result> { RecordCount = (int)recordCount.Value, Results = searchResults };
         }
 
@@ -268,7 +269,7 @@ namespace Business
                 ticketNumberFormatted = Constants.Defaults.TicketNumberPrefix + ticketNumberFormatted;
             }
             ObjectParameter recordCount = new ObjectParameter("TotalRecords", typeof(int));
-            var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Zone,parameters.Category, parameters.SoldTo,parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
+            var searchResults = db.SeachTickets(ticketNumberFormatted, parameters.AgentCode, parameters.TicketStatusCode, parameters.Category, parameters.SoldTo, parameters.TableNo, parameters.TotalRecords, parameters.RecordsPerPage, parameters.PagingStartIndex, recordCount).ToList();
             for (int i = 0; i < searchResults.Count; i++)
             {
                 searchResults[i].SearchCategoryDescription = allCategories.First(a => a.Key == searchResults[i].Category).Value;
@@ -297,5 +298,11 @@ namespace Business
         {
             return db.ReportTicketAllUnpaid().ToList<ReportTicketAllUnpaid_Result>();
         }
+
+        public List<GetTableAllocations_Result> GetTableAllocations()
+        {
+            return db.GetTableAllocations().ToList<GetTableAllocations_Result>();
+        }
+
     }
  }

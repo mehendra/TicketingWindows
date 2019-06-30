@@ -19,5 +19,7 @@ namespace Models
         public int? RecordsPerPage { get; set; }
         public int? PagingStartIndex { get; set; }
         public int TotalRecords { get; set; }
+
+        public int? TableNo { get; set; }
     }
 }

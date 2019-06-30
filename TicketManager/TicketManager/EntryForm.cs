@@ -22,5 +22,10 @@ namespace TicketManager
             var frm = new SearchTicketsForm();
             frm.Show(this);
         }
+
+        private void AdministratorModeButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

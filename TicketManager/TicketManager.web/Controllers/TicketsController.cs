@@ -203,6 +203,12 @@ namespace TicketManager.web.Controllers
             return View(ticketSummary);
         }
 
+        public ActionResult ByTable()
+        {
+            var ticketSummary = ticketService.GetTableAllocations();
+            return View(ticketSummary);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

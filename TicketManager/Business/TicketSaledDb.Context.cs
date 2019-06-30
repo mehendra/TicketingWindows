@@ -33,47 +33,6 @@ namespace Business
         public virtual DbSet<TicketsIssued> TicketsIssueds { get; set; }
         public virtual DbSet<TicketSiteUser> TicketSiteUsers { get; set; }
     
-        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string zone, string category, string soldTo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
-        {
-            var ticketNumberParameter = ticketNumber != null ?
-                new ObjectParameter("TicketNumber", ticketNumber) :
-                new ObjectParameter("TicketNumber", typeof(string));
-    
-            var agentCodeParameter = agentCode != null ?
-                new ObjectParameter("AgentCode", agentCode) :
-                new ObjectParameter("AgentCode", typeof(string));
-    
-            var ticketStatusCodeParameter = ticketStatusCode != null ?
-                new ObjectParameter("TicketStatusCode", ticketStatusCode) :
-                new ObjectParameter("TicketStatusCode", typeof(string));
-    
-            var zoneParameter = zone != null ?
-                new ObjectParameter("Zone", zone) :
-                new ObjectParameter("Zone", typeof(string));
-    
-            var categoryParameter = category != null ?
-                new ObjectParameter("Category", category) :
-                new ObjectParameter("Category", typeof(string));
-    
-            var soldToParameter = soldTo != null ?
-                new ObjectParameter("SoldTo", soldTo) :
-                new ObjectParameter("SoldTo", typeof(string));
-    
-            var rcordCountParameter = rcordCount.HasValue ?
-                new ObjectParameter("RcordCount", rcordCount) :
-                new ObjectParameter("RcordCount", typeof(int));
-    
-            var recordsPerPageParameter = recordsPerPage.HasValue ?
-                new ObjectParameter("RecordsPerPage", recordsPerPage) :
-                new ObjectParameter("RecordsPerPage", typeof(int));
-    
-            var pagingStartIndexParameter = pagingStartIndex.HasValue ?
-                new ObjectParameter("PagingStartIndex", pagingStartIndex) :
-                new ObjectParameter("PagingStartIndex", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, zoneParameter, categoryParameter, soldToParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
-        }
-    
         public virtual ObjectResult<ReportTicketSummary_Result> ReportTicketSummary()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportTicketSummary_Result>("ReportTicketSummary");
@@ -84,7 +43,7 @@ namespace Business
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportTicketAllUnpaid_Result>("ReportTicketAllUnpaid");
         }
     
-        public virtual ObjectResult<SeachTicketsWithWildCards_Result> SeachTicketsWithWildCards(string ticketNumber, string category, string soldBy, string soldTo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
+        public virtual ObjectResult<SeachTicketsWithWildCards_Result> SeachTicketsWithWildCards(string ticketNumber, string category, string soldBy, string soldTo, Nullable<int> tableNo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
         {
             var ticketNumberParameter = ticketNumber != null ?
                 new ObjectParameter("TicketNumber", ticketNumber) :
@@ -102,6 +61,10 @@ namespace Business
                 new ObjectParameter("SoldTo", soldTo) :
                 new ObjectParameter("SoldTo", typeof(string));
     
+            var tableNoParameter = tableNo.HasValue ?
+                new ObjectParameter("TableNo", tableNo) :
+                new ObjectParameter("TableNo", typeof(int));
+    
             var rcordCountParameter = rcordCount.HasValue ?
                 new ObjectParameter("RcordCount", rcordCount) :
                 new ObjectParameter("RcordCount", typeof(int));
@@ -114,7 +77,7 @@ namespace Business
                 new ObjectParameter("PagingStartIndex", pagingStartIndex) :
                 new ObjectParameter("PagingStartIndex", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTicketsWithWildCards_Result>("SeachTicketsWithWildCards", ticketNumberParameter, categoryParameter, soldByParameter, soldToParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTicketsWithWildCards_Result>("SeachTicketsWithWildCards", ticketNumberParameter, categoryParameter, soldByParameter, soldToParameter, tableNoParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
         }
     
         public virtual int UpdateTicketNotesAndPaymentState(Nullable<int> ticketId, string ticketStatusCode, string notes)
@@ -132,6 +95,52 @@ namespace Business
                 new ObjectParameter("Notes", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateTicketNotesAndPaymentState", ticketIdParameter, ticketStatusCodeParameter, notesParameter);
+        }
+    
+        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string category, string soldTo, Nullable<int> tableNo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
+        {
+            var ticketNumberParameter = ticketNumber != null ?
+                new ObjectParameter("TicketNumber", ticketNumber) :
+                new ObjectParameter("TicketNumber", typeof(string));
+    
+            var agentCodeParameter = agentCode != null ?
+                new ObjectParameter("AgentCode", agentCode) :
+                new ObjectParameter("AgentCode", typeof(string));
+    
+            var ticketStatusCodeParameter = ticketStatusCode != null ?
+                new ObjectParameter("TicketStatusCode", ticketStatusCode) :
+                new ObjectParameter("TicketStatusCode", typeof(string));
+    
+            var categoryParameter = category != null ?
+                new ObjectParameter("Category", category) :
+                new ObjectParameter("Category", typeof(string));
+    
+            var soldToParameter = soldTo != null ?
+                new ObjectParameter("SoldTo", soldTo) :
+                new ObjectParameter("SoldTo", typeof(string));
+    
+            var tableNoParameter = tableNo.HasValue ?
+                new ObjectParameter("TableNo", tableNo) :
+                new ObjectParameter("TableNo", typeof(int));
+    
+            var rcordCountParameter = rcordCount.HasValue ?
+                new ObjectParameter("RcordCount", rcordCount) :
+                new ObjectParameter("RcordCount", typeof(int));
+    
+            var recordsPerPageParameter = recordsPerPage.HasValue ?
+                new ObjectParameter("RecordsPerPage", recordsPerPage) :
+                new ObjectParameter("RecordsPerPage", typeof(int));
+    
+            var pagingStartIndexParameter = pagingStartIndex.HasValue ?
+                new ObjectParameter("PagingStartIndex", pagingStartIndex) :
+                new ObjectParameter("PagingStartIndex", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, categoryParameter, soldToParameter, tableNoParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
+        }
+    
+        public virtual ObjectResult<GetTableAllocations_Result> GetTableAllocations()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTableAllocations_Result>("GetTableAllocations");
         }
     }
 }
