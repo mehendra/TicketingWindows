@@ -2,9 +2,9 @@
 	@TicketNumber varchar(17) = null,
 	@AgentCode varchar(10) = null,
 	@TicketStatusCode varchar(4) = null,
-	@Zone varchar(10) = null,
 	@Category varchar(50) = null,
 	@SoldTo varchar(100) = null,
+	@TableNo int = null,
 	@RcordCount int = 0,
 	@RecordsPerPage int = 0,
 	@PagingStartIndex int = 1,
@@ -54,7 +54,7 @@ and isnull(t.TicketStatusCode,'') = case when @TicketStatusCode is null then isn
 
 and isnull(t.Category,'') = case when @Category is null then isnull(t.Category,'') else @Category end
 
-and isnull(t.Zone,'') = case when @Zone is null then isnull(t.Zone,'') else @Zone end
+and isnull(t.TableNumber,0) = case when @TableNo is null then isnull(t.TableNumber,0) else @TableNo end
 
 and isnull(t.SoldTo,'') like case when @SoldTo is null then isnull(t.SoldTo,'') else '%' + @SoldTo + '%' end
 

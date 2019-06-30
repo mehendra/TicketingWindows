@@ -97,7 +97,7 @@ namespace Business
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateTicketNotesAndPaymentState", ticketIdParameter, ticketStatusCodeParameter, notesParameter);
         }
     
-        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string zone, string category, string soldTo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
+        public virtual ObjectResult<SeachTickets_Result> SeachTickets(string ticketNumber, string agentCode, string ticketStatusCode, string category, string soldTo, Nullable<int> tableNo, Nullable<int> rcordCount, Nullable<int> recordsPerPage, Nullable<int> pagingStartIndex, ObjectParameter totalRecords)
         {
             var ticketNumberParameter = ticketNumber != null ?
                 new ObjectParameter("TicketNumber", ticketNumber) :
@@ -111,10 +111,6 @@ namespace Business
                 new ObjectParameter("TicketStatusCode", ticketStatusCode) :
                 new ObjectParameter("TicketStatusCode", typeof(string));
     
-            var zoneParameter = zone != null ?
-                new ObjectParameter("Zone", zone) :
-                new ObjectParameter("Zone", typeof(string));
-    
             var categoryParameter = category != null ?
                 new ObjectParameter("Category", category) :
                 new ObjectParameter("Category", typeof(string));
@@ -122,6 +118,10 @@ namespace Business
             var soldToParameter = soldTo != null ?
                 new ObjectParameter("SoldTo", soldTo) :
                 new ObjectParameter("SoldTo", typeof(string));
+    
+            var tableNoParameter = tableNo.HasValue ?
+                new ObjectParameter("TableNo", tableNo) :
+                new ObjectParameter("TableNo", typeof(int));
     
             var rcordCountParameter = rcordCount.HasValue ?
                 new ObjectParameter("RcordCount", rcordCount) :
@@ -135,7 +135,12 @@ namespace Business
                 new ObjectParameter("PagingStartIndex", pagingStartIndex) :
                 new ObjectParameter("PagingStartIndex", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, zoneParameter, categoryParameter, soldToParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SeachTickets_Result>("SeachTickets", ticketNumberParameter, agentCodeParameter, ticketStatusCodeParameter, categoryParameter, soldToParameter, tableNoParameter, rcordCountParameter, recordsPerPageParameter, pagingStartIndexParameter, totalRecords);
+        }
+    
+        public virtual ObjectResult<GetTableAllocations_Result> GetTableAllocations()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTableAllocations_Result>("GetTableAllocations");
         }
     }
 }

@@ -50,6 +50,10 @@ namespace ImportData
             {
                 return nameCodes["Dharshi"];
             }
+            else if(person.StartsWith("Amola"))
+            {
+                return nameCodes["Amila"];
+            }
             else
             {
                 return nameCodes[person];
@@ -87,14 +91,14 @@ namespace ImportData
                         SoldTo = soldTicket.Owner,
                         TicketStatusCode = "INIT",
                         TicketNumber = ticketNumber,
-                        Notes = soldTicket.Notes
+                        Notes = soldTicket.Notes,
                     };
                     if(soldTicket.TableNumber > 0)
                     {
                         ticketIssued.TableNumber = soldTicket.TableNumber;
                     }
 
-                    if(!string.IsNullOrEmpty(ticketIssued.City))
+                    if(!string.IsNullOrEmpty(soldTicket.City))
                     {
                         ticketIssued.City = soldTicket.City;
                     }
@@ -137,7 +141,11 @@ namespace ImportData
             {
                 return "SCH";
             }
-            return "UN";
+            else if (valueFromSheet.Under5 == 1)
+            {
+                return "UN5";
+            }
+            return "USP";
         }
 
         public static List<TicketRowOnSpredSheet> ReadGoogleSheet()
@@ -174,7 +182,7 @@ namespace ImportData
             //https://docs.google.com/spreadsheets/d/1RIJFHsgYNEMWqC_C2lrI0NbEBQ58lOk2dVTEPW3oNjs/edit#gid=242709292
 
             //String spreadsheetId = "1RIJFHsgYNEMWqC_C2lrI0NbEBQ58lOk2dVTEPW3oNjs";
-            String spreadsheetId = "1_z1PpHubNwaIMJKUTH1fvTsCRnvzQHpyxjSHofQ_-QM";            
+            String spreadsheetId = "1QfOzAuPG8zmmDWhpRRQUzne9d8YtaoTfM7YDcIggxl4";            
             String range = "Sheet1!A2:P";
 
             
@@ -211,27 +219,20 @@ namespace ImportData
                             GeneralAdult = string.IsNullOrEmpty(row[4].ToString()) ? 0 : 1,
                             GeneralChild = string.IsNullOrEmpty(row[5].ToString()) ? 0 : 1,
                             Under5 = string.IsNullOrEmpty(row[6].ToString()) ? 0 : 1
-                        };
-                        
-                        //Table number : if the next column is a city
-                        if (listOfItems[7].ToString() != "NA" && !string.IsNullOrEmpty(listOfItems[7].ToString()))
-                        {
-                            tableNumber = int.Parse(listOfItems[7].ToString());
-                            t.TableNumber = tableNumber;
-                        }
+                            
+                    };
                         if(string.IsNullOrEmpty(listOfItems[7].ToString()))
                         {
-                            t.TableNumber = tableNumber;
-                        }
-                        if (listOfItems[7].ToString() == "NA")
+                            t.TableNumber = 0;
+                        } else
                         {
-                            tableNumber = 0;
+                            t.TableNumber = int.Parse(listOfItems[7].ToString());
                         }
 
-                        t.City = listOfItems[9].ToString();
-                        t.Notes = string.Format("Booked By:" + listOfItems[10].ToString());
-                        t.BookedBy = GetBookedPerson(listOfItems[10].ToString().Trim());
-                            
+                        t.City = listOfItems[8].ToString();
+                        t.Notes = string.Format("Booked By:" + listOfItems[9].ToString());
+                        t.BookedBy = GetBookedPerson(listOfItems[9].ToString().Trim());
+                        t.Paid = (listOfItems[10].ToString().Trim() == "Yes");
                         ticketOwners.Add(t);
                     rowNumber++;
                     }    

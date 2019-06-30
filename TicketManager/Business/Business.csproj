@@ -61,6 +61,9 @@
     <Compile Include="Constants\DefaultValues.cs" />
     <Compile Include="Constants\FixedAgents.cs" />
     <Compile Include="Constants\TicketStatus.cs" />
+    <Compile Include="GetTableAllocations_Result.cs">
+      <DependentUpon>TicketSaledDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Logger.cs" />
     <Compile Include="LoginService.cs" />
     <Compile Include="ReportTicketAllUnpaid_Result.cs">

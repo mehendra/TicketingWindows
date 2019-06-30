@@ -38,6 +38,7 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <Property Name="Zone" Type="varchar" MaxLength="10" />
           <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TableNumber" Type="int" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TicketSiteUser">
           <Key>
@@ -79,15 +80,16 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetTableAllocations" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ReportTicketAllUnpaid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ReportTicketSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SeachTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TicketNumber" Type="varchar" Mode="In" />
           <Parameter Name="AgentCode" Type="varchar" Mode="In" />
           <Parameter Name="TicketStatusCode" Type="varchar" Mode="In" />
-          <Parameter Name="Zone" Type="varchar" Mode="In" />
           <Parameter Name="Category" Type="varchar" Mode="In" />
           <Parameter Name="SoldTo" Type="varchar" Mode="In" />
+          <Parameter Name="TableNo" Type="int" Mode="In" />
           <Parameter Name="RcordCount" Type="int" Mode="In" />
           <Parameter Name="RecordsPerPage" Type="int" Mode="In" />
           <Parameter Name="PagingStartIndex" Type="int" Mode="In" />
@@ -177,14 +179,15 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
             <Parameter Name="TicketNumber" Mode="In" Type="String" />
             <Parameter Name="AgentCode" Mode="In" Type="String" />
             <Parameter Name="TicketStatusCode" Mode="In" Type="String" />
-            <Parameter Name="Zone" Mode="In" Type="String" />
             <Parameter Name="Category" Mode="In" Type="String" />
             <Parameter Name="SoldTo" Mode="In" Type="String" />
+            <Parameter Name="TableNo" Mode="In" Type="Int32" />
             <Parameter Name="RcordCount" Mode="In" Type="Int32" />
             <Parameter Name="RecordsPerPage" Mode="In" Type="Int32" />
             <Parameter Name="PagingStartIndex" Mode="In" Type="Int32" />
             <Parameter Name="TotalRecords" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GetTableAllocations" ReturnType="Collection(TicketingModel.GetTableAllocations_Result)" />
         </EntityContainer>
         <EntityType Name="Agent">
           <Key>
@@ -220,6 +223,7 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <NavigationProperty Name="Agent" Relationship="TicketingModel.fk_Agent" FromRole="TicketsIssued" ToRole="Agent" />
           <NavigationProperty Name="TicketStatu" Relationship="TicketingModel.fk_TicketStatus" FromRole="TicketsIssued" ToRole="TicketStatu" />
           <Property Name="TableNumber" Type="Int32" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_Agent">
           <End Type="TicketingModel.Agent" Role="Agent" Multiplicity="1" />
@@ -302,6 +306,10 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <Property Type="String" Name="SoldTo" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="TableNumber" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="GetTableAllocations_Result">
+          <Property Type="String" Name="TableNumber" Nullable="true" MaxLength="11" />
+          <Property Type="Int32" Name="NumberOfPeople" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -335,6 +343,7 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
           <EntitySetMapping Name="TicketsIssueds">
             <EntityTypeMapping TypeName="TicketingModel.TicketsIssued">
               <MappingFragment StoreEntitySet="TicketsIssued">
+                <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="TableNumber" ColumnName="TableNumber" />
                 <ScalarProperty Name="TicketId" ColumnName="TicketId" />
                 <ScalarProperty Name="Zone" ColumnName="Zone" />
@@ -422,6 +431,14 @@ warning 6002: The table/view 'MMunasinghe_Ticketing.dbo.TicketCategory' does not
                 <ScalarProperty Name="Zone" ColumnName="Zone" />
                 <ScalarProperty Name="SoldTo" ColumnName="SoldTo" />
                 <ScalarProperty Name="TableNumber" ColumnName="TableNumber" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTableAllocations" FunctionName="TicketingModel.Store.GetTableAllocations">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketingModel.GetTableAllocations_Result">
+                <ScalarProperty Name="TableNumber" ColumnName="TableNumber" />
+                <ScalarProperty Name="NumberOfPeople" ColumnName="NumberOfPeople" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
