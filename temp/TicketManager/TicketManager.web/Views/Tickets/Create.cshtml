@@ -1,0 +1,96 @@
+﻿@model TicketManager.web.Models.TicketDetailsViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>TicketsIssued</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label for="TicketNumber" class="control-label col-md-2">Ticket Number: </label>
+            <div class="col-md-10">
+
+                @Html.EditorFor(model => model.TicketDetails.TicketNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.TicketNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TicketDetails.TicketStatusCode, "Ticket Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TicketDetails.TicketStatusCode, new SelectList(Model.TicketStatus, "Value", "Text"), "-- Please Select --")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="AgentCode" class="control-label col-md-2">Agent Code: </label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TicketDetails.AgentCode, new SelectList(Model.Agents, "Value", "Text"), "-- Please Select --")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TicketDetails.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TicketDetails.Category,new SelectList(Model.Categories, "Value", "Text"), "-- Please Select --")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ArrivedAt" class="control-label col-md-2">Arrived At: </label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TicketDetails.ArrivedAt, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.ArrivedAt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ArrivalConfirmedBy" class="control-label col-md-2">Arrival Confirmed By: </label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TicketDetails.ArrivalConfirmedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.ArrivalConfirmedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Notes" class="control-label col-md-2">Notes: </label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.TicketDetails.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.Notes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="SoldTo" class="control-label col-md-2">SoldTo: </label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TicketDetails.SoldTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TicketDetails.SoldTo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Zone" class="control-label col-md-2">Zone: </label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TicketDetails.Zone, new SelectList(Model.Zones, "Value", "Text"), "-- Please Select --")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,410 @@
+﻿@model TicketManager.web.Models.TicketSearchInfoViewModel<Business.SeachTickets_Result>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>TicketSearchParams</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.TicketNumber, "Ticket Number (BNS2017)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SearchParameters.TicketNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SearchParameters.TicketNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.SoldTo, "Sold To", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SearchParameters.SoldTo, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.AgentCode, "Agent", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.AgentCode, new SelectList(Model.Agents, "Value", "Text"), "--Select Agent--")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.TicketStatusCode, "Ticket Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.TicketStatusCode, new SelectList(Model.TicketStatus, "Value", "Text"), "--Select Ticket Status--")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.Category, "Ticket Category", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.Category, new SelectList(Model.Categories, "Value", "Text"), "--Select Category--")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.TableNo, "Table No", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SearchParameters.TableNo, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SearchParameters.RecordsPerPage, "Records per page", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SearchParameters.RecordsPerPage, new SelectList(Model.RecordsPerPage, "Value", "Text"))
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.SearchParameters.RcordCount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.SearchParameters.PagingStartIndex, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.SearchResults.RecordCount, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Search" class="btn btn-default" onclick="doSubmit();" />
+        </div>
+    </div>
+}
+</p>
+<br />
+<br />
+@if (Model.SearchResults != null || Model.SearchResults.Results.Count() > 0)
+{
+    <div>
+        Total Number of Records: @Model.SearchResults.RecordCount
+    </div>
+
+    <table class="table">
+    <tr>
+        <th>Ticket Number</th>
+        <th>Category</th>
+        <th>Agent Name</th>
+        <th>Ticket Status</th>
+        <th>Sold To</th>
+        <th>Table</th>
+        <th>&nbsp;</th>
+    </tr>
+    @foreach (var item in Model.SearchResults.Results)
+    {
+        Html.RenderPartial("~/Views/Shared/_SearchView.cshtml", item);
+    }
+
+    </table>
+}
+
+<div id="dialog-form" title="Create new user">
+    <p class="validateTips">All form fields are required.</p>
+
+    <form id="quickEdit">
+        <fieldset>
+            <div id="editingTicketNumber"></div>
+            <input type="hidden" name="TicketId" id="TicketId" value="" />
+            <label for="TicketNumber">Ticket Number</label>
+            <input type="text" name="TicketNumber" id="TicketNumber" value="" /><br>
+            <label for="Agent">Agent</label>
+            @Html.DropDownList("Agent", new SelectList(Model.Agents, "Value", "Text"))<br />
+            <label for="Category">Category</label>
+            @Html.DropDownList("Category", new SelectList(Model.Categories, "Value", "Text"))<br />
+            <label for="TicketStatusCode">Ticket Status</label>
+            @Html.DropDownList("TicketStatusCode", new SelectList(Model.TicketStatus, "Value", "Text"))<br />
+            <label for="SoldTo1">Sold To</label>
+            <input type="text" name="SoldTo" id="SoldTo" value="" /><br />
+            <label for="notes">Notes</label><br />
+            <textarea id="Notes" name="Notes" rows="3" cols="40"></textarea><br/>
+            <label for="Paid">Paid</label><br />
+            <input type="checkbox" id="Paid" value="Paid" name="Paid"/>
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="button" tabindex="-1" style="position:absolute; top:-1000px" onclick="">
+        </fieldset>
+    </form>
+</div>
+
+<div id="view_dialog">
+    <table class="displayTicketTable">        
+        <tr><td width="30%">Ticket Number</td><td id="ticket_ticketnumber_display"></td></tr>
+        <tr><td>Agent</td><td id="agent_display"></td></tr>
+        <tr><td>Ticket Category</td><td id="ticket_category_display"></td></tr>
+        <tr><td>Ticket Status</td><td id="ticket_status_display"></td></tr>
+        <tr><td>Notes</td><td id="ticket_notes_display"></td></tr>
+        <tr><td>Sold To</td><td id="ticket_soldto_display"></td></tr>
+    </table>
+</div>
+
+<div id="delete_dialog">
+    <input type="hidden" id="ticketNumberToDelete" />
+    Are you sure you want to delete <span id="ticket_ticketnumber_display_for_delete"></span>
+</div>
+    <script>
+        function postPage(pageId) {
+            $("#SearchParameters_PagingStartIndex").val(pageId)
+            document.forms[0].submit();
+        }
+        function doSubmit() {
+            $("#SearchParameters_PagingStartIndex").val(1)
+            document.forms[0].submit();
+        }
+
+
+        function updatePage(ticketId) {
+            var controlId = "#TicketContainer-" + ticketId;
+            var response = "";
+            var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
+            })
+                .done(function (data) {
+                    $("#tktNumber-" + ticketId).text(data.Data.TicketNumber);
+                    $("#tktCat-" + ticketId).text(data.Data.CategoryDescription);
+                    $("#tktNum-" + ticketId).text(data.Data.AgentName);
+                    $("#tktStatus-" + ticketId).text(data.Data.TicketStatusDescription);
+                    $("#tktSoldTo-" + ticketId).text(data.Data.SoldTo);
+                })
+                .fail(function () {
+                    alert("error");
+                })
+                .always(function () {
+                });
+            jqxhr.always(function () {
+            });
+        }
+
+        function DeleteTicket(dialogToClose, ticketId) {
+            request = $.ajax({
+                url: "/api/TicketA/" + ticketId,
+                type: "DELETE",
+                data: { id: ticketId }
+            });
+            request.done(function (response, textStatus, jqXHR) {
+                var controlId = "#TicketContainer-" + ticketId;
+                $(controlId).remove();
+                dialogToClose.dialog("close");
+                return true;
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                $("#error").text('Error: ' + jqXHR.responseText);
+                console.error(
+                    "The following error occurred: " +
+                    textStatus, errorThrown
+                );
+                return false;
+            })
+        }
+
+        function UpdateTicket(dialogToClose) {
+            var $form = $("#quickEdit");
+            var $inputs = $form.find("input, select, button, textarea, checkbox");
+            var serializedData = $form.serialize();
+            $inputs.prop("disabled", true);
+            request = $.ajax({
+                url: "/api/TicketB",
+                type: "post",
+                data: serializedData
+            });
+            request.done(function (response, textStatus, jqXHR) {
+                updatePage($("#TicketId").val());
+                dialogToClose.dialog("close");
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                $("#error").text('Error: ' + jqXHR.responseText);
+                console.error(
+                    "The following error occurred: " +
+                    textStatus, errorThrown
+                );
+            });
+            request.always(function () {
+                $inputs.prop("disabled", false);
+            });
+        }
+
+        function GetTicketDetails(ticketId, dialogToOpen, forEdit) {
+            // Abort any pending request
+            var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
+            })
+                .done(function (data) {
+                    if(forEdit){
+                        assignTicketToView(data.Data.AgentName, data.Data.CategoryDescription, data.Data.TicketStatusDescription, data.Data.Zone, data.Data.Notes, data.Data.SoldTo, data.Data.TicketNumber);
+                    }
+                    else {
+                        assignTicketToDelete(data.Data.TicketId, data.Data.TicketNumber)
+                    }
+                    dialogToOpen.dialog("open");
+                })
+                .fail(function () {
+                    alert("error");
+                })
+                .always(function () {
+                });
+            jqxhr.always(function () {
+            });
+
+        }
+
+        function assignTicketToDelete(ticketId, ticketNumber)
+        {
+            $("#ticketNumberToDelete").val(ticketId);
+            $("#ticket_ticketnumber_display_for_delete").text(ticketNumber);
+        }
+
+        function assignTicketToView(agentDetails, categoryDescription, ticketStatusDescription, zone, notes, soldTo, ticketNumber)
+        {
+            $("#agent_display").text(agentDetails);
+            $("#ticket_category_display").text(categoryDescription);
+            $("#ticket_status_display").text(ticketStatusDescription);
+            $("#ticket_notes_display").text(notes);
+            $("#ticket_soldto_display").text(soldTo);
+            $("#ticket_ticketnumber_display").text(ticketNumber);            
+
+        }
+
+        function GetTicketDetailsToEdit(ticketId, dialogToOpen) {
+            // Abort any pending request
+            var jqxhr = $.getJSON("/api/TicketA/" + ticketId, function (data) {
+            })
+                .done(function (data) {
+                    $("#editingTicketNumber").text(data.Data.TicketNumber);
+                    $("#TicketId").val(data.Data.TicketId);
+                    $("#TicketNumber").val(data.Data.TicketNumber);
+                    $("#Agent").val(data.Data.AgentCode);
+                    $("#Category").val(data.Data.Category);
+                    $("#TicketStatusCode").val(data.Data.TicketStatusCode);
+                    $("#Notes").val(data.Data.Notes);
+                    $("#SoldTo").val(data.Data.SoldTo);
+                    
+                    if (data.Data.Paid) {
+                        $("#Paid").prop('checked', true);
+                        $("#Paid").val(data.Data.Paid);
+                    } else {
+                        $("#Paid").val("Paid");
+                    }
+                    
+                    dialogToOpen.dialog("open");
+                })
+                .fail(function () {
+                    alert("error");
+                })
+                .always(function () {
+                });
+            jqxhr.always(function () {
+            });
+
+        }
+
+        $(function () {
+            var dialog;
+            dialog = $("#dialog-form").dialog({
+                autoOpen: false,
+                height: 500,
+                width: 550,
+                modal: true,
+                buttons: {
+                    "Update Ticket": addTicket,
+                    Cancel: function () {
+                        dialog.dialog("close");
+                    }
+                },
+                close: function () {
+                    $('#quickEdit')[0].reset();
+                }
+            });
+
+
+
+            function addTicket() {
+                var valid = true;
+                if (valid) {
+                    UpdateTicket(dialog);
+                }
+                return valid;
+            }
+
+            $(".editDialog").on("click", function (event) {
+                event.preventDefault();
+                var id = this.getAttribute('random');
+                var data = GetTicketDetailsToEdit(id, dialog);
+            });
+        });
+
+
+        $(function () {
+            var dialog;
+            dialog = $("#delete_dialog").dialog({
+                autoOpen: false,
+                height: 150,
+                width: 550,
+                modal: true,
+                buttons: {
+                    Cancel: function () {
+                        dialog.dialog("close");
+                    },
+                    Delete: function () {
+                        if(DeleteTicket(dialog, $('#ticketNumberToDelete').val()))
+                        {
+                            dialog.dialog("close");
+                        }
+                    }
+                },
+                close: function () {
+                    assignTicketToView("", "", "", "", "", "", "");
+                }
+            });
+
+            $(".deleteDialog").on("click", function (event) {
+                event.preventDefault();
+                var id = this.getAttribute('random');                
+                var data = GetTicketDetails(id, dialog, false);
+            });
+        });
+
+        $(function () {
+            var dialog;
+            dialog = $("#view_dialog").dialog({
+                autoOpen: false,
+                height: 450,
+                width: 550,
+                modal: true,
+                buttons: {
+                    Cancel: function () {
+                        dialog.dialog("close");
+                    }
+                },
+                close: function () {
+                    assignTicketToView("", "", "", "", "", "", "");
+                }
+            });
+
+            $(".displayDialog").on("click", function (event) {
+                event.preventDefault();
+                var id = this.getAttribute('random');
+                var data = GetTicketDetails(id, dialog, true);
+            });
+        });
+
+    </script>
+    <div class="pager">
+        <ul>
+            @{
+                int i = 1;
+                while (i < Math.Ceiling((decimal)Model.SearchResults.RecordCount / Model.SearchParameters.RecordsPerPage.Value) + 1)
+                {
+                    <li>&nbsp; <a href="#" onclick="postPage(@i);">@i</a></li>
+                    i++;
+                }
+            }
+
+        </ul>
+    </div>

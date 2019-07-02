@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Business.GetTableAllocations_Result>
+
+@{
+    ViewBag.Title = "By Table";
+}
+
+<h2>Unpaid Tickets By Agent</h2>
+<script>
+    function postToPage(tableNumber) {
+
+        var form = $('<form action="/Tickets" method="POST">' +
+            '<input type="hidden" name="SearchParameters.TicketNumber" value="">' +
+            '<input type="hidden" name="SearchParameters.AgentCode" value="">'  +
+            '<input type="hidden" name="SearchParameters.TicketStatusCode" value="">' +
+            '<input type="hidden" name="SearchParameters.Category" value="">' + 
+            '<input type="hidden" name="SearchParameters.TableNo" value="' + tableNumber + '">' +
+            '<input type="hidden" name="SearchParameters.RecordsPerPage" value="150">' +
+            '<input type="hidden" name="SearchParameters.RcordCount" value="0">' +
+            '<input type="hidden" name="SearchParameters.PagingStartIndex" value="1">' +
+            '<input type="hidden" name="SearchParameters.RecordCiount" value="0">' +
+            '</form>');
+        $(document.body).append(form);
+        document.forms[0].submit();
+    }
+</script>
+
+<table class="table">
+    <tr>
+        <th>
+            Table Number
+        </th>
+        <th width="10%">
+            Number Of Tickets
+        </th>
+        <th>&nbsp;</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPeople)
+            </td>
+            <td>
+                <a href="#" onclick="postToPage('@item.TableNumber');">Show Tickets</a>
+            </td>
+        </tr>
+    }
+
+</table>

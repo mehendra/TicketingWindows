@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Bulk Create";
+}
+
+<h2>Bulk Create</h2>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    @if (ViewBag.Errors != null)
+    {
+        <ul class="has-error">
+            @foreach (var item in ViewBag.Errors)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    }
+    Bulk Tickets (please note all these tickets will be created new)
+    <br />
+    <textarea name="ticketsIssued" cols="200" rows="30"></textarea>
+    <br />
+    <input type="submit" />
+</form>
+
