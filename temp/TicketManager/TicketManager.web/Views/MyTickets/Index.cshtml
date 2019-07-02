@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TicketManager.web.Models.MyTicketViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Tickets Assigned To @ViewData["agentName"]</h2>
+<br /><br />
+<h4>Legend For Tickets Sold</h4>
+<table title="Legend" summary="Legend For Tickets Sold">
+    <tr>
+        <td style="background-color:#ccffcc; padding:10px;text-align:center" width="150px;">Paid Tickets</td>
+        <td style="background-color:#ffcccc; padding:10px;text-align:center" width="150px;">Unpaid Tickets</td>
+    </tr>
+</table>
+<br /><br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SoldTo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TicketNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Zone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+
+    var trColor = (item.IsPaid) ? "#ccffcc" : "#ffcccc";
+    <tr style="background-color:@trColor">
+        <td>
+            @Html.DisplayFor(modelItem => item.SoldTo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Zone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,39 @@
+ERROR 8 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 9 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 13 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 9 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 9 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 13 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 13 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 25 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 16 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 17 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 17 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 10 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 10 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 13 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 11 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 11 Business.Logger - Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+ERROR 13 Business.Logger - Object reference not set to an instance of an object.
+ERROR 17 Business.Logger - Object reference not set to an instance of an object.
+ERROR 18 Business.Logger - Object reference not set to an instance of an object.
+ERROR 15 Business.Logger - Object reference not set to an instance of an object.
+ERROR 9 Business.Logger - Object reference not set to an instance of an object.
+ERROR 10 Business.Logger - Object reference not set to an instance of an object.
+ERROR 10 Business.Logger - Object reference not set to an instance of an object.
+ERROR 11 Business.Logger - A specified Include path is not valid. The EntityType 'TicketingModel.TicketsIssued' does not declare a navigation property with the name 'Category'.
+ERROR 11 Business.Logger - A specified Include path is not valid. The EntityType 'TicketingModel.TicketsIssued' does not declare a navigation property with the name 'Category'.
+ERROR 10 Business.Logger - A specified Include path is not valid. The EntityType 'TicketingModel.TicketsIssued' does not declare a navigation property with the name 'Category'.
+ERROR 10 Business.Logger - A specified Include path is not valid. The EntityType 'TicketingModel.TicketsIssued' does not declare a navigation property with the name 'Category'.
+ERROR 10 Business.Logger - A specified Include path is not valid. The EntityType 'TicketingModel.TicketsIssued' does not declare a navigation property with the name 'Category'.
+ERROR 21 Business.Logger - Unknown Ticket 
+ERROR 21 Business.Logger - Unknown Ticket 
+ERROR 20 Business.Logger - Unknown Ticket 
+ERROR 20 Business.Logger - Unknown Ticket 
+ERROR 20 Business.Logger - Unknown Ticket 
+ERROR 20 Business.Logger - Unknown Ticket 
+ERROR 20 Business.Logger - Unknown Ticket 
+ERROR 21 Business.Logger - Unknown Ticket 
+ERROR 22 Business.Logger - Unknown Ticket 
+ERROR 23 Business.Logger - Unknown Ticket 
+ERROR 13 Business.Logger - Object reference not set to an instance of an object.

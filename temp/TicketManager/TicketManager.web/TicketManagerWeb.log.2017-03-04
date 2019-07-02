@@ -1,0 +1,5 @@
+ERROR 14 Business.Logger - Object reference not set to an instance of an object.
+ERROR 16 Business.Logger - Object reference not set to an instance of an object.
+ERROR 10 Business.Logger - Object reference not set to an instance of an object.
+ERROR 15 Business.Logger - An error occurred while updating the entries. See the inner exception for details.
+ERROR 10 Business.Logger - An error occurred while updating the entries. See the inner exception for details.

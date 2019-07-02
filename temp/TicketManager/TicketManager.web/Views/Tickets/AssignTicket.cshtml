@@ -1,0 +1,130 @@
+﻿@model IEnumerable<Business.TicketsIssued>
+
+@{
+    ViewBag.Title = "Assign Ticket";
+}
+
+<h2>Assign Ticket for @ViewData["agentName"]</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div>
+    <form id="ticketAdd">
+        <table>
+            <tr><td>
+                    <input type="text" name="ticketNumber" id="ticketNumber" class="form-control text-box single-line" />
+                    <input type="hidden" name="agentCode" value="@ViewData["agentCode"]"/>
+                </td>
+            <td>
+                <input type="submit" class="btn btn-default" /></td>
+            <td><div id="loadContainer"></div></td>
+            </tr>
+
+        </table>
+        <div id="error"></div>
+        
+    </form>
+    
+</div>
+<hr />
+<div id="ticketContainer">
+@foreach (var item in Model)
+{
+    <div class="ticketNumberOnly">
+        @Html.DisplayFor(modelItem => item.TicketNumber)
+        <br /><span>@Html.DisplayFor(modelItem => item.Category)</span>
+    </div>
+}
+</div>
+
+
+<script>
+    var request;
+    $(document).ajaxStart(function () {
+        console.log('ajax starting');
+    }).ajaxStop(function () {
+        console.log('ajax stoping');
+    });
+    // Bind to the submit event of our form
+    $("#ticketAdd").submit(function (event) {
+
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+
+        // Abort any pending request
+        if (request) {
+            request.abort();
+        }
+        // setup some local variables
+        var $form = $(this);
+
+        // Let's select and cache all the fields
+        var $inputs = $form.find("input, select, button, textarea");
+
+        // Serialize the data in the form
+        var serializedData = $form.serialize();
+
+        // Let's disable the inputs for the duration of the Ajax request.
+        // Note: we disable elements AFTER the form data has been serialized.
+        // Disabled form elements will not be serialized.
+        $inputs.prop("disabled", true);
+        if ($("#spinner").length) {
+            $('spinner').show();
+        } else {
+            $('#loadContainer').append('<img src="/Content/images/ajax-loader.gif" id="spinner"/>');
+        }
+
+        $("#error").text('');
+
+        //alert(serializedData);
+
+        // Fire off the request to /form.php
+        request = $.ajax({
+            url: "/api/TicketA",
+            type: "post",
+            data: serializedData
+        });
+
+        // Callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR) {
+            updatePage($('#ticketNumber').val());
+            $('#ticketNumber').val('');
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown) {
+            // Log the error to the console
+            $("#error").text('Error: ' + jqXHR.responseText);
+            console.error(
+                "The following error occurred: " +
+                textStatus, errorThrown
+            );
+        });
+
+        // Callback handler that will be called regardless
+        // if the request failed or succeeded
+        request.always(function () {
+            // Reenable the inputs
+            $inputs.prop("disabled", false);
+            $("#spinner").hide();
+        });
+
+    });
+
+    function updatePage(ticketId)
+    {
+        $.getJSON("/api/TicketA", {
+            ticketNumber: ticketId
+        }).done(function (data) {
+            var htmlString = '<div class="ticketNumberOnly">' + data.Data.TicketNumber + '<br /><span>';
+            if(data.Data.Category != null)
+            {
+                htmlString = htmlString + data.Data.Category 
+            } 
+            htmlString = htmlString + '</span></div>'
+            $('#ticketContainer').append(htmlString);
+        });
+    }
+
+</script>
