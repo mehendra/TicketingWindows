@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagerFirebaseDb", "TicketManagerFirebaseDb.csproj", "{DBA0EFA2-709A-41DB-9066-5B455ED44B6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBA0EFA2-709A-41DB-9066-5B455ED44B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA0EFA2-709A-41DB-9066-5B455ED44B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA0EFA2-709A-41DB-9066-5B455ED44B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA0EFA2-709A-41DB-9066-5B455ED44B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9EA25960-E90B-4FD1-8859-945475A34B8C}
+	EndGlobalSection
+EndGlobal
