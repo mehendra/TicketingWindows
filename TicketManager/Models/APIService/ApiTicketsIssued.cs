@@ -1,7 +1,11 @@
-﻿namespace Models.APIService
+﻿using System.Collections.Generic;
+
+namespace Models.APIService
 {
     public class ApiTicketsIssued
     {
+
+        public List<ApiTicketsIssued> ticketList { get; set; }
         public int TicketId { get; set; }
         public string Agent { get; set; }
         public string Category { get; set; }
