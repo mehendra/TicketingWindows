@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Git\TicketManager\Business\TicketSaledDb.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\mehen\Documents\GitHub\TicketingWindows\TicketManager\Business\TicketSaledDb.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
